@@ -774,9 +774,9 @@ The domain lives in the profile; the shape of the conversation is identical.
 
 ### English only, everywhere in the repo — 20/09/2026
 Claudia: *"I do not want italian stuff in this project... no italian leftover
-for an international hackaton."* The project began Italian (`Officina`) and
-went multilingual on 18/09 with English as default, but only the **content**
-moved: the plumbing stayed Italian. On 20/09 all of it went — routes, tool
+for an international hackaton."* The project began in Italian and went
+multilingual on 18/09 with English as default, but only the **content** moved:
+the plumbing stayed Italian. On 20/09 all of it went — routes, tool
 names, tool parameters, D1 tables and columns, env vars, JSON keys, identifiers
 and every comment. **Language is still an input** (`language` in
 `persona.json`); what is fixed is that the *system* is written in English and
