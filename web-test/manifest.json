@@ -1,0 +1,8 @@
+{
+  "name": "Mic Permission Test",
+  "short_name": "MicTest",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#14120f",
+  "theme_color": "#14120f"
+}

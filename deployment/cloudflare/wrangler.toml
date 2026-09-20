@@ -1,0 +1,31 @@
+# Configuration of the Cloudflare Pages project.
+#
+# WHY IT EXISTS: until yesterday it was not needed, everything was sent from the
+# command line. But a database gets "bound" to the project, and
+# `wrangler pages deploy` has no argument at all for doing that: either you click
+# in the dashboard, or you write it here. Writing it here means the binding lives
+# in the repository and rebuilds itself; in the dashboard it would be something
+# only the person who clicked it knows.
+#
+# CONSEQUENCE FOR THE COMMAND: with this file the folder to publish is named by
+# pages_build_output_dir, so the command becomes `npx wrangler pages deploy`
+# with no arguments. The old command with `public --project-name <project>` still
+# works, but this is the right one.
+#
+# The names here are DESCRIPTIVE, not a brand: the product can change name
+# without touching cloud resources, which is exactly the problem we had on 18/09.
+#
+# NO secrets go in here. DIARY_KEY, PAGE_KEY and ASSEMBLYAI_API_KEY live in .env
+# (which git ignores) and are loaded with `wrangler pages secret put`. This file,
+# by contrast, ends up in the repository.
+
+name = "voice-companion"
+pages_build_output_dir = "public"
+compatibility_date = "2026-09-01"
+
+# The diary. "DIARY" is the name the functions see it under
+# (env.DIARY); the real database sits in EEUR, served from Frankfurt.
+[[d1_databases]]
+binding = "DIARY"
+database_name = "companion-diary"
+database_id = "1267f8f5-4fb1-4543-aa1d-0fdcd3e59dd3"

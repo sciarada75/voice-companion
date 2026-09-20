@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MicTest">
+<link rel="manifest" href="manifest.json">
+<title>Mic Permission Test</title>
+<style>
+  :root{
+    --bg:#14120f; --card:#1e1b16; --line:#332e25;
+    --ink:#efe9dc; --dim:#a2977f; --accent:#e08b4c;
+    --ok:#6fbf7f; --bad:#e0705f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:16px/1.5 -apple-system,BlinkMacSystemFont,sans-serif;
+       padding:env(safe-area-inset-top) 16px 32px}
+  h1{font-size:19px;margin:20px 0 4px}
+  p.sub{color:var(--dim);font-size:14px;margin:0 0 20px}
+  #go{
+    width:100%;min-height:180px;font-size:22px;font-weight:600;
+    background:var(--accent);color:#1a1206;border:0;border-radius:14px;
+    cursor:pointer;margin-bottom:18px;
+  }
+  #go:active{filter:brightness(.9)}
+  .card{background:var(--card);border:1px solid var(--line);
+        border-radius:12px;padding:14px 16px;margin-bottom:12px}
+  .row{display:flex;justify-content:space-between;gap:12px;
+       padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .row:last-child{border-bottom:0}
+  .row span:first-child{color:var(--dim)}
+  .row span:last-child{font-variant-numeric:tabular-nums;text-align:right}
+  .ok{color:var(--ok)} .bad{color:var(--bad)}
+  #verdict{font-size:15px;font-weight:600;margin:0 0 6px}
+  ol{margin:8px 0 0;padding-left:20px;color:var(--dim);font-size:13.5px}
+  li{margin-bottom:5px}
+  code{background:#2a251d;padding:1px 5px;border-radius:4px;font-size:12.5px}
+  button.reset{background:transparent;color:var(--dim);border:1px solid var(--line);
+               border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<h1>Microphone permission test</h1>
+<p class="sub">Does iOS re-ask every launch, or remember?</p>
+
+<button id="go">Tap to start microphone</button>
+
+<div class="card">
+  <p id="verdict">Not tested yet in this launch.</p>
+  <div class="row"><span>This launch</span><span id="state">—</span></div>
+  <div class="row"><span>Times opened</span><span id="opens">—</span></div>
+  <div class="row"><span>Times it asked</span><span id="asks">—</span></div>
+  <div class="row"><span>Time to grant</span><span id="ms">—</span></div>
+  <div class="row"><span>Display mode</span><span id="mode">—</span></div>
+  <div class="row"><span>Sample rate</span><span id="rate">—</span></div>
+</div>
+
+<div class="card">
+  <strong style="font-size:14px">Protocol</strong>
+  <ol>
+    <li>Open in Safari over <strong>https</strong>, then Share → <strong>Add to Home Screen</strong>.</li>
+    <li>Launch from the <strong>Home Screen icon</strong>, not Safari. Check "Display mode" says <code>standalone</code>.</li>
+    <li>Tap the button. Allow the mic. Note whether a dialog appeared.</li>
+    <li>Close it fully (swipe up from app switcher). Reopen from the icon. Tap again.</li>
+    <li>Repeat 3–4 times, then <strong>reboot the phone</strong> and do it once more.</li>
+  </ol>
+  <p style="font-size:13.5px;color:var(--dim);margin:12px 0 10px">
+    "Times it asked" counts launches where granting took over 400&nbsp;ms — roughly, a dialog
+    you had to tap. Instant grants mean iOS remembered. Trust what you actually saw over the
+    number if they disagree.
+  </p>
+  <button class="reset" id="reset">Reset counters</button>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const K = 'mictest.v1';
+const load = () => { try { return JSON.parse(localStorage.getItem(K)) || {opens:0,asks:0,log:[]}; }
+                     catch { return {opens:0,asks:0,log:[]}; } };
+const save = s => { try { localStorage.setItem(K, JSON.stringify(s)); } catch {} };
+
+let s = load();
+s.opens++;
+save(s);
+
+const standalone = window.matchMedia('(display-mode: standalone)').matches
+                || window.navigator.standalone === true;
+$('mode').textContent = standalone ? 'standalone ✓' : 'browser tab';
+$('mode').className = standalone ? 'ok' : 'bad';
+$('opens').textContent = s.opens;
+$('asks').textContent = s.asks;
+
+function render(){
+  $('opens').textContent = s.opens;
+  $('asks').textContent = s.asks;
+  if (s.opens >= 3) {
+    const asked = s.asks;
+    if (asked <= 1) {
+      $('verdict').innerHTML = '<span class="ok">Looks like it REMEMBERS → build the app.</span>';
+    } else if (asked >= s.opens - 1) {
+      $('verdict').innerHTML = '<span class="bad">Asks every time → build the phone.</span>';
+    } else {
+      $('verdict').textContent = 'Mixed results — keep going, and trust what you saw.';
+    }
+  }
+}
+
+$('go').addEventListener('click', async () => {
+  $('state').textContent = 'requesting…';
+  const t0 = performance.now();
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: true, noiseSuppression: false }
+    });
+    const dt = Math.round(performance.now() - t0);
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+    $('ms').textContent = dt + ' ms';
+    $('rate').textContent = ctx.sampleRate + ' Hz';
+    $('state').textContent = 'granted';
+    $('state').className = 'ok';
+
+    // Over ~400ms almost certainly means a dialog was shown and tapped.
+    if (dt > 400) { s.asks++; }
+    s.log.push({t: new Date().toISOString(), dt, standalone});
+    save(s);
+    render();
+
+    stream.getTracks().forEach(t => t.stop());
+    ctx.close();
+  } catch (err) {
+    $('state').textContent = 'denied / error';
+    $('state').className = 'bad';
+    $('verdict').textContent = err.name + ': ' + err.message;
+  }
+});
+
+$('reset').addEventListener('click', () => {
+  s = {opens:1, asks:0, log:[]};
+  save(s);
+  $('verdict').textContent = 'Counters reset.';
+  render();
+});
+
+render();
+</script>
+</body>
+</html>

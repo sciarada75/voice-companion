@@ -1,0 +1,23 @@
+{
+  "name": "voice-agent-starter",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Voice agents on the AssemblyAI Voice Agent API: one JSON file, a browser tab or a phone number",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node deployment/browser/server.mjs",
+    "test": "node --test tools/",
+    "publish": "node publish.mjs",
+    "import": "node import.mjs",
+    "phone": "node deployment/telephony/connect.mjs",
+    "ship": "node tools/ship/run.mjs",
+    "profile": "node tools/make_profile/run.mjs",
+    "setup": "node tools/setup_ui/run.mjs",
+    "sessions": "node tools/pull_sessions/run.mjs",
+    "metrics": "node tools/compute_metrics/run.mjs",
+    "report": "node tools/report/run.mjs"
+  }
+}

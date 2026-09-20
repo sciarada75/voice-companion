@@ -1,0 +1,116 @@
+{
+  "name": "Peggy",
+  "agent_name": "Iris",
+  "language": "en",
+  "place": "Ashton, just outside Manchester",
+  "window": "1957-1998",
+  "years_active": 41,
+  "years_since": 28,
+  "good_at": [
+    "Running the sample room at Hartley's - making the first version of any new garment before it went to the factory floor. She made the samples, she did not draw them. Never call her a designer.",
+    "Industrial machining - setting up an overlocker, knowing which needle for which cloth, working linings. Started on linings and rose from there.",
+    "Alterations and dressmaking for the whole street in the evenings - wedding dresses, taking up trousers, all of it, for nothing. Keep this separate from the factory work: it was a second, informal craft, not her job.",
+    "Judging a garment at a glance - she can still tell whether a jacket was made properly, and she is usually rude about it."
+  ],
+  "fond_of": [
+    "Manchester City - watched them since the sixties, and she has firm opinions about the money in the game now",
+    "Ballroom dancing - she and her husband danced at the Ritz",
+    "Big band music - Joe Loss, Glenn Miller, still on in the house"
+  ],
+  "loves": [
+    "Her family - three children, six grandchildren, two great-grandchildren, and she knows every birthday",
+    "Ashton itself, especially the Ashton she remembers - she will tell you what used to stand where the retail park is",
+    "Her late husband and their ballroom evenings at the Ritz"
+  ],
+  "warning": "Her mind is completely sharp - sharper than her own daughter, by that account. Do not slow down, simplify, or explain things she plainly knows. If she senses she is being patronised she goes quiet and gets off the phone. This is the single fastest way to lose her.",
+  "condition": "Reduced hearing in one ear and she will not wear the aid, so be clear and do not mumble to that side. Eyes are fine. A knee replacement means a stick outdoors but none indoors - mobility is limited, not frailty. She is not frail and not slow.",
+  "pace": "Talks quickly and fluently in a Manchester accent, does not hesitate and does not lose her thread. Set turn detection to close turns promptly - do not hold long end-of-turn pauses waiting for her, she keeps pace.",
+  "knows_well": [
+    "Garment construction - overlockers, needles for cloth, linings, sample-making",
+    "How a jacket should be made, and spotting shoddy work on sight",
+    "Ballroom dancing",
+    "Manchester City's history from the 1960s onward",
+    "Ashton's old geography - what used to be where"
+  ],
+  "does_not_know": [
+    "How clothes are made now - offshore mass production and fast fashion (she says the work 'went to Turkey')",
+    "Computerised pattern-cutting and automated sewing lines that came in after she left",
+    "Selling alterations or dressmaking online, through apps or listings"
+  ],
+  "things": [
+    "Hartley's",
+    "Ashton",
+    "Manchester City",
+    "the Ritz",
+    "Joe Loss",
+    "Glenn Miller",
+    "overlocker",
+    "Sylvia",
+    "Turkey",
+    "Manchester"
+  ],
+  "greetings": {
+    "_readme": "FIXED text, and it does NOT pass through the model. The first is the introduction for the first call; the others are for later calls. Each ends by asking how they are, which the rules pick up. Rotation is not built yet, so change chosen_greeting by hand.",
+    "chosen_greeting": 0,
+    "list": [
+      "Hello Peggy, I'm Iris, your companion. I'm happy to talk with you, keep track of your habits, and keep a diary of them together with you. I've been told a little about you, but I'd like to get to know you myself. How are you today?",
+      "Hello Peggy, it's Iris. How are you today?",
+      "Peggy, it's Iris. It's good to hear you. How has your day been?"
+    ]
+  },
+  "inferred": [
+    {
+      "field": "window",
+      "value": "1957-1998",
+      "why": "Told 'forty-one years... until it shut in 1998'. 1998 minus 41 is 1957, and she started at fifteen, which is consistent with her being eighty-three now."
+    },
+    {
+      "field": "years_since",
+      "value": "28",
+      "why": "The factory shut in 1998, 28 years before now (2026). But there is a second, later stop: she went on altering clothes for the street until her hands got too stiff about five or six years ago, so her hands-on craft really ended around 2020. Confirm which date the agent should treat as 'stopped'."
+    },
+    {
+      "field": "loves (number of children)",
+      "value": "three children",
+      "why": "The relative writing this is one of Peggy's children and says 'I've got two brothers', so Peggy has three children in total. Whether they are sons or daughters is not all stated."
+    },
+    {
+      "field": "good_at (not a designer)",
+      "value": "she made the first sample of new garments, she did not design them",
+      "why": "The text says she 'made the first version of anything new before it went to the floor' - that is sample machining, not design. Flagged so the agent never upgrades her to designer, the same class of error as giving someone a job they never had."
+    },
+    {
+      "field": "does_not_know",
+      "value": "offshore fast fashion, computerised pattern-cutting, automated sewing lines, online selling",
+      "why": "None of this is in the text beyond her line that the factory 'went to Turkey'. Inferred as what entered garment-making after she left in 1998, meant as the agent's own material to bring her - confirm before it is used."
+    },
+    {
+      "field": "condition (not frail)",
+      "value": "limited mobility, not frail; mind completely sharp",
+      "why": "Told directly that her mind is fine and she resents being treated as daft. The 'not frail' framing is inferred from a knee replacement plus a stick outdoors only, which reads as reduced mobility rather than frailty."
+    }
+  ],
+  "agent": {
+    "name": "Iris",
+    "file": "peggy"
+  },
+  "pronunciation": {
+    "_readme": "The synthesiser reads the characters it is given: \"126\" comes out \"one two six\". Put the SPOKEN form here, keyed by how it is written elsewhere."
+  },
+  "spoken_stress": [],
+  "voice_settings": {
+    "_readme": "The rhythm knobs. Change here, then rebuild and republish.",
+    "voice": "anna",
+    "_voice": "The API validates this one. A wrong value fails and lists the 18 valid names.",
+    "transcription_mode": "balanced",
+    "_transcription_mode": "balanced = answers at a natural pace. max_accuracy waits much longer before deciding they have finished: only for someone who stops to hunt for words.",
+    "min_silence": 600,
+    "_min_silence": "ms of silence before their turn is considered over. Raise it if they get cut off.",
+    "max_silence": 1800,
+    "_max_silence": "ms ceiling on waiting. Without it the default is 3000, which felt like a dropped line.",
+    "interruption_delay": 1000,
+    "_interruption_delay": "How long they must really talk over the agent before it stops. At maximum: fewer accidental cuts, fewer lost words.",
+    "vad_threshold": 0.75,
+    "_vad_threshold": "How speech-like a sound must be to count. Default 0.5 was so sensitive that speaker echo triggered an interruption, and every interruption flushes the audio buffer - that is how whole words vanished."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "_readme": "Written by tools/setup_ui. The agent gets notebook tools only if this file exists, and it needs a \"url\" (or DIARY_URL) that AssemblyAI can reach from its own servers.",
+  "url": "https://voice-companion-1le.pages.dev/diary",
+  "habits": [
+    { "id": "tablets-morning", "type": "medicine", "what": "morning tablets", "when": "" },
+    { "id": "tablets-evening", "type": "medicine", "what": "evening tablets", "when": "" }
+  ]
+}

@@ -1,0 +1,16 @@
+node_modules/
+.env
+agents/*.env
+
+# this project
+sessions/**/*.ogg
+sessions/**/*.wav
+state/
+.tmp/
+
+# Cache di wrangler: id account e stato locale, non va nel repository.
+.wrangler/
+
+# Transcripts of real calls. Personal data: stays on the machine.
+sessions/*/
+config/profiles/*/setup.json
