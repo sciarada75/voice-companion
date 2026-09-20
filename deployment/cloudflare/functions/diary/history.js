@@ -17,7 +17,7 @@
 //   recorded   there are events, with times and numbers
 //   said_no    they said themselves that they did not do it
 //   not_asked  they spoke to each other, but it did not come up
-//   no_call    that day they did not speak at all
+//   no_conversation    that day they did not speak at all
 // Flattening them into "missing" would mean measuring above all how often
 // Claudia is away travelling.
 
@@ -54,11 +54,11 @@ export async function onRequestGet({ request, env }) {
   const events = intoEvents(entries.results);
 
   const answer = list.map((h) => {
-    const summary = { recorded: 0, said_no: 0, not_asked: 0, no_call: 0 };
+    const summary = { recorded: 0, said_no: 0, not_asked: 0, no_conversation: 0 };
     const perDay = days.map((day) => {
       const theirs = events.filter((e) => e.day === day && e.habit === h.id);
       if (!theirs.length) {
-        const status = talked.has(day) ? 'not_asked' : 'no_call';
+        const status = talked.has(day) ? 'not_asked' : 'no_conversation';
         summary[status]++;
         return { day, status };
       }

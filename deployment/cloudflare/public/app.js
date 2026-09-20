@@ -172,7 +172,7 @@ const PLAYBACK_WORKLET = `
 const blobUrl = (code) =>
   URL.createObjectURL(new Blob([code], { type: 'application/javascript' }))
 
-let ws, captureCtx, playbackCtx, playback, mic, callStart, timer
+let ws, captureCtx, playbackCtx, playback, mic, conversationStart, timer
 
 // LOCAL CHANGE (not from the starter kit). WHERE THE TIME GOES.
 //
@@ -378,12 +378,12 @@ async function start() {
       switch (msg.type) {
         case 'session.ready':
           ready = true
-          callStart = Date.now()
+          conversationStart = Date.now()
           timer = setInterval(tick, 1000)
           tick()
           setStatus('listening')
           $('btn').disabled = false
-          $('btn').textContent = document.body.classList.contains('simple') ? 'End the call' : 'End call'
+          $('btn').textContent = document.body.classList.contains('simple') ? 'End the conversation' : 'End'
           $('btn').classList.add('live')
           logEvent('down', msg.type, msg.session_id)
           break
@@ -533,7 +533,7 @@ function reset() {
   open.clear()
   $('btn').disabled = false
   $('mic').disabled = false
-  $('btn').textContent = document.body.classList.contains('simple') ? 'Talk to ' + AGENT.name : 'Start call'
+  $('btn').textContent = document.body.classList.contains('simple') ? 'Talk to ' + AGENT.name : 'Start'
   $('btn').classList.remove('live')
 }
 
@@ -580,7 +580,7 @@ function measureLatency() {
     ` · voice ${voice ? sec(voice) : '?'}` +
     ` · cushion ${sec(cushion)})`
   diagnostics()
-  // Into the event log as well, so the history of the whole call is kept and
+  // Into the event log as well, so the history of the whole conversation is kept and
   // not just the last utterance: an occasional slow reply and a reply that is
   // always slow are two different problems.
   logEvent('down', 'latency', latency)
@@ -608,7 +608,7 @@ function measureLatency() {
 const COST_PER_SECOND = 4.5 / 3600
 
 function tick() {
-  const seconds = Math.floor((Date.now() - callStart) / 1000)
+  const seconds = Math.floor((Date.now() - conversationStart) / 1000)
   $('elapsed').textContent =
     Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0')
   $('cost').textContent = '$' + (seconds * COST_PER_SECOND).toFixed(3)
@@ -714,7 +714,7 @@ function eventRow(direction, type, detail) {
   row.className = 'event ' + direction
   const at = document.createElement('span')
   at.className = 'at'
-  at.textContent = (callStart ? (Date.now() - callStart) / 1000 : 0).toFixed(1) + 's'
+  at.textContent = (conversationStart ? (Date.now() - conversationStart) / 1000 : 0).toFixed(1) + 's'
   const arrow = document.createElement('span')
   arrow.className = 'dir'
   arrow.textContent = direction === 'up' ? '↑' : '↓'

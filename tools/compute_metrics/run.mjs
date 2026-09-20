@@ -1,10 +1,11 @@
-// Stage 8: arithmetic on the calls. No AI here, on purpose — these numbers go
-// to a family, so they have to be the same every time anyone runs them.
+// Stage 8: arithmetic on the conversations. No AI here, on purpose — these
+// numbers go to a family, so they have to be the same every time anyone runs
+// them.
 //
 //   PROFILE=peggy node tools/compute_metrics/run.mjs [--json]
 //
-// What it measures, per call and across calls:
-//   - how long the call lasted, and at what time of day it started
+// What it measures, per conversation and across conversations:
+//   - how long the conversation lasted, and at what time of day it started
 //   - how much SHE talked: words, and the average length of her answers
 //   - flat answers ("yes", "mm", "I don't know"): the rules make the agent
 //     change subject after two in a row, so counting them is the engagement
@@ -12,8 +13,8 @@
 //   - the delay she heard before each reply (time_to_first_audio_ms)
 //   - how often she interrupted, and how often the agent was cut off
 //
-// Nothing here is a diagnosis. It is a description of one call, against her own
-// earlier calls and nothing else.
+// Nothing here is a diagnosis. It is a description of one conversation, against
+// her own earlier conversations and nothing else.
 import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -34,7 +35,7 @@ try {
   process.exit(1);
 }
 if (!files.length) {
-  console.error(`\nNo calls stored for "${PROFILE}" yet.\n`);
+  console.error(`\nNo conversations stored for "${PROFILE}" yet.\n`);
   process.exit(1);
 }
 
@@ -54,7 +55,7 @@ const median = (a) => {
   return s.length % 2 ? s[m] : Math.round((s[m - 1] + s[m]) / 2);
 };
 
-const calls = files
+const conversations = files
   .map((f) => JSON.parse(readFileSync(join(DIR, f), 'utf8')))
   .sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)))
   .map((c) => {
@@ -92,19 +93,19 @@ const calls = files
   });
 
 if (process.argv.includes('--json')) {
-  console.log(JSON.stringify({ profile: PROFILE, calls }, null, 1));
+  console.log(JSON.stringify({ profile: PROFILE, conversations }, null, 1));
   process.exit(0);
 }
 
 const pad = (s, n) => String(s ?? '-').padEnd(n);
 const num = (s, n) => String(s ?? '-').padStart(n);
 
-console.log(`\n${PROFILE}: ${calls.length} calls\n`);
+console.log(`\n${PROFILE}: ${conversations.length} conversations\n`);
 console.log(
   pad('when', 22) + num('secs', 6) + num('turns', 7) + num('her words', 11) +
   num('her share', 11) + num('avg answer', 12) + num('flat', 6) + num('2-flat', 8) + num('delay ms', 10),
 );
-for (const c of calls) {
+for (const c of conversations) {
   console.log(
     pad(c.local_time, 22) + num(c.duration_s, 6) + num(c.their_turns, 7) + num(c.their_words, 11) +
     num(c.their_share + '%', 11) + num(c.average_answer_words, 12) + num(c.flat_answers, 6) +
@@ -112,19 +113,19 @@ for (const c of calls) {
   );
 }
 
-// The comparison that matters is with HER earlier calls, so the averages of
-// everything before today are printed under today's line, and nothing else is
+// The comparison that matters is with HER earlier conversations, so the averages
+// of everything before today are printed under today's line, and nothing else is
 // compared to anything.
-if (calls.length > 1) {
-  const before = calls.slice(0, -1);
+if (conversations.length > 1) {
+  const before = conversations.slice(0, -1);
   const average = (k) => Math.round(before.reduce((n, c) => n + (c[k] ?? 0), 0) / before.length);
-  const today = calls.at(-1);
-  console.log('\nher own baseline (every call before the last one):');
+  const today = conversations.at(-1);
+  console.log('\nher own baseline (every conversation before the last one):');
   console.log(
     `  length ${average('duration_s')}s · her words ${average('their_words')} · her share ${average('their_share')}%` +
     ` · avg answer ${average('average_answer_words')} words · flat ${average('flat_answers')}`,
   );
-  console.log('last call against it:');
+  console.log('last conversation against it:');
   console.log(
     `  length ${today.duration_s}s · her words ${today.their_words} · her share ${today.their_share}%` +
     ` · avg answer ${today.average_answer_words} words · flat ${today.flat_answers}`,

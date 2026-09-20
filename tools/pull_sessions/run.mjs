@@ -1,4 +1,4 @@
-// Stage 7: the calls come back.
+// Stage 7: the conversations come back.
 //
 // AssemblyAI keeps every session: a recording, a turn-by-turn timeline and a
 // little metadata. The timeline is the useful one — it carries what each side

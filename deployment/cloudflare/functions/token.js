@@ -25,7 +25,7 @@ const json = (body, status) =>
     headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
   });
 
-export async function onRequestGet({ request, env }) {
+export async function onRequestGet({ request, env, waitUntil }) {
   // If the configuration on the Cloudflare side is missing, it shuts down.
   // Better not to work at all than to work wide open to anyone.
   if (!env.PAGE_KEY || !env.ASSEMBLYAI_API_KEY) {
@@ -43,9 +43,53 @@ export async function onRequestGet({ request, env }) {
       { headers: { authorization: env.ASSEMBLYAI_API_KEY } },
     );
     if (!res.ok) return json({ error: 'token request failed' }, 502);
+
+    // THIS IS WHERE "A CONVERSATION HAPPENED TODAY" GETS WRITTEN, and it is
+    // written HERE rather than by the agent on purpose.
+    //
+    // It used to be written by the diary_status tool, which the agent was told
+    // to use once at the start. On 20/09 the first real conversation showed it
+    // never called it at all — and it cannot: the greeting is fixed text that
+    // does not go through the model, so the model's first turn only happens
+    // AFTER the person has spoken, by which time it is answering them.
+    // There is no "start of the conversation" moment for a model to act at.
+    //
+    // Minting a token IS the start of a conversation, and it is code, not a
+    // model deciding. That matters more here than anywhere else: without this
+    // row, every day reads "there was no conversation", and the four states in
+    // the diary (they did it / they said no / nobody asked / there was no
+    // conversation) collapse into one. See HANDOVER §4.
+    //
+    // KNOWN LIMIT: a token minted for a conversation that then fails — the
+    // microphone is blocked, the person walks away — still counts as a
+    // conversation. That is wrong, but it is wrong far less often than never
+    // recording one at all, and it errs towards "we asked" rather than towards
+    // "they did not do it", which is the safer direction for the person.
+    //
+    // waitUntil: the write must not make the person wait to start talking.
+    if (env.DIARY) {
+      waitUntil(recordConversation(env));
+    }
+
     return json(await res.json(), 200);
   } catch {
     return json({ error: 'token request failed' }, 502);
+  }
+}
+
+// A failure here must never stop someone talking: the diary is worth less than
+// the conversation, so this swallows its own errors on purpose.
+async function recordConversation(env) {
+  try {
+    const day = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Europe/Rome',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+    }).format(new Date());
+    await env.DIARY.prepare(
+      'INSERT INTO conversations (session, day, created_at) VALUES (?, ?, ?)',
+    ).bind(crypto.randomUUID(), day, new Date().toISOString()).run();
+  } catch {
+    // Deliberately silent.
   }
 }
 

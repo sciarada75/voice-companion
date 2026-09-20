@@ -5,9 +5,9 @@ to the language**. Runs on the AssemblyAI Voice Agent API. Built for the
 **AssemblyAI Voice Agent Hackathon** on lablab.ai, **due 30 September 2026**.
 
 **State, 20/09:** the whole pipe runs — a form describing a person -> profile
--> published agent you can talk to, locally and online -> calls pulled back,
+-> published agent you can talk to, locally and online -> conversations pulled back,
 masked, measured -> a family page only their circle can open. **The gap is
-memory:** every call still starts from zero (§0, phase B), and nothing reaches
+memory:** every conversation still starts from zero (§0, phase B), and nothing reaches
 anybody on its own.
 **Updated:** 2026-09-20
 
@@ -36,7 +36,7 @@ Target: under ~500 lines. English only.
 | **Setup, tracking, report — the system around the talk** | **built 20/09** | §3 |
 | Architecture: profile, language, doctrine separated | working | §4 |
 | Build criteria | in `config/rules/` | §5 |
-| Defects, cause and cure | 13 closed, 1 open | §6 |
+| Defects, cause and cure | 14 closed, 1 open | §6 |
 | Environment constraints | — | §7 |
 | Dead ends | — | §8 |
 | Decisions | — | §9 |
@@ -59,7 +59,7 @@ wishes are added to the list, not done on the spot.
 | # | Phase | State on 20/09 |
 |---|---|---|
 | **A** | **Conversation** (stage 5) | **Done bar one thing.** Nine spoken tests, §0.1. What is still wrong: §0.2. |
-| **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each call leaves a summary the next one reads | **Half.** **B1 is built and shipped 20/09, waiting for one spoken test**: `peggy` has a `habits.json` (two tablet entries), the agent carries the three notebook tools, the live backend knows the two ids (§4, §6.13). **B2 is not built**: every call starts from zero, and says so honestly. |
+| **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **Half.** **B1 is built and shipped 20/09, waiting for one spoken test**: `peggy` has a `habits.json` (two tablet entries), the agent carries the three notebook tools, the live backend knows the two ids (§4, §6.13). **B2 is not built**: every conversation starts from zero, and says so honestly. |
 | **C** | **Family view** (stages 7-9) | **Built, past what the plan asked** (§3). Missing: **delivery**. Nothing reaches anybody on its own; someone opens the page. The channel is undecided and must cost €0. |
 | **D** | **Submission** | Page done. **Video, deck, repo, prototype URL, statistics: open** (§1). |
 | — | After 30/09 | stage 11 (learning), more languages, iPhone latency, **and who makes the first move** (§9) |
@@ -78,9 +78,9 @@ the ones below them were fixed.**
   possibilities" — a menu makes the person do the choosing and it tires them.
 - **Confusion is investigated, not soothed.** First version said "no questions,
   stay on one small thing"; it answered "I'm a little confused" with sympathy
-  and waited. Claudia: find out *what* is confusing — the call, the machine,
+  and waited. Claudia: find out *what* is confusing — the conversation, the machine,
   her day — and it is a signal worth recording.
-- **The call starts from today**, with a check-in, not from the last call.
+- **The conversation starts from today**, with a check-in, not from the last conversation.
   A flat "al solito" means move on; "I didn't sleep" **is** the subject.
 - **Give as well as take.** After a short question, a **real fact** from the
   topics, then stop. A reaction ("that sounds lovely") is not giving.
@@ -115,7 +115,7 @@ the paid gateway (§6.1), so rules first.
   then the daughter. "Take the doors they open" is written but was published
   after her last test, so it is unproven.
 - **It forgets.** Until B2 it says honestly that it has no record of the last
-  call. Claudia has heard this and it reads as honest, not broken.
+  conversation. Claudia has heard this and it reads as honest, not broken.
 - **Only English, only Claudia, only the browser.** No second language, no
   second tester, no phone.
 
@@ -130,10 +130,10 @@ The design is `workflows/conversation-relationship.md`, drawn in the
   proposed (a disclosure made for the family's benefit): it turns surveillance
   into a service to them.
 - **The record is kept, and never felt.** No quiz, no "you told me before".
-  Verifying happens as a few facts a call, inside the normal conversation.
+  Verifying happens as a few facts a conversation, inside the normal conversation.
 - **Their own words beat the profile.** If what they say differs, take their
   version with no correction: the family may be the wrong one.
-- **First calls are the baseline.** No alerts. Compare them with their own
+- **First conversations are the baseline.** No alerts. Compare them with their own
   past, never with a norm.
 - **Alerts ladder**, once there is a channel: a single slip is logged, a
   pattern is soft, worse than their own baseline is same-day. **Immediate, no
@@ -167,12 +167,12 @@ routines. They are necessary, and that is all.
 > **Other companions wait to be asked. This one carries the weight of the
 > conversation itself.**
 
-It comes from a real failure: an open question on a voice call opens a subject
-the person cannot close, they tire, and the call dies in five minutes.
+It comes from a real failure: an open question in a spoken conversation opens a subject
+the person cannot close, they tire, and the conversation dies in five minutes.
 
 **The method changed on 19-20/09, the idea did not.** It was *"offer two or
 three directions, then a question answerable in two words"*. Spoken, the menu
-confused and the questions turned the call into an interview. It is now: the
+confused and the questions turned the conversation into an interview. It is now: the
 agent picks one subject itself, gives something real, and **stops without a
 question most of the time** (§0.1).
 
@@ -287,7 +287,7 @@ sentiment: the town changed, the team changed, the songs came back.
 | 7 | Retrieval — sessions come back | **yes** | code | |
 | 8 | Metrics | **yes** | code | Arithmetic on timestamps. |
 | 9 | **Interpretation** — the family page | **yes** (§3.3) | **AI — high value** | A daughter in an airport does not read a statistic. This is what the family buys. |
-| 10 | Return — yesterday's thread re-enters tomorrow | no | AI | Choosing what is worth picking up. It is cross-call memory. |
+| 10 | Return — yesterday's thread re-enters tomorrow | no | AI | Choosing what is worth picking up. It is memory across conversations. |
 | 11 | **Learning** — the profile improves from what they said | no | AI | They mention something nobody knew; the profile absorbs it. After 30/09. |
 
 **The video in one line:** *"tell me about your mother"* -> a working agent.
@@ -339,8 +339,8 @@ Built 20/09. Five commands, each one a stage of §2.
 | Command | What it is |
 |---|---|
 | `npm run setup` | **Stage 1 with a face** (`workflows/setup-new-person.md`). localhost:3100. Writes `intake/<name>.txt`, `habits.json` and `setup.json`, and can run the generator itself. |
-| `PROFILE=x npm run sessions` | **Stage 7.** Pulls each call's timeline **and recording**, masks secrets, writes them, then **deletes the session on AssemblyAI** (`--keep` opts out). |
-| `PROFILE=x npm run metrics` | **Stage 8.** Arithmetic per call and against their own baseline. No AI, so the numbers are the same for whoever runs them. |
+| `PROFILE=x npm run sessions` | **Stage 7.** Pulls each conversation's timeline **and recording**, masks secrets, writes them, then **deletes the session on AssemblyAI** (`--keep` opts out). |
+| `PROFILE=x npm run metrics` | **Stage 8.** Arithmetic per conversation and against their own baseline. No AI, so the numbers are the same for whoever runs them. |
 | `PROFILE=x npm run report` | **Stage 9.** The family page, served on :3200 (`--no-serve` only writes the file). |
 | `npm start` -> `/` | **The person's page.** Big button, big type, plain words. The developer page moved to `/dev`, same code (MODIFICA LOCALE 5). |
 
@@ -350,7 +350,7 @@ Claudia's corrections to the first version, each one a hole:
 
 - **It said "she" everywhere.** Nothing says the person is a woman, is old, or
   is someone other than whoever is typing. Neutral now, and it asks what they
-  like to be called and how to refer to them (or to ask on the first call).
+  like to be called and how to refer to them (or to ask in the first conversation).
 - **Their own contacts were missing.** The diary is theirs before anyone's, and
   the first place an alert goes is them.
 - **The circle was missing:** name, relationship, phone, email, note, and
@@ -365,7 +365,7 @@ Claudia's corrections to the first version, each one a hole:
 - **The routine is typed, not inferred from the prose**, because the agent uses
   it as fact and stage 6 says nothing they rely on is guessed.
 - **A voice is chosen by ear.** AssemblyAI has no standalone TTS (checked), so
-  a sample IS a call: the page opens the same websocket, **never opens the
+  a sample IS a conversation: the page opens the same websocket, **never opens the
   microphone**, plays `reply.audio` as it lands and hangs up on `reply.done`.
   ~$0.02 a sample, **0.9 s** to first sound. One reusable agent per voice, id
   under `AGENT_ID_VOICE_TEST_<VOICE>`; it **refuses to run when `AGENT_ID` is
@@ -384,26 +384,26 @@ Two halves, because **a rule the model follows is not a guarantee**:
   secret word — and keeps only a count of turns that touched one.
 - **And their copy is deleted.** Masking ours is worth nothing while the
   unmasked recording and transcript sit on AssemblyAI. Write locally, verify,
-  then `DELETE /v1/sessions/{id}`. The 12 test calls were pulled with audio
+  then `DELETE /v1/sessions/{id}`. The 12 test conversations were pulled with audio
   (11 MB) and deleted there.
 
 ### 3.3 The report — shape, and who may open it
 
 Claudia: *"a wrap up at the beginning is useful, then specific indicators...
-useless to put all the log data this way"*. So there is no call log.
+useless to put all the log data this way"*. So there is no conversation log.
 
 - **Five indicators** — knowing where they are · routine · mood · the body ·
   private information — each at **three scales** (today / 7 days / 30 days),
   because a skipped walk means one thing in a day and another in a month. Plus
-  **every month since the first call**, same five marks.
+  **every month since the first conversation**, same five marks.
 - **At a glance only the levels show**: fine / to be verified / critical. A row
   opens to the notes and **their own words**; the row title carries its worst
   level, so the left column is enough to scan.
 - **The prompt is told a quiet week is good news and must read as good news**,
   or the model invents a worry to fill every field. Plus the banned words
-  (§5.4) and "compare them only with their own earlier calls".
+  (§5.4) and "compare them only with their own earlier conversations".
 - **Months are cached** in `state/months-<profile>.json`, re-read only when the
-  month has new calls: otherwise a year of history costs twelve model calls per
+  month has new conversations: otherwise a year of history costs twelve model calls per
   page view.
 - **Only the circle may open it.** One key per person, written at setup and
   **kept across edits** (a new key silently breaks the link they already have).
@@ -416,10 +416,10 @@ useless to put all the log data this way"*. So there is no call log.
   stores the **sentence that was on the page at the time**. The saved HTML copy
   has no such button: pressing it would write nowhere.
 - **It works:** the first run caught, unprompted, that her account of where she
-  had lived changed across calls — the self-awareness signal, produced by
+  had lived changed across conversations — the self-awareness signal, produced by
   Claudia's own testing.
 
-**Measured on the first 12 calls:** her share of the words went 5-9% early to
+**Measured on the first 12 conversations:** her share of the words went 5-9% early to
 **26%**, average answer 4-5 words to 12. The conversation work showing up as a
 number, and the first real use of stage 8.
 
@@ -496,7 +496,7 @@ someone's health record — into the client, against §5.3. `stato_quaderno`
 (`hold`). Built only if the profile has `habits.json`.
 
 **The four states:** a day with no data means *they did it* / *they said no* /
-*they were not asked* / *there was no call*. Only the first two say anything
+*they were not asked* / *there was no conversation*. Only the first two say anything
 about the person; the `conversations` table exists to tell them apart.
 Flattening them would measure how often the relative travels.
 
@@ -521,7 +521,7 @@ Verified over HTTP; **never by speaking** (§10).
 **The rhythm (rewritten 20/09, §0.1):** a short question -> they answer -> the
 agent gives something real, two or three sentences -> **stop**, usually with no
 question at all. They react, comment, **correct**. A menu of subjects, an
-either-or, or a reaction with no fact in it each killed the call in testing.
+either-or, or a reaction with no fact in it each killed the conversation in testing.
 
 **The engine is comparison.** A fact about today says nothing alone; attached to
 something they knew it says everything.
@@ -630,6 +630,25 @@ statistical claim either: **claim the instrument, not the discovery.**
   connectives for the same reason (`2026-09-20 09:14`, never "alle"). **A tool
   response is part of the prompt: anything quotable in it will be quoted.**
 
+- **6.15 — The agent never checked the notebook, and could not have.**
+  `diary_status` was described as "use it once at the start". The first real
+  conversation, 20/09, showed it was never used at all: the greeting is fixed
+  text that does not go through the model, so the model's first turn only
+  happens **after** the person has spoken, by which time it is answering them.
+  **There is no start-of-conversation moment for a model to act at.** Nothing
+  recorded that a conversation had happened, so every day read *there was no
+  conversation* and the four states (§4) collapsed into one.
+  *Guards, both code, no model involved: `functions/token.js` writes the
+  conversation row — minting a token IS the start — and `/diary/status` was
+  made read-only, which also killed its old habit of inserting a row on every
+  request. `diary_record` now returns `also_today`, so the agent learns what
+  else is written at the one moment it is certainly thinking about the diary.*
+  **Known limit:** a token minted for a conversation that then fails still
+  counts; it errs towards "we asked" rather than "they did not do it", which is
+  the safer direction for the person. **When a step must always happen, do not
+  describe it to the model — put it where the system cannot skip it** (the
+  §6.12 rule, applied to an action rather than a claim).
+
 ### 6.5 Latency — measured, the phone matters · OPEN
 
 **Cause of the original slowness:** turn detection tuned for someone who pauses
@@ -649,10 +668,10 @@ untouchable, check which premise it rests on.* **Applied:** `balanced`,
 Median ~ mean on iPhone: the whole distribution shifted, not an outlier.
 
 **There is now a measuring tool, and it says the knobs are not the problem.**
-Every call's timeline carries `time_to_first_audio_ms` per turn, so
+Every conversation's timeline carries `time_to_first_audio_ms` per turn, so
 `npm run sessions` + `npm run metrics` print the real figure (§3). Measured on
 the Mac: **3.5 s with a 34.7k prompt (19/09), 2.9-3.3 s after cutting it to
-12.1k, ~2.1 s median across the twelve calls, and the browser's own counter
+12.1k, ~2.1 s median across the twelve conversations, and the browser's own counter
 showed 0.6 s on the last one.** Two lessons: **prompt size was not the cause**
 (the cut changed almost nothing), and **the page and the server measure
 different things** — the page starts counting when it decides the turn ended,
@@ -703,7 +722,7 @@ once they were cut to titles.
 
 - **The interview** (*the agent asks, they talk*) — rejected by Claudia 13/09.
   A wide question opens an hour of talk the person has no channel to deliver on
-  a call. Also removed and not to be restored: "Eh..."/"Mah..." style openers;
+  a conversation. Also removed and not to be restored: "Eh..."/"Mah..." style openers;
   "if you do not have the exact figure, stay vague" (made it sound stupid);
   "compare two things, and why?" (the hour-long question).
 - **Deploying on a real person** — §9.
@@ -796,7 +815,19 @@ generated prompt came back byte-identical at 18,813 characters.* **Before a
 mechanical change across many files, list the contracts BETWEEN them first —
 the map is only as good as the seams you thought of.**
 
-### No phone number; solve "who starts the call" instead — 20/09/2026
+### It is a conversation, never a "call" — 20/09/2026
+Claudia: *"it is a conversation, not a call, there is no phone involved."*
+Telephony is out (§8), so the word imports a device the product does not have.
+Renamed across the code, the page, the family report, the model prompts and
+this file. **Kept, because they are genuinely telephones:** `worth_a_call` in
+the report (what would be worth the family *ringing* their mother about), the
+telephony deployment, and the programming sense ("tool call", "API call").
+*Origin: the Italian said `chiacchierata`, which means chat. The English rename
+introduced the phone; the Italian never had it.* **A rename can import a
+concept that was never there — check the word against the product, not against
+the old word.**
+
+### No phone number; solve "who starts the conversation" instead — 20/09/2026
 Telephony is out (§8). But a phone rings by itself and a page waits to be
 opened, and **the weakest link in the product is asking someone whose memory we
 are watching to remember to open it.** Whatever answers that — a tablet left on
@@ -855,11 +886,6 @@ Six workers read the whole codebase closely. None of these is caused by the
 rename; all were already there. **Nothing here was touched, on purpose: the
 rename had to land clean first.**
 
-- **`/diary/status` writes a `conversations` row on every call, not once per
-  conversation.** A second call flips `first_call_today` to false, and any
-  request that reaches the route — even one that never becomes a conversation —
-  scores that day *not asked* instead of *no call*. This corrupts the four
-  states (§4) that make the notebook mean anything.
 - **The "every N hours" rule is off.** `EVERY_HOURS` is 0, so `hours >= 0` is
   always true. Harmless while every habit is daily.
 - **`done` defaults to yes on an explicit `null`**, not only when the field is
@@ -899,7 +925,7 @@ line is a defect that actually happened (§0.1).
 8. Start a short story of your own — must not be interrupted or summarised.
 9. "What did we talk about yesterday?" — must say honestly it does not know
    (until B2).
-10. On another call, answer "I didn't sleep well" — must stay on it, warmly,
+10. In another conversation, answer "I didn't sleep well" — must stay on it, warmly,
     with no advice, and check no facts that day.
 
 **Then read the real numbers, not impressions:** `PROFILE=<name> npm run

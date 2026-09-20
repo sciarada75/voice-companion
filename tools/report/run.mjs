@@ -8,7 +8,7 @@
 //   - then five indicators, each read at three scales (today, 7 days, 30 days)
 //   - at a glance ONLY the levels show: fine / to be verified / critical.
 //     Any row opens to the notes and their own words
-//   - below that, every month since the first call, compacted and expandable
+//   - below that, every month since the first conversation, compacted and expandable
 //   - and an acknowledgement, so it is known that somebody read it
 //
 // Not a log. A log is what a family stops opening after the second week.
@@ -19,7 +19,7 @@
 //   - the five indicators are read from the transcripts by the model, which
 //     may describe and may never diagnose (§5.4: no "decline", no "cognitive",
 //     no threshold dressed up as clinical — that is a medical-device claim)
-//   - every reading compares them with THEIR OWN earlier calls, never a norm
+//   - every reading compares them with THEIR OWN earlier conversations, never a norm
 //
 // WHY IT IS SERVED AND NOT JUST WRITTEN: an acknowledgement has to be stored,
 // and a page opened from the filesystem cannot store anything. The server is
@@ -45,7 +45,7 @@ const read = (p) => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
 const exists = (p) => existsSync(join(ROOT, p));
 const DIR = join(ROOT, 'sessions', PROFILE);
 if (!existsSync(DIR)) {
-  console.error(`\nERROR: no calls stored for "${PROFILE}". Run: PROFILE=${PROFILE} npm run sessions\n`);
+  console.error(`\nERROR: no conversations stored for "${PROFILE}". Run: PROFILE=${PROFILE} npm run sessions\n`);
   process.exit(1);
 }
 const STATE = join(ROOT, 'state');
@@ -74,7 +74,7 @@ const metrics = JSON.parse(
     encoding: 'utf8',
   }),
 );
-const savedCalls = readdirSync(DIR)
+const savedConversations = readdirSync(DIR)
   .filter((f) => f.endsWith('.json'))
   .map((f) => read(`sessions/${PROFILE}/${f}`))
   .sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
@@ -95,13 +95,13 @@ const SHORT = { self_awareness: 'awareness', routine: 'routine', mood: 'mood', b
 
 // --- the arithmetic ------------------------------------------------------------
 function numbersFor(from, to) {
-  const within = metrics.calls.filter((c) => when(c) >= from && when(c) < to);
-  const before = metrics.calls.filter((c) => when(c) < from);
-  const secrets = savedCalls
+  const within = metrics.conversations.filter((c) => when(c) >= from && when(c) < to);
+  const before = metrics.conversations.filter((c) => when(c) < from);
+  const secrets = savedConversations
     .filter((c) => when(c) >= from && when(c) < to)
     .reduce((n, c) => n + (c.turns_with_secrets ?? 0), 0);
   return {
-    calls: within.length,
+    conversations: within.length,
     minutes: Math.round(sum(within, 'duration_s') / 60),
     their_share: average(within, 'their_share'),
     average_answer: average(within, 'average_answer_words'),
@@ -110,20 +110,20 @@ function numbersFor(from, to) {
     median_wait_ms: average(within, 'median_delay_ms'),
     turns_with_secrets: secrets,
     comparison: before.length
-      ? { calls: before.length, their_share: average(before, 'their_share'), average_answer: average(before, 'average_answer_words') }
+      ? { conversations: before.length, their_share: average(before, 'their_share'), average_answer: average(before, 'average_answer_words') }
       : null,
   };
 }
 
 const transcriptsFor = (from, to, limit) =>
-  savedCalls
+  savedConversations
     .filter((c) => when(c) >= from && when(c) < to)
     .map((c) => {
       const turns = (c.timeline?.turns ?? [])
         .flatMap((t) => [t.user_transcript && `THEM: ${t.user_transcript}`, t.agent_text && `COMPANION: ${t.agent_text}`])
         .filter(Boolean)
         .join('\n');
-      return `--- call of ${new Date(c.created_at).toLocaleString()}\n${turns}`;
+      return `--- conversation of ${new Date(c.created_at).toLocaleString()}\n${turns}`;
     })
     .join('\n\n')
     .slice(-limit);
@@ -131,14 +131,14 @@ const transcriptsFor = (from, to, limit) =>
 // --- the read indicators -------------------------------------------------------
 async function readPeriod(from, to, title, characters = 22_000) {
   const numbers = numbersFor(from, to);
-  if (!numbers.calls) return { empty: true, numbers };
+  if (!numbers.conversations) return { empty: true, numbers };
 
-  const prompt = `You read the phone calls between ${CALLED} and their AI companion, and report to the people ${CALLED} has allowed to see this.
+  const prompt = `You read the conversations between ${CALLED} and their AI companion, and report to the people ${CALLED} has allowed to see this.
 
 THE RULES, ABSOLUTE:
 - Describe what happened. Never diagnose, never predict, never advise a treatment.
 - Forbidden words: decline, cognitive, dementia, symptom of, risk of, concerning, deterioration.
-- Compare ${CALLED} only with their own earlier calls. Never with other people, never with a norm for their age.
+- Compare ${CALLED} only with their own earlier conversations. Never with other people, never with a norm for their age.
 - Quiet is good news and must read as good news. Do not invent a worry to fill a field.
 - Never repeat anything that looks like a password, a code, an account or a card number, even if it appears below.
 - Plain English. Short sentences.
@@ -146,7 +146,7 @@ THE RULES, ABSOLUTE:
 WHAT WE BELIEVE ABOUT THEM (may itself be wrong, they are the authority):
 ${KNOWN || 'Nothing on file.'}
 
-THE CALLS IN THIS PERIOD (${title}, transcripts, already masked):
+THE CONVERSATIONS IN THIS PERIOD (${title}, transcripts, already masked):
 ${transcriptsFor(from, to, characters)}
 
 Report on exactly these, each with a level of exactly "fine", "to be verified" or "critical":
@@ -183,23 +183,23 @@ const WINDOWS = [
   { key: 'month', title: 'thirty days', days: 30, characters: 26_000 },
 ];
 
-console.log(`Reading ${savedCalls.length} stored calls for "${PROFILE}"...`);
+console.log(`Reading ${savedConversations.length} stored conversations for "${PROFILE}"...`);
 const readings = {};
 for (const f of WINDOWS) {
   process.stdout.write(`  ${f.title}... `);
   readings[f.key] = await readPeriod(NOW - f.days * 86_400_000, NOW + 1, f.title, f.characters);
-  console.log(readings[f.key].empty ? 'no calls' : 'done');
+  console.log(readings[f.key].empty ? 'no conversations' : 'done');
 }
 
-// --- every month since the first call ------------------------------------------
+// --- every month since the first conversation ----------------------------------
 // A month that is over never changes, so it is read once and kept. Only a month
-// with new calls in it is read again. Without this cache, a year of history
-// would mean twelve model calls every time somebody opens the page.
+// with new conversations in it is read again. Without this cache, a year of
+// history would mean twelve model calls every time somebody opens the page.
 const ARCHIVE = join(STATE, `months-${PROFILE}.json`);
 const archive = existsSync(ARCHIVE) ? JSON.parse(readFileSync(ARCHIVE, 'utf8')) : {};
 const months = [];
-if (savedCalls.length) {
-  const first = new Date(when(savedCalls[0]));
+if (savedConversations.length) {
+  const first = new Date(when(savedConversations[0]));
   const cursor = new Date(first.getFullYear(), first.getMonth(), 1);
   const end = new Date();
   while (cursor <= end) {
@@ -207,20 +207,20 @@ if (savedCalls.length) {
     const to = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1).getTime();
     const key = `${cursor.getFullYear()}-${String(cursor.getMonth() + 1).padStart(2, '0')}`;
     const title = cursor.toLocaleString(undefined, { month: 'long', year: 'numeric' });
-    const n = metrics.calls.filter((c) => when(c) >= from && when(c) < to).length;
-    if (n) months.push({ key, title, from, to, calls: n });
+    const n = metrics.conversations.filter((c) => when(c) >= from && when(c) < to).length;
+    if (n) months.push({ key, title, from, to, conversations: n });
     cursor.setMonth(cursor.getMonth() + 1);
   }
 }
 for (const m of months.slice().reverse()) {
   const inCache = archive[m.key];
-  if (inCache && inCache.calls === m.calls) {
+  if (inCache && inCache.conversations === m.conversations) {
     m.reading = inCache.reading;
     continue;
   }
   process.stdout.write(`  ${m.title}... `);
   m.reading = await readPeriod(m.from, m.to, m.title, 26_000);
-  archive[m.key] = { calls: m.calls, reading: m.reading, written: new Date().toISOString() };
+  archive[m.key] = { conversations: m.conversations, reading: m.reading, written: new Date().toISOString() };
   console.log('done');
 }
 writeFileSync(ARCHIVE, JSON.stringify(archive, null, 1) + '\n');
@@ -260,7 +260,7 @@ const worstLevel = (levels) => {
 };
 
 const detail = (indicator, title, reading) => {
-  if (!reading || reading.empty) return `<div class="scale"><b>${esc(title)}</b><p class="empty">no calls</p></div>`;
+  if (!reading || reading.empty) return `<div class="scale"><b>${esc(title)}</b><p class="empty">no conversations</p></div>`;
   const v = reading[indicator];
   if (!v) return '';
   return `<div class="scale"><b>${esc(title)} &middot; <span class="${levelClass(v.level)}">${esc(v.level)}</span></b>
@@ -284,16 +284,16 @@ const indicatorRow = (indicator) => {
 </details>`;
 };
 
-// One row per month, all the way back to the first call.
+// One row per month, all the way back to the first conversation.
 const monthRow = (m) => {
   const l = m.reading ?? {};
   const chip = INDICATORS.map((v) => {
     const x = l[v];
-    return `<span class="mini ${levelClass(x?.level)}" title="${esc(LABELS[v][0])}: ${esc(x?.level ?? 'no calls')}">${SHORT[v]}</span>`;
+    return `<span class="mini ${levelClass(x?.level)}" title="${esc(LABELS[v][0])}: ${esc(x?.level ?? 'no conversations')}">${SHORT[v]}</span>`;
   }).join('');
   const worst = worstLevel(INDICATORS.map((v) => l[v]?.level));
   return `<details class="row month ${levelClass(worst)}">
-  <summary><span class="name">${esc(m.title)}<small>${m.calls} call${m.calls === 1 ? '' : 's'} &middot; ${
+  <summary><span class="name">${esc(m.title)}<small>${m.conversations} conversation${m.conversations === 1 ? '' : 's'} &middot; ${
     l.numbers?.minutes ?? 0} minutes &middot; ${l.numbers?.their_share ?? 0}% of the talking theirs</small></span>
   <span class="levels">${chip}</span></summary>
   <div class="details month-details">
@@ -315,7 +315,7 @@ function page(who) {
   const comparison = week?.numbers?.comparison;
   const done = acknowledged();
   const latest = done.at(-1);
-  const firstCall = savedCalls.length ? new Date(when(savedCalls[0])) : null;
+  const firstConversation = savedConversations.length ? new Date(when(savedConversations[0])) : null;
 
   return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(CALLED)} &mdash; how it is going</title>
@@ -377,7 +377,7 @@ function page(who) {
  footer p{margin:.5rem 0}
 </style></head><body><main>
 <h1>${esc(CALLED)} &mdash; how it is going</h1>
-<p class="title">${esc(week?.summary ?? 'No calls in the last seven days.')}</p>
+<p class="title">${esc(week?.summary ?? 'No conversations in the last seven days.')}</p>
 ${week?.worth_a_call ? `<p class="call"><strong>Worth a call:</strong> ${esc(week.worth_a_call)}</p>` : ''}
 
 <form class="read" method="post" action="/acknowledge">
@@ -396,14 +396,14 @@ ${week?.worth_a_call ? `<p class="call"><strong>Worth a call:</strong> ${esc(wee
 <p style="margin:.2rem 0 1rem;font-size:.9rem;opacity:.72">Green needs nothing. Open a row to see what was said, today and over the weeks behind it.</p>
 ${INDICATORS.map(indicatorRow).join('\n')}
 
-<h2>Month by month${firstCall ? `, since ${esc(firstCall.toLocaleDateString())}` : ''}</h2>
+<h2>Month by month${firstConversation ? `, since ${esc(firstConversation.toLocaleDateString())}` : ''}</h2>
 <p style="margin:.2rem 0 1rem;font-size:.9rem;opacity:.72">Newest first. The five marks are the same indicators, so a run of quiet months is visible without opening anything.</p>
 ${months.length ? months.slice().reverse().map(monthRow).join('\n') : '<p class="empty">Nothing yet.</p>'}
 
 <details class="block"><summary>How they spoke &mdash; the counted part</summary>
-<p style="margin:.2rem 0 .8rem;font-size:.9rem;opacity:.72">Counted, not interpreted. The useful one is the change against their own earlier calls.</p>
+<p style="margin:.2rem 0 .8rem;font-size:.9rem;opacity:.72">Counted, not interpreted. The useful one is the change against their own earlier conversations.</p>
 <table class="numbers"><thead><tr><th></th>${WINDOWS.map((f) => `<th>${f.title}</th>`).join('')}</tr></thead><tbody>
-${numbersRow('calls', (n) => n.calls)}
+${numbersRow('conversations', (n) => n.conversations)}
 ${numbersRow('minutes talking', (n) => n.minutes)}
 ${numbersRow('their share of the words', (n) => n.their_share, (v) => v + '%')}
 ${numbersRow('average answer', (n) => n.average_answer, (v) => v + ' words')}
@@ -415,14 +415,14 @@ ${numbersRow('turns where a code or account came up', (n) => n.turns_with_secret
 
 <footer>
 <p>${comparison
-    ? `Their own baseline, from the ${comparison.calls} calls before this week: ${comparison.their_share}% of the talking, ${comparison.average_answer} words an answer. Everything here is measured against that, and against nothing else.`
-    : 'There is nothing earlier to compare with yet, so these calls are the baseline.'}</p>
+    ? `Their own baseline, from the ${comparison.conversations} conversations before this week: ${comparison.their_share}% of the talking, ${comparison.average_answer} words an answer. Everything here is measured against that, and against nothing else.`
+    : 'There is nothing earlier to compare with yet, so these conversations are the baseline.'}</p>
 <p>A pause before answering is not only them: it includes the time the companion waits to be sure they have finished.</p>
-<p>This describes phone calls. It is not a medical opinion and it is not advice. Anything that looks like a code, an account or a card number is removed before a call is stored, and only the fact that one came up is kept.</p>
+<p>This describes conversations. It is not a medical opinion and it is not advice. Anything that looks like a code, an account or a card number is removed before a conversation is stored, and only the fact that one came up is kept.</p>
 <p>${settings
     ? `Who may see this: ${CIRCLE.map((c) => `${esc(c.name)} (${esc(c.access)})`).join(', ') || 'nobody yet'}. ${esc(CALLED)} decides that, and can change it.`
     : 'No circle has been set up, so nobody is on the list yet.'}</p>
-<p>Written ${new Date().toLocaleString()} from calls stored on this machine. Nothing was sent anywhere.</p>
+<p>Written ${new Date().toLocaleString()} from conversations stored on this machine. Nothing was sent anywhere.</p>
 </footer></main></body></html>`;
 }
 
@@ -432,7 +432,7 @@ const WHERE = join(STATE, `report-${PROFILE}.html`);
 writeFileSync(WHERE, page('nobody, this is the saved copy').replace(/<form class="read"[\s\S]*?<\/form>/, ''));
 
 const week = readings.week;
-console.log(`\n${week?.summary ?? 'No calls this week.'}\n`);
+console.log(`\n${week?.summary ?? 'No conversations this week.'}\n`);
 for (const v of INDICATORS) {
   const x = week?.[v];
   if (x) console.log(`  ${LABELS[v][0].padEnd(24)} ${String(x.level).padEnd(16)} ${x.note}`);

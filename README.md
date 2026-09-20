@@ -58,7 +58,7 @@ Either way you end up with the same pair: a file in `agents/` and its id in `.en
 npm start
 ```
 
-Open http://localhost:3000 and start the call.
+Open http://localhost:3000 and start the conversation.
 
 ### 5. Put it on a phone number
 
@@ -91,7 +91,7 @@ Nine agent files. Four demonstrate a parameter, five demonstrate an integration.
 | [`turn-taking`](agents/turn-taking.jsonc) | silence thresholds and interruption handling | |
 | [`byo-llm`](agents/byo-llm.jsonc) | Claude through the AssemblyAI gateway, or your own endpoint | |
 | [`http-tools`](agents/http-tools.jsonc) | tools that AssemblyAI calls on the agent's behalf | |
-| [`exa-search`](agents/exa-search.jsonc) | web search during a call | `EXA_API_KEY` |
+| [`exa-search`](agents/exa-search.jsonc) | web search during a conversation | `EXA_API_KEY` |
 | [`airtable-crm`](agents/airtable-crm.jsonc) | reading a caller record and writing one back | `AIRTABLE_*` |
 | [`cal-booking`](agents/cal-booking.jsonc) | checking availability, then booking a slot | `CAL_*` |
 | [`dtmf`](agents/dtmf.jsonc) | PCI compliance: card entry on the keypad, never in the transcript, the logs or the model | `DTMF_WEBHOOK_URL` |
@@ -120,13 +120,13 @@ Header values are write-only and did not come back for: lookup.
 Put them in .env and reference them as ${VARS}.
 ```
 
-From there it behaves like any other file in `agents/`: edit it, publish, call.
+From there it behaves like any other file in `agents/`: edit it, publish, talk.
 
 ## Where it answers
 
 | | | |
 | --- | --- | --- |
-| [Browser](deployment/browser/) | `npm start` | Serves a page with a call button and mints session tokens. The API key stays on the server. |
+| [Browser](deployment/browser/) | `npm start` | Serves a page with a button to start a conversation, and mints session tokens. The API key stays on the server. |
 | [Phone](deployment/telephony/) | `npm run phone` | Configures a Twilio SIP trunk and attaches the agent to your number. |
 
 Twilio passes the call to AssemblyAI over SIP, so nothing in this repo sits in the audio path.

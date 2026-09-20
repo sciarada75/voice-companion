@@ -6,7 +6,7 @@
   "tools": [
     {
       "name": "diary_status",
-      "description": "What is already recorded today (tablets-morning, tablets-evening), and whether it is worth asking. Call it ONCE, at the start of the call.",
+      "description": "What is already recorded today (tablets-morning, tablets-evening), and whether anything is worth asking about. Use it before you ask them about their routine, so you never ask about something they have already told you.",
       "parameters": {
         "type": "object",
         "properties": {},

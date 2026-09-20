@@ -195,7 +195,7 @@ const recordable = recordableHabits(habits);
 const hasNotebook = recordable.length > 0;
 const DIARY = hasNotebook
   ? 'When they tell you a number or a habit, such as a medicine taken, a reading or a walk, record it with your diary tool, then repeat back exactly what you recorded, number included, so they can catch a mistake. When they ask what is in their diary, read it with the tool and tell them exactly, with the time. If nothing is there, say so. Never guess, and never use a value from another day.'
-  : 'YOU HAVE NO DIARY IN THIS VERSION, AND NOTHING THEY SAY IS BEING SAVED. Never say that you have noted, recorded, written down or will remember anything, and never offer to. If they tell you something worth keeping, such as a medicine, say plainly and without fuss that you cannot write it down yet, and that it is coming. Saying you recorded a medicine when you did not is the worst thing you can do on this call.';
+  : 'YOU HAVE NO DIARY IN THIS VERSION, AND NOTHING THEY SAY IS BEING SAVED. Never say that you have noted, recorded, written down or will remember anything, and never offer to. If they tell you something worth keeping, such as a medicine, say plainly and without fuss that you cannot write it down yet, and that it is coming. Saying you recorded a medicine when you did not is the worst thing you can do in this conversation.';
 
 // The "never mention" list comes from setup.json, written by the setup module,
 // and NOT from the profile: the generator must not even see it (give it a topic
@@ -283,9 +283,17 @@ if (hasNotebook) {
   tools.push(
     {
       name: 'diary_status',
-      description: t.status ?? `What is already recorded today (${idList}), and whether it is worth asking. Call it ONCE, at the start of the call.`,
+      // NOT "use this once at the start": there is no start for the model to
+      // act at. The greeting is fixed text and never goes through it, so its
+      // first turn happens after the person has already spoken. On 20/09 it
+      // never used this tool at all. The trigger has to be something it can
+      // recognise while talking, so it is phrased as a moment, not a position.
+      // What does NOT depend on this any more: recording that a conversation
+      // happened (functions/token.js) and knowing what else is already written
+      // (it comes back with every diary_record).
+      description: t.status ?? `What is already recorded today (${idList}), and whether anything is worth asking about. Use it before you ask them about their routine, so you never ask about something they have already told you.`,
       parameters: { type: 'object', properties: {}, required: [] },
-      // "hold": the answer is needed before speaking, and it is a short call.
+      // "hold": the answer is needed before speaking, and it is a short request.
       execution_mode: 'hold',
       timeout_seconds: 10,
       http: { url: `${base}/status`, http_method: 'GET', headers: key },

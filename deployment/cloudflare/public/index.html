@@ -138,7 +138,7 @@
                     line-height: 1.6; color: var(--text); white-space: pre-wrap;
                     word-break: break-word; }
 
-  /* LOCAL CHANGE 5. The home page is for the person receiving the call, not for
+  /* LOCAL CHANGE 5. The home page is for the person having the conversation, not for
      whoever develops it: one big button, big text, no cost counter, no log, no
      microphone picker. The developer page stays whole at /dev, and the two share
      the same audio code, so one correction to the sound counts for both (and
@@ -182,11 +182,11 @@
     <section class="pane">
       <div class="pane-head"><span>Transcript</span></div>
       <div class="pane-body" id="transcript">
-        <div class="empty">Start the call and talk. Partial transcripts appear as they stream, and tool calls show up inline.</div>
+        <div class="empty">Start the conversation and talk. Partial transcripts appear as they stream, and tool calls show up inline.</div>
       </div>
       <div class="pane-foot">
         <select id="mic" aria-label="Microphone"><option value="">Default microphone</option></select>
-        <button id="btn">Start call</button><!-- the simple page's label is set by the client -->
+        <button id="btn">Start</button><!-- the simple page's label is set by the client -->
       </div>
     </section>
     <section class="pane" id="side">
