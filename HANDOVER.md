@@ -31,12 +31,12 @@ Target: under ~500 lines. English only.
 | **The plan, and where each phase stands** | A done · B half · C built · D open | §0 |
 | Value proposition, and the hackathon's requirements | decided; requirements read 20/09 | §1 |
 | Evidence base: the person is derived from data | decided 17/09 | §1.5, `config/evidence.json` |
-| The system in 11 stages | 7 built, 1 partial, 3 missing | §2 |
+| The system in 11 stages | 9 built, 2 missing | §2 |
 | The generator — stages 1 and 2 | runs, proven 18/09 | §2.5 |
 | **Setup, tracking, report — the system around the talk** | **built 20/09** | §3 |
 | Architecture: profile, language, doctrine separated | working | §4 |
 | Build criteria | in `config/rules/` | §5 |
-| Defects, cause and cure | 14 closed, 1 open | §6 |
+| Defects, cause and cure | 16 closed, 1 open | §6 |
 | Environment constraints | — | §7 |
 | Dead ends | — | §8 |
 | Decisions | — | §9 |
@@ -59,7 +59,7 @@ wishes are added to the list, not done on the spot.
 | # | Phase | State on 20/09 |
 |---|---|---|
 | **A** | **Conversation** (stage 5) | **Done bar one thing.** Nine spoken tests, §0.1. What is still wrong: §0.2. |
-| **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **Half.** **B1 is built and shipped 20/09, waiting for one spoken test**: `peggy` has a `habits.json` (two tablet entries), the agent carries the three notebook tools, the live backend knows the two ids (§4, §6.13). **B2 is not built**: every conversation starts from zero, and says so honestly. |
+| **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **Half.** **B1 is built and shipped 20/09, waiting for one spoken test**: `peggy` has a `habits.json` (two tablet entries), the agent carries the three notebook tools, the live backend knows the two ids (§4, §6.13). **B2 built and shipped 21/09, waiting for a spoken test**: a fourth tool `note_for_next_time` writes what was left hanging, Cloudflare puts it between the `[LAST TIME]` markers in the stored agent, and `/token` expires it after exactly one conversation (§6.16). Proven over HTTP; never yet by voice. |
 | **C** | **Family view** (stages 7-9) | **Built, past what the plan asked** (§3). Missing: **delivery**. Nothing reaches anybody on its own; someone opens the page. The channel is undecided and must cost €0. |
 | **D** | **Submission** | Page done. **Video, deck, repo, prototype URL, statistics: open** (§1). |
 | — | After 30/09 | stage 11 (learning), more languages, iPhone latency, **and who makes the first move** (§9) |
@@ -287,7 +287,7 @@ sentiment: the town changed, the team changed, the songs came back.
 | 7 | Retrieval — sessions come back | **yes** | code | |
 | 8 | Metrics | **yes** | code | Arithmetic on timestamps. |
 | 9 | **Interpretation** — the family page | **yes** (§3.3) | **AI — high value** | A daughter in an airport does not read a statistic. This is what the family buys. |
-| 10 | Return — yesterday's thread re-enters tomorrow | no | AI | Choosing what is worth picking up. It is memory across conversations. |
+| 10 | Return — yesterday's thread re-enters tomorrow | **yes** (§6.16) | AI | Choosing what is worth picking up. It is memory across conversations. |
 | 11 | **Learning** — the profile improves from what they said | no | AI | They mention something nobody knew; the profile absorbs it. After 30/09. |
 
 **The video in one line:** *"tell me about your mother"* -> a working agent.
@@ -649,6 +649,25 @@ statistical claim either: **claim the instrument, not the discovery.**
   describe it to the model — put it where the system cannot skip it** (the
   §6.12 rule, applied to an action rather than a claim).
 
+- **6.16 — Editing a prompt by pattern-matching can destroy a biography.** The
+  loose end is written into the live `system_prompt`, which is the person's
+  life. A pattern matching one character too far would delete it silently and
+  the agent would keep answering, so nobody would notice until someone spoke to
+  it. *Guards: `deployment/cloudflare/lib/prompt-block.js` is a pure function
+  with no network in it and eight tests; it changes NOTHING and says why if
+  both markers are not present; it strips markers out of the note, because the
+  note is written by the model and untrusted text must never become structure;
+  `agent-prompt.js` reads the agent back after every write and refuses to
+  report success unless it matches.* **A string that holds a person is edited by
+  a tested function, never inline.**
+- **6.17 — Work inside `waitUntil` fails where nobody is listening.** The note
+  is written to the agent in the background, so a failure returned nothing to
+  anyone and the row still read `pending` while the agent never got it. That is
+  6.2 in a new hat, and it is the shape of nearly every defect in this list.
+  *Guard: a note that does not reach the agent is marked `failed`, and `/token`
+  leaves those rows alone as the evidence.* **If a thing can fail silently,
+  give it somewhere to say so.**
+
 ### 6.5 Latency — measured, the phone matters · OPEN
 
 **Cause of the original slowness:** turn detection tuned for someone who pauses
@@ -704,6 +723,18 @@ once they were cut to titles.
   when stdin is piped, or creates resources in the wrong account.
 - **`wrangler pages deploy` can fail with `code: 8000000`** / 500: their side.
   Run it again.
+- **`agents.assemblyai.com` rotates its IP addresses.** A publish died twice
+  with `UND_ERR_CONNECT_TIMEOUT` on an address that `dig` no longer returned,
+  while `curl` succeeded in 0.2 s on a current one. Not their outage and not the
+  key: **compare the failing address against `dig +short`, then run it again.**
+- **Cloudflare Pages keeps secrets per environment, and deploying from a branch
+  goes to PREVIEW.** So a branch deploy has the new code and none of the
+  secrets, while production has the secrets and none of the code — which reads
+  as a 401 on one and a 405 on the other. This wrangler has no `--environment`
+  flag for `pages secret put`, so preview secrets can only be set in the
+  dashboard. **Test on production, or set them by hand first.** Safe here
+  because the prompt is generated: `PROFILE=<name> npm run ship` restores it
+  byte-for-byte.
 - **Claudia runs several VS Code windows and chats on this machine at once,
   often on this same folder.** **Never kill a process this session did not
   start, and never rename or move the project folder, without asking.** A
