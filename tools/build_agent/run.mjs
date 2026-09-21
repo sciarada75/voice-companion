@@ -12,6 +12,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { recordableHabits } from '../habits.mjs';
+import { NOTHING } from '../../deployment/cloudflare/lib/prompt-block.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = p => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
@@ -226,6 +227,11 @@ const VALUES = {
   DOES_NOT_KNOW: list(person.does_not_know),
   EXAMPLES: (spine.examples ?? []).join(String.fromCharCode(10)),
   TOPICS: topics,
+  // Built empty, ALWAYS. What actually goes in here is written by Cloudflare
+  // between the [LAST TIME] markers after a conversation leaves something
+  // hanging. A publish is a fresh start, so a rebuild wipes the note — correct:
+  // publishing means the agent changed.
+  LAST_TIME: NOTHING,
 };
 
 // A hole left empty stops LOUDLY. Were it let through, the word "undefined"
@@ -335,6 +341,26 @@ if (hasNotebook) {
       execution_mode: 'hold',
       timeout_seconds: 10,
       http: { url: `${base}/history`, http_method: 'GET', headers: key },
+    },
+    {
+      name: 'note_for_next_time',
+      // THE WORDING IS THE DESIGN. `diary_status` was described as "use it once
+      // at the start" and was never used once, because a model acts on a moment
+      // it can feel and ignores a position in time (§6.15). "The moment it
+      // comes up" is a moment.
+      description: t.note ?? 'Note something worth returning to next time — they slept badly, they were waiting on news, they started a story and did not finish it. Use it the moment it comes up, not at the end. Only for something genuinely left hanging: if nothing was, do not use this.',
+      parameters: {
+        type: 'object',
+        properties: {
+          note: { type: 'string', description: 'What is worth returning to, in plain words, as they would recognise it. Not a summary of the conversation.' },
+        },
+        required: ['note'],
+      },
+      // "interactive": a write must never put a silence in the middle of a
+      // sentence. Same reason as diary_record.
+      execution_mode: 'interactive',
+      timeout_seconds: 10,
+      http: { url: `${base}/loose-end`, http_method: 'POST', headers: key },
     },
   );
 }
