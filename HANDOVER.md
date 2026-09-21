@@ -4,12 +4,13 @@ A voice companion for old people living alone, **configurable to the person and
 to the language**. Runs on the AssemblyAI Voice Agent API. Built for the
 **AssemblyAI Voice Agent Hackathon** on lablab.ai, **due 30 September 2026**.
 
-**State, 20/09:** the whole pipe runs — a form describing a person -> profile
+**State, 21/09:** the whole pipe runs — a form describing a person -> profile
 -> published agent you can talk to, locally and online -> conversations pulled back,
-masked, measured -> a family page only their circle can open. **The gap is
-memory:** every conversation still starts from zero (§0, phase B), and nothing reaches
-anybody on its own.
-**Updated:** 2026-09-20
+masked, measured -> a family page only their circle can open. **Memory works
+and has never been spoken to:** the notebook records what they say and a loose
+end carries into the next conversation, both proven only over HTTP (§0, phase
+B). **Nothing reaches anybody on its own.**
+**Updated:** 2026-09-21
 
 **How to read this file.** It records the *why*, not the state: where we are is
 already said by the code and `git log`. Organised by subject, never by date — a
@@ -56,7 +57,7 @@ flowchart of development and functioning we are just randomly fixing arising
 issues."* **Work goes through this list in order, one item at a time.** New
 wishes are added to the list, not done on the spot.
 
-| # | Phase | State on 20/09 |
+| # | Phase | State on 21/09 |
 |---|---|---|
 | **A** | **Conversation** (stage 5) | **Done bar one thing.** Nine spoken tests, §0.1. What is still wrong: §0.2. |
 | **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **Half.** **B1 is built and shipped 20/09, waiting for one spoken test**: `peggy` has a `habits.json` (two tablet entries), the agent carries the three notebook tools, the live backend knows the two ids (§4, §6.13). **B2 built and shipped 21/09, waiting for a spoken test**: a fourth tool `note_for_next_time` writes what was left hanging, Cloudflare puts it between the `[LAST TIME]` markers in the stored agent, and `/token` expires it after exactly one conversation (§6.16). Proven over HTTP; never yet by voice. |
@@ -64,9 +65,8 @@ wishes are added to the list, not done on the spot.
 | **D** | **Submission** | Page done. **Video, deck, repo, prototype URL, statistics: open** (§1). |
 | — | After 30/09 | stage 11 (learning), more languages, iPhone latency, **and who makes the first move** (§9) |
 
-**Ten days left on 20/09.** The demo needs B more than C needs finishing: "she
-says she took her tablets, and tomorrow it remembers" is the thing a judge
-cannot get from a report.
+**Nine days left on 21/09.** B is built. What is left is the submission: the
+video, the deck, the cover image and the three descriptions (§1, §10).
 
 ### 0.1 Phase A — the rules nine spoken tests produced
 
@@ -114,8 +114,9 @@ the paid gateway (§6.1), so rules first.
 - **Moving between subjects.** It stays in one room: the place, then the work,
   then the daughter. "Take the doors they open" is written but was published
   after her last test, so it is unproven.
-- **It forgets.** Until B2 it says honestly that it has no record of the last
-  conversation. Claudia has heard this and it reads as honest, not broken.
+- **Memory is built but unheard.** B1 and B2 both work over HTTP and neither
+  has been tested by voice. Until they are, assume nothing about how they feel
+  in a conversation: §6.15 was found by speaking, not by testing.
 - **Only English, only Claudia, only the browser.** No second language, no
   second tester, no phone.
 
