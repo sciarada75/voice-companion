@@ -96,3 +96,25 @@ CREATE TABLE IF NOT EXISTS latency (
 );
 
 CREATE INDEX IF NOT EXISTS latency_when ON latency (created_at DESC);
+
+-- What the person left hanging, to be picked up in the NEXT conversation.
+--
+-- Only the most recent row is ever used. If somebody leaves three things
+-- hanging in one conversation, carrying all three back is an interrogation.
+--
+-- Rows are never deleted and the note is never rewritten: only `state` moves,
+-- pending -> delivered. The history of what was carried forward is worth
+-- keeping, and it is the same "an event, not a box" rule as `entries`.
+CREATE TABLE IF NOT EXISTS loose_ends (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  note       TEXT NOT NULL,
+  -- Local day in Europe/Rome, like everywhere else: at 00:30 Italian time UTC
+  -- is still yesterday, and the row would land on the wrong day.
+  day        TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  -- 'pending'   written, not yet given to a conversation
+  -- 'delivered' a conversation has had it; the next one clears the block
+  state      TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS loose_ends_recent ON loose_ends (id DESC);
