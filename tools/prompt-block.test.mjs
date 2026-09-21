@@ -1,0 +1,57 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { replaceBlock, OPEN, CLOSE } from '../deployment/cloudflare/lib/prompt-block.js';
+
+const prompt = [
+  'BEFORE THE BLOCK.',
+  OPEN,
+  'Nothing was left hanging last time.',
+  CLOSE,
+  'AFTER THE BLOCK.',
+].join('\n');
+
+test('replaces only what is between the markers', () => {
+  const out = replaceBlock(prompt, 'She said she had not slept.');
+  assert.equal(out.ok, true);
+  assert.match(out.prompt, /BEFORE THE BLOCK\./);
+  assert.match(out.prompt, /AFTER THE BLOCK\./);
+  assert.match(out.prompt, /She said she had not slept\./);
+  assert.doesNotMatch(out.prompt, /Nothing was left hanging/);
+});
+
+test('everything outside the markers is byte-identical', () => {
+  const out = replaceBlock(prompt, 'Anything at all.');
+  const before = (s) => s.slice(0, s.indexOf(OPEN));
+  const after = (s) => s.slice(s.indexOf(CLOSE));
+  assert.equal(before(out.prompt), before(prompt));
+  assert.equal(after(out.prompt).slice(CLOSE.length), after(prompt).slice(CLOSE.length));
+});
+
+test('replacing twice does not accumulate', () => {
+  const once = replaceBlock(prompt, 'First note.').prompt;
+  const twice = replaceBlock(once, 'Second note.').prompt;
+  assert.doesNotMatch(twice, /First note/);
+  assert.match(twice, /Second note\./);
+  assert.equal(twice.split(OPEN).length, 2, 'exactly one open marker');
+  assert.equal(twice.split(CLOSE).length, 2, 'exactly one close marker');
+});
+
+test('a prompt with no markers is returned unchanged, and says so', () => {
+  const out = replaceBlock('No markers anywhere.', 'Note.');
+  assert.equal(out.ok, false);
+  assert.equal(out.prompt, 'No markers anywhere.');
+  assert.match(out.reason, /marker/i);
+});
+
+test('a prompt missing only the closing marker is refused', () => {
+  const out = replaceBlock(`A\n${OPEN}\nB`, 'Note.');
+  assert.equal(out.ok, false);
+  assert.match(out.reason, /marker/i);
+});
+
+test('an empty note restores the empty-state sentence', () => {
+  const out = replaceBlock(prompt, '');
+  assert.equal(out.ok, true);
+  assert.match(out.prompt, /Nothing was left hanging last time\./);
+  assert.match(out.prompt, /Do not refer to a previous conversation\./);
+});
