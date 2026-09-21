@@ -123,6 +123,10 @@ async function ageLooseEnd(env) {
     if (latest.state === 'delivered') {
       await setLastTime(env, '');
     }
+
+    // 'failed' is left alone on purpose: the note never reached the agent, so
+    // there is nothing in the instructions to age out, and the row stays as the
+    // evidence that it did not get there.
   } catch {
     // Deliberately silent.
   }

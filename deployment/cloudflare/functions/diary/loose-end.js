@@ -30,14 +30,31 @@ export async function onRequestPost({ request, env, waitUntil }) {
   if (!note) return json({ error: 'note is required' }, 400);
 
   const now = nowInRome();
-  await env.DIARY.prepare(
+  const insert = await env.DIARY.prepare(
     'INSERT INTO loose_ends (note, day, created_at, state) VALUES (?, ?, ?, ?)',
   ).bind(note, now.day, now.iso, 'pending').run();
+  const id = insert?.meta?.last_row_id;
 
   // The agent update is two or three API calls, so it does not go in the
   // person's way. It takes effect from the NEXT conversation: the running
   // session keeps the instructions it started with, which is correct.
-  waitUntil(setLastTime(env, note));
+  //
+  // BUT ITS FAILURE IS WRITTEN DOWN. Inside waitUntil nobody is listening, and
+  // a row that says 'pending' while the agent never got it is this project's
+  // oldest defect wearing a new hat: the file says one thing, the server does
+  // another, nobody notices until someone speaks to it (§6.2, and 6.10, 6.11,
+  // 6.12, 6.13, 6.15). A 'failed' row is the only way anyone finds out.
+  waitUntil(
+    setLastTime(env, note).then((result) => {
+      if (result?.ok || !id) return;
+      return env.DIARY.prepare('UPDATE loose_ends SET state = ? WHERE id = ?')
+        .bind('failed', id).run().catch(() => {});
+    }).catch(() => {
+      if (!id) return;
+      return env.DIARY.prepare('UPDATE loose_ends SET state = ? WHERE id = ?')
+        .bind('failed', id).run().catch(() => {});
+    }),
+  );
 
   return json({
     ok: true,
