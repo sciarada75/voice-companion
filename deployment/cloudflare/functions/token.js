@@ -17,6 +17,8 @@
 // that is the person's biography: name, where they live, what jobs they have done.
 // Locally that is fine, on a public address it is not.
 
+import { setLastTime } from '../lib/agent-prompt.js';
+
 const AGENTS_API = 'https://agents.assemblyai.com/v1';
 
 const json = (body, status) =>
@@ -69,6 +71,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
     // waitUntil: the write must not make the person wait to start talking.
     if (env.DIARY) {
       waitUntil(recordConversation(env));
+      waitUntil(ageLooseEnd(env));
     }
 
     return json(await res.json(), 200);
@@ -88,6 +91,42 @@ async function recordConversation(env) {
     await env.DIARY.prepare(
       'INSERT INTO conversations (session, day, created_at) VALUES (?, ?, ?)',
     ).bind(crypto.randomUUID(), day, new Date().toISOString()).run();
+  } catch {
+    // Deliberately silent.
+  }
+}
+
+// A loose end lives for exactly ONE conversation.
+//
+// Without this, Monday's bad night gets asked about every day for a week, which
+// is the "you told me before" failure in slow motion — the thing §0.3 forbids.
+//
+// This conversation is starting, so:
+//   pending   -> mark it delivered. THIS conversation is the one that gets it,
+//               and the instructions already hold it: nothing to write.
+//   delivered -> it has had its turn. Put the block back to the empty state.
+// Silent on failure, like recordConversation: the diary is worth less than the
+// conversation.
+async function ageLooseEnd(env) {
+  try {
+    const latest = await env.DIARY.prepare(
+      'SELECT id, state FROM loose_ends ORDER BY id DESC LIMIT 1',
+    ).first();
+    if (!latest) return;
+
+    if (latest.state === 'pending') {
+      await env.DIARY.prepare('UPDATE loose_ends SET state = ? WHERE id = ?')
+        .bind('delivered', latest.id).run();
+      return;
+    }
+
+    if (latest.state === 'delivered') {
+      await setLastTime(env, '');
+    }
+
+    // 'failed' is left alone on purpose: the note never reached the agent, so
+    // there is nothing in the instructions to age out, and the row stays as the
+    // evidence that it did not get there.
   } catch {
     // Deliberately silent.
   }

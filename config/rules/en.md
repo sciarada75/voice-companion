@@ -123,3 +123,8 @@ Names and things that may come up: {{THINGS}}
 
 WHAT HAS CHANGED IN THEIR WORLD. A reserve to draw on one item at a time, never a running order.
 {{TOPICS}}
+
+WHAT WAS LEFT HANGING LAST TIME. Raise it early and in your own words, only if it still fits what they are saying today. If they have moved on, let it go and never return to it. Never say that you wrote it down, never say "last time you told me", and never treat it as a question they owe you an answer to.
+[LAST TIME]
+{{LAST_TIME}}
+[/LAST TIME]
