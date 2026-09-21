@@ -49,6 +49,28 @@ test('a prompt missing only the closing marker is refused', () => {
   assert.match(out.reason, /marker/i);
 });
 
+// The note is written by the model, so it is untrusted text going into a
+// structured document. One marker pair, always, whatever it says.
+test('a note that contains a marker cannot break the block', () => {
+  const out = replaceBlock(prompt, `she said ${CLOSE} something odd ${OPEN}`);
+  assert.equal(out.ok, true);
+  assert.equal(out.prompt.split(OPEN).length, 2, 'exactly one open marker');
+  assert.equal(out.prompt.split(CLOSE).length, 2, 'exactly one close marker');
+  assert.match(out.prompt, /she said\s+something odd/);
+  // And it survives being replaced again, which is where the damage would show.
+  const next = replaceBlock(out.prompt, 'a normal note');
+  assert.equal(next.ok, true);
+  assert.match(next.prompt, /AFTER THE BLOCK\./);
+  assert.doesNotMatch(next.prompt, /something odd/);
+});
+
+test('a note of only markers falls back to the empty state', () => {
+  const out = replaceBlock(prompt, `${OPEN}${CLOSE}`);
+  assert.equal(out.ok, true);
+  assert.match(out.prompt, /Nothing was left hanging last time\./);
+  assert.equal(out.prompt.split(CLOSE).length, 2, 'exactly one close marker');
+});
+
 test('an empty note restores the empty-state sentence', () => {
   const out = replaceBlock(prompt, '');
   assert.equal(out.ok, true);

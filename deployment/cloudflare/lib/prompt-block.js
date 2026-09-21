@@ -31,9 +31,16 @@ export function replaceBlock(prompt, note) {
     };
   }
 
-  const text = String(note ?? '').trim() || NOTHING;
+  // THE NOTE COMES FROM THE MODEL, so it is untrusted text going into a
+  // structured document. A note that happened to contain a marker would leave
+  // two of them in the prompt, the block would no longer have one boundary, and
+  // the next write would land somewhere nobody chose. Strip them: the markers
+  // are ours, and nothing the model says may ever become one.
+  const text = strip(String(note ?? '')).trim() || NOTHING;
   return {
     ok: true,
     prompt: prompt.slice(0, start + OPEN.length) + '\n' + text + '\n' + prompt.slice(end),
   };
 }
+
+const strip = (s) => s.split(OPEN).join('').split(CLOSE).join('');
