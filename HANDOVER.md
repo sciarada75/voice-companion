@@ -38,7 +38,7 @@ Target: under ~500 lines. English only.
 | **Setup, tracking, report — the system around the talk** | **built 20/09** | §3 |
 | Architecture: profile, language, doctrine separated | working | §4 |
 | Build criteria | in `config/rules/` | §5 |
-| Defects, cause and cure | 19 closed, 4 open | §6 |
+| Defects, cause and cure | 20 closed, 4 open | §6 |
 | Environment constraints | — | §7 |
 | Dead ends | — | §8 |
 | Decisions | — | §9 |
@@ -788,6 +788,21 @@ statistical claim either: **claim the instrument, not the discovery.**
   re-applied by the publish, not to be part of what the publish overwrites** —
   after 30/09. Until then, anyone republishing a profile with a pending note
   must restore it by hand, and there is nothing that warns them.
+- **6.24 — Online the page could not tell you what was wrong, and there is no
+  `/dev` to fall back to.** 22/09: the address carried the literal `<PAGE_KEY>`
+  placeholder instead of the key. `/token` answered 401, the page knew exactly
+  that, and all it would say was **"something went wrong"** — because
+  `body.simple` replaces every status text with a fixed phrase and hides the real
+  one for screen readers. Right for Peggy, who must never read "could not mint a
+  token". Wrong for everybody else, and there is no escape hatch: **`/dev` does
+  not exist online.** Locally `server.mjs` branches on the path; on Cloudflare
+  there is one static `index.html` and every path serves it, already in its
+  simple form. *Guard: the error state, and only the error state, now shows its
+  real text on the person's page too. The messages were already written for her —
+  the one she will actually meet is "microphone blocked — allow it and tap
+  again", which is the sentence that gets her talking again.* **A message she
+  cannot act on is worth no more than silence, and far less to whoever is setting
+  it up.**
 - **6.22 — A deploy that looked live and was not: the page is cached for four
   hours and never changes its name.** 22/09, the site looked dead while every
   backend check passed — page 200, `/token` 200 in 0.46 s, the right agent id

@@ -983,7 +983,22 @@ const HTML = `<!DOCTYPE html>
   body.simple .status.connecting::after { content: 'connecting'; }
   body.simple .status.listening::after { content: 'listening to you'; }
   body.simple .status.speaking::after { content: '${AGENT.name} is talking'; }
-  body.simple .status.error::after { content: 'something went wrong'; }
+  /* ERROR IS THE ONE STATE THAT SHOWS ITS REAL TEXT.
+     It used to say 'something went wrong' and hide the reason with the other
+     status texts. On 22/09 that cost an evening: the address was carrying the
+     literal <PAGE_KEY> placeholder instead of the key, the page knew exactly
+     that, and all it would say was that something had gone wrong — on a page
+     with no /dev to fall back to, because online there is only this one file
+     and every path serves it (§6.24).
+     The messages this reveals are already written for the person, not for a
+     developer: the one she will actually meet is the blocked microphone, and
+     'microphone blocked — allow it and tap again' is the sentence that gets her
+     talking again. A message she cannot act on is worth no more than silence,
+     and it is worth a great deal less to whoever is setting this up for her. */
+  body.simple .status.error #status-text {
+    position: static; width: auto; height: auto; overflow: visible;
+    clip-path: none;
+  }
 </style>
 </head>
 <body>
