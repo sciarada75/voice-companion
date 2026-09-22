@@ -50,13 +50,40 @@
     "Manchester"
   ],
   "greetings": {
-    "_readme": "FIXED text, and it does NOT pass through the model. The first is the introduction for the first call; the others are for later calls. Each ends by asking how they are, which the rules pick up. Rotation is not built yet, so change chosen_greeting by hand.",
-    "chosen_greeting": 0,
-    "list": [
-      "Hello Peggy, I'm Iris, your companion. I'm happy to talk with you, keep track of your habits, and keep a diary of them together with you. I've been told a little about you, but I'd like to get to know you myself. How are you today?",
-      "Hello Peggy, it's Iris. How are you today?",
-      "Peggy, it's Iris. It's good to hear you. How has your day been?"
-    ]
+    "_readme": "introduction is spoken ONCE, in the very first conversation ever. Every conversation after that gets a random line from the band matching the local hour where they live. Cloudflare's /token chooses and writes it before the session starts; tools/build_web bakes this into greetings.generated.js.",
+    "timezone": "Europe/London",
+    "bands": {
+      "morning": [
+        5,
+        12
+      ],
+      "afternoon": [
+        12,
+        18
+      ],
+      "evening": [
+        18,
+        5
+      ]
+    },
+    "introduction": "Hello Peggy, I'm Iris, your companion. I'm happy to talk with you, keep track of your habits, and keep a diary of them together with you. I've been told a little about you, but I'd like to get to know you myself. How are you today?",
+    "rotation": {
+      "morning": [
+        "Morning, Peggy. It's Iris. How are you today?",
+        "Peggy, it's Iris. Good morning to you. How are you doing?",
+        "Morning, Peggy, it's Iris. How's today starting off?"
+      ],
+      "afternoon": [
+        "Afternoon, Peggy. It's Iris. How's your day been?",
+        "Peggy, it's Iris. How has your afternoon been?",
+        "Afternoon, Peggy, it's Iris. How are you getting on today?"
+      ],
+      "evening": [
+        "Evening, Peggy. It's Iris. How's your day been?",
+        "Peggy, it's Iris. Good evening. How has today been?",
+        "Evening, Peggy, it's Iris. How are you this evening?"
+      ]
+    }
   },
   "inferred": [
     {

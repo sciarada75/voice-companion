@@ -17,7 +17,9 @@
 // that is the person's biography: name, where they live, what jobs they have done.
 // Locally that is fine, on a public address it is not.
 
-import { setLastTime } from '../lib/agent-prompt.js';
+import { setLastTime, setGreeting } from '../lib/agent-prompt.js';
+import { chooseGreeting } from '../lib/greeting.js';
+import { GREETINGS } from '../lib/greetings.generated.js';
 
 const AGENTS_API = 'https://agents.assemblyai.com/v1';
 
@@ -70,6 +72,14 @@ export async function onRequestGet({ request, env, waitUntil }) {
     //
     // waitUntil: the write must not make the person wait to start talking.
     if (env.DIARY) {
+      // AWAITED, unlike the two below, and it has to be: the greeting is the
+      // first thing the person hears, so a write that lands after the session
+      // opens is a write that did nothing. Bounded, because nothing here is
+      // worth making somebody wait to talk — if it is slow or it fails, the
+      // agent keeps the greeting it already has and the conversation is
+      // completely normal. The only cost of giving up is hearing yesterday's
+      // opening line.
+      await withTimeout(pickGreeting(env), 1500);
       waitUntil(recordConversation(env));
       waitUntil(ageLooseEnd(env));
     }
@@ -77,6 +87,38 @@ export async function onRequestGet({ request, env, waitUntil }) {
     return json(await res.json(), 200);
   } catch {
     return json({ error: 'token request failed' }, 502);
+  }
+}
+
+// Never let a slow dependency hold the person at the door. Resolves either way.
+function withTimeout(promise, ms) {
+  return Promise.race([
+    promise.catch(() => undefined),
+    new Promise(resolve => setTimeout(resolve, ms)),
+  ]);
+}
+
+// The opening line for THIS conversation. See lib/greeting.js for why it moves
+// at all, and why the first conversation is the only one that introduces itself.
+//
+// The count is taken BEFORE recordConversation writes this conversation's row,
+// which is what makes "no conversations yet" mean the very first one. That is
+// also why the two are not merged into one query.
+async function pickGreeting(env) {
+  try {
+    if (!GREETINGS) return;
+    const row = await env.DIARY.prepare(
+      'SELECT COUNT(*) AS n FROM conversations',
+    ).first();
+    // `current` is deliberately NOT passed. Knowing which line the agent is
+    // carrying costs a GET on the agent, or a column on this table, to buy the
+    // guarantee that the same greeting never lands twice running. Out of three
+    // lines that is a one-in-three chance of a repeat, which is what happens
+    // when a real person says hello, so it is not worth a request.
+    const greeting = chooseGreeting({ greetings: GREETINGS, conversations: row?.n ?? 0 });
+    if (greeting) await setGreeting(env, greeting);
+  } catch {
+    // Deliberately silent, like the rest of this file.
   }
 }
 

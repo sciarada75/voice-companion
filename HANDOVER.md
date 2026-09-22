@@ -61,7 +61,7 @@ wishes are added to the list, not done on the spot.
 | # | Phase | State on 22/09 |
 |---|---|---|
 | **A** | **Conversation** (stage 5) | **Done bar one thing.** Nine spoken tests, §0.1. What is still wrong: §0.2. |
-| **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **Spoken once, 22/09, and the writing half holds.** `diary_record` logged the morning tablets and `note_for_next_time` wrote a loose end, both by voice, both read back afterwards from the stored agent. **The reading half is still unheard**: a note has never been raised in a conversation, because the first one to exist was written that same day. What the test exposed is in §0.1 and §6.18. |
+| **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **DONE, proven by voice 22/09.** Writing: `diary_record` logged the tablets, `note_for_next_time` wrote a loose end. Reading: the next conversation opened with *"I remember us talking about your friend who used to work in a shop in Glasgow. I don't have the rest of that conversation"* — the one note, in its own words, no mention of having written it down, honest about the rest. What the two tests exposed about the CONVERSATION is in §0.1; the defect they exposed about publishing is §6.18. |
 | **C** | **Family view** (stages 7-9) | **Built, past what the plan asked** (§3). Missing: **delivery**. Nothing reaches anybody on its own; someone opens the page. The channel is undecided and must cost €0. |
 | **D** | **Submission** | Page done. **Video, deck, repo, prototype URL, statistics: open** (§1). |
 | — | After 30/09 | stage 11 (learning), more languages, iPhone latency, **and who makes the first move** (§9) |
@@ -71,7 +71,7 @@ B is built and half proven by voice. **Everything still open is the submission:*
 the video, the deck, the cover image, the three descriptions and a README that
 is still the starter's (§1, §10).
 
-### 0.1 Phase A — the rules ten spoken tests produced
+### 0.1 Phase A — the rules eleven spoken tests produced
 
 All in `config/rules/en.md`. Each line is a defect Claudia heard, and the rule
 that answered it. **The order matters: the ones at the top were ignored until
@@ -139,6 +139,46 @@ list. Alongside it:
   week* go by. A model reads "worth returning to" as "worth knowing". The tool
   description now tests for time, not interest: **if you could not ask "how did
   it go?" about it next time, it is not a loose end.**
+
+**Eleventh test, 22/09 — the memory worked, and two things Claudia named.**
+
+- **It cannot take a joke, and that is colder than anything else it does.**
+  Peggy, on being told a rest day was sensible: *"so you could have a walk
+  instead of me."* Iris explained, earnestly, that it has no body to move around
+  in and spends its time processing information. Then, told it was full of irony,
+  it agreed — *"I suppose I am"* — to a wit it had not shown. **Two separate
+  faults with one cause: the honesty-about-being-an-AI rule was firing on a
+  tease.** Being asked to do something it obviously cannot do is not a question
+  about its nature, and answering it as one kills the joke and makes the person
+  feel foolish for making it. New rules: joke back, dry and short, then carry on;
+  never answer a tease with an explanation of what you are; and never accept a
+  description of yourself that is not true, because agreeing to be witty when you
+  were not is its own kind of lying and they can hear it.
+- **The greeting was unsettling, and the reason is that it repeats.** *"I've been
+  told a little about you, but I'd like to get to know you myself"* is a
+  reasonable thing to say once, and an announcement that somebody has filed a
+  report on you when it is the first thing you hear every single day. **The
+  doctrine had leaned on that repetition** — "never say where a fact came from,
+  the greeting already discloses it once" was written as though there were only
+  ever one greeting. Fixed by the rotation (§4): the introduction is spoken in
+  the very first conversation and never again.
+
+Two more the transcript showed that Claudia did not have to name:
+
+- **It offered to end the conversation twice in three turns, and she took the
+  second offer.** Both offers were triggered by mistranscriptions — a stray
+  *"Deserted."* — which the two-flat-answers rule counted as her going quiet, and
+  which it then apologised for having caused. **A turn you did not understand is
+  not a short answer**, and an apology for an offence nobody mentioned invents
+  one and makes her reassure the machine. Offers to end are now capped at one.
+- **"Taking a rest day sounds like a sensible plan", "it's a good idea to let
+  your body recover."** That is advice about a body it cannot see, and the health
+  wall did not catch it because the wall was written in medical words —
+  medicines, doses, values — while aching, tiredness, resting and eating arrive
+  in ordinary ones. **The wall now covers the body in plain English**, including
+  agreeing with a decision she has already made and was only telling him about.
+  Also: banning "that sounds" at the START of a turn simply moved it to the
+  middle, where it did the same job. The ban is now on the word.
 
 Not defects, recorded so they are not chased twice: "Belly and Jeans" and
 "Someoness" were misheard, but keyterms are configured (43 of them) and neither
@@ -527,6 +567,32 @@ if the API key appears in the files.
 - Secrets set: `ASSEMBLYAI_API_KEY`, `PAGE_KEY`, `DIARY_KEY`. Change the key ->
   reset the secret **and republish**.
 
+### The greeting, and why it moves
+
+Fixed text on the stored agent. It never passes through the model, so nothing
+the model does can vary it — which is also why `diary_status` could never be
+"used at the start" (§6.15) and why `/token` writes the conversation row itself.
+
+**One `introduction`, spoken in the very first conversation and never again**,
+plus three short lines per band (morning, afternoon, evening) in
+`persona.json`. `/token` counts the conversations **before** writing this one's
+row, picks a line for the local hour where the person lives, and PUTs it onto
+the agent. `tools/build_web` bakes the list into `greetings.generated.js`;
+`tools/build_agent` publishes the introduction, so a brand-new person starts
+correctly.
+
+- **The choice is a pure function** (`lib/greeting.js`, ten tests), for the same
+  reason `prompt-block.js` is: it is the first thing a person hears and nothing
+  downstream can correct it.
+- **The write is AWAITED, not `waitUntil`** — unlike the loose end. A greeting
+  written after the session opens is a greeting that did nothing. It is bounded
+  to 1.5 s and failure is silent: the agent keeps the line it has, and the only
+  cost is hearing yesterday's.
+- **One request, not three.** A `PUT` echoes the stored agent back, measured at
+  ~100 ms on 22/09, so the response IS the read-back §4 demands.
+- **The evening band wraps past midnight**, so two in the morning is evening and
+  not a gap. Every hour belongs to exactly one band, and a test asserts it.
+
 ### The notebook
 
 **Cloudflare D1** `companion-diary` (binding `DIARY`), schema in
@@ -722,6 +788,27 @@ statistical claim either: **claim the instrument, not the discovery.**
   re-applied by the publish, not to be part of what the publish overwrites** —
   after 30/09. Until then, anyone republishing a profile with a pending note
   must restore it by hand, and there is nothing that warns them.
+- **6.20 — A conversation held on localhost does not exist as far as the backend
+  is concerned · OPEN, and it changes how to test.** The diary tools are called
+  by AssemblyAI from its own servers, so they reach Cloudflare whoever served the
+  page. **`/token` does not.** Served locally it is `deployment/browser/server.mjs`
+  that mints the token, so for a local conversation: no row in `conversations`,
+  **the loose end is never aged out**, and from 22/09 the greeting never rotates.
+  Found when the second spoken test ran locally and left its note still
+  `pending` — a third local conversation would have raised Glasgow all over
+  again, which is exactly the "you told me before" failure §0.3 forbids.
+  **So: rules and conversation quality can be tested on localhost. Anything to
+  do with memory, greetings or the diary's sense of time must be tested on
+  `lablab.claudiaonclaude.com`.** The honest fix is for the local server to do
+  what `/token` does, which is after 30/09; until then this is a testing rule,
+  not a code path.
+- **6.21 — The day is computed in Europe/Rome for a person in Ashton · OPEN,
+  small.** `recordConversation` and the diary write `Europe/Rome` days while the
+  greeting bands correctly use the person's own `greetings.timezone`. Two clocks
+  in one system. It is wrong for one hour a day in the UK — a conversation at
+  23:30 in Ashton lands on tomorrow's row. Harmless today, wrong the moment
+  anybody outside Italy uses it for real. **The timezone belongs to the profile;
+  `Europe/Rome` should not appear in code at all.**
 - **6.19 — Two agent turns with nobody in between, after an `interactive` tool.**
   22/09, `note_for_next_time`: the transcript shows "It's a big change from
   here…" and then "It's quite an effort to travel that far…" back to back, no
@@ -940,8 +1027,10 @@ No fixed date except the submission, **30 September**.
 **The build** — see §0 for order and state. Beyond it:
 - [ ] **The product has no name.** Blocks nothing (§7). Domain on
       claudiaonclaude.com once named.
-- [ ] **Greeting rotation:** the greetings in `persona.json` do not rotate;
-      `saluto_scelto` is changed by hand.
+- [x] **Greeting rotation — done 22/09.** `persona.json` now holds one
+      `introduction` plus three lines per time-of-day band; `/token` picks one
+      before every conversation and PUTs it onto the stored agent. **Only
+      online** (§6.20).
 - [ ] **Nothing reaches anyone by itself.** The report waits to be opened;
       there is no alert channel, and it has to cost €0 (phase C's last item).
 - [ ] **The report and the setup form are local only.** Fine for now; a family

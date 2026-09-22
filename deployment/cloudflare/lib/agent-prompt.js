@@ -49,3 +49,37 @@ export async function setLastTime(env, note) {
   }
   return { ok: true };
 }
+
+// The opening line, chosen fresh before each conversation (lib/greeting.js).
+//
+// ONE REQUEST, NOT THREE, and this is the difference that matters: unlike the
+// loose end, this is AWAITED before the token goes back to the page, because the
+// greeting is the very first thing the person hears. Put it in waitUntil and the
+// session starts before the write lands — §6.17 in a new hat, except here the
+// person hears the wrong opening rather than nothing happening.
+//
+// Measured 22/09: a PUT is about 100 ms and ECHOES the stored agent back, so the
+// response body IS the read-back that §4 requires. No separate GET, and none to
+// read the current greeting either: an unchanged PUT is harmless, and a request
+// saved is a request that cannot make somebody wait to be greeted.
+export async function setGreeting(env, greeting) {
+  const id = env.AGENT_ID;
+  if (!id || !env.ASSEMBLYAI_API_KEY) {
+    return { ok: false, reason: 'AGENT_ID or ASSEMBLYAI_API_KEY is not set on Cloudflare' };
+  }
+  if (!greeting) return { ok: false, reason: 'no greeting to write' };
+
+  const write = await fetch(`${AGENTS_API}/agents/${id}`, {
+    method: 'PUT',
+    headers: { authorization: env.ASSEMBLYAI_API_KEY, 'content-type': 'application/json' },
+    body: JSON.stringify({ greeting }),
+  });
+  if (!write.ok) return { ok: false, reason: `could not write the greeting: ${write.status}` };
+
+  // NEVER TRUST "Updated" — §4. Here the check is free.
+  const after = await write.json().catch(() => ({}));
+  if (after.greeting !== greeting) {
+    return { ok: false, reason: 'the agent read back does not carry the greeting written' };
+  }
+  return { ok: true };
+}

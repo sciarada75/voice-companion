@@ -373,6 +373,22 @@ if (hasNotebook) {
   );
 }
 
+// The greeting the agent is PUBLISHED with. See the comment at its use below.
+// This is one of the loud guards: a profile with no greeting at all would
+// otherwise reach the API as `undefined` and the agent would open every
+// conversation with silence, which reads as a dropped line (§6.2 all over).
+function greetingToPublish() {
+  const g = person.greetings ?? {};
+  const chosen = g.introduction ?? g.list?.[g.chosen_greeting] ?? g.list?.[0];
+  if (!chosen) {
+    console.error(`\nERROR: ${DIR}/persona.json has no greeting to publish.`);
+    console.error(`Add "greetings.introduction": the first thing anyone hears`);
+    console.error(`cannot be left to a default.\n`);
+    process.exit(1);
+  }
+  return chosen;
+}
+
 // --- the voice ----------------------------------------------------------------
 // Only voice.voice_id is validated by the API. language_codes and output.voice
 // accept any string at all and create the agent without a word of protest, so
@@ -392,7 +408,12 @@ const agent = {
   // FIXED text, said identically on every call, and it does NOT pass through the
   // model: so it has to open with substance. "Shall we have a chat?" asks
   // permission to converse, which is not how a real conversation starts.
-  greeting: forTheVoice(person.greetings.list[person.greetings.chosen_greeting] ?? person.greetings.list[0]),
+  // The INTRODUCTION, always, and never a rotation line. A publish is the state
+  // a brand-new person starts from, so the greeting baked in is the one that
+  // introduces itself. From the second conversation onwards Cloudflare's /token
+  // overwrites this field before the session opens (lib/greeting.js).
+  // A profile still on the old flat list keeps working and simply never rotates.
+  greeting: forTheVoice(greetingToPublish()),
   voice: { voice_id: VOICE },
   input: {
     language_codes: [LANGUAGE],
