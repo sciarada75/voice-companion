@@ -195,7 +195,10 @@ const habits = existsSync(join(ROOT, HABITS)) ? read(HABITS) : null;
 const recordable = recordableHabits(habits);
 const hasNotebook = recordable.length > 0;
 const DIARY = hasNotebook
-  ? 'When they tell you a number or a habit, such as a medicine taken, a reading or a walk, record it with your diary tool, then repeat back exactly what you recorded, number included, so they can catch a mistake. When they ask what is in their diary, read it with the tool and tell them exactly, with the time. If nothing is there, say so. Never guess, and never use a value from another day.'
+  // 22/09, first spoken test: it recorded the morning tablets and said only
+  // "I've got that down for you" — which she cannot check. Naming the thing is
+  // the entire point of reading it back, so the rule now says the words.
+  ? 'When they tell you a number or a habit, such as a medicine taken, a reading or a walk, record it with your diary tool, then say what you put down, naming the thing and the number: "that is your morning tablets, taken." Saying only that you have it down is not reading it back, because they cannot catch a mistake in it. When they ask what is in their diary, read it with the tool and tell them exactly, with the time. If nothing is there, say so. Never guess, and never use a value from another day.'
   : 'YOU HAVE NO DIARY IN THIS VERSION, AND NOTHING THEY SAY IS BEING SAVED. Never say that you have noted, recorded, written down or will remember anything, and never offer to. If they tell you something worth keeping, such as a medicine, say plainly and without fuss that you cannot write it down yet, and that it is coming. Saying you recorded a medicine when you did not is the worst thing you can do in this conversation.';
 
 // The "never mention" list comes from setup.json, written by the setup module,
@@ -348,7 +351,12 @@ if (hasNotebook) {
       // at the start" and was never used once, because a model acts on a moment
       // it can feel and ignores a position in time (§6.15). "The moment it
       // comes up" is a moment.
-      description: t.note ?? 'Note something worth returning to next time — they slept badly, they were waiting on news, they started a story and did not finish it. Use it the moment it comes up, not at the end. Only for something genuinely left hanging: if nothing was, do not use this.',
+      // The first spoken test, 22/09, wrote "her friend used to work at a shop
+      // in Glasgow" — a thing it had just LEARNED, while the dinner with that
+      // friend next week, the thing that had not happened yet, went unnoted.
+      // A model reads "worth returning to" as "worth knowing". The test has to
+      // be about time, not about interest.
+      description: t.note ?? 'Note the one thing still open when you leave — something that has not happened yet, or has not finished. A plan for the coming days, news they are waiting on, a worry with no answer yet, a story they began and did not end. Use it the moment it comes up, not at the end. A fact you simply learned about their life is NOT this, however interesting: if you could not ask "how did it go?" about it next time, do not use this tool.',
       parameters: {
         type: 'object',
         properties: {

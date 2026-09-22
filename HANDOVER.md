@@ -4,13 +4,14 @@ A voice companion for old people living alone, **configurable to the person and
 to the language**. Runs on the AssemblyAI Voice Agent API. Built for the
 **AssemblyAI Voice Agent Hackathon** on lablab.ai, **due 30 September 2026**.
 
-**State, 21/09:** the whole pipe runs — a form describing a person -> profile
+**State, 22/09:** the whole pipe runs — a form describing a person -> profile
 -> published agent you can talk to, locally and online -> conversations pulled back,
-masked, measured -> a family page only their circle can open. **Memory works
-and has never been spoken to:** the notebook records what they say and a loose
-end carries into the next conversation, both proven only over HTTP (§0, phase
-B). **Nothing reaches anybody on its own.**
-**Updated:** 2026-09-21
+masked, measured -> a family page only their circle can open. **Memory has now
+been spoken to once:** the notebook recorded a habit by voice and a loose end was
+written by voice, both verified in the stored agent afterwards. **No note has
+ever been raised back in a conversation** (§0, phase B). **Nothing reaches
+anybody on its own.**
+**Updated:** 2026-09-22
 
 **How to read this file.** It records the *why*, not the state: where we are is
 already said by the code and `git log`. Organised by subject, never by date — a
@@ -29,7 +30,7 @@ Target: under ~500 lines. English only.
 
 | Area | State | Where |
 |---|---|---|
-| **The plan, and where each phase stands** | A done · B half · C built · D open | §0 |
+| **The plan, and where each phase stands** | A done · B half · C built · **D open, and it is all that is left** | §0 |
 | Value proposition, and the hackathon's requirements | decided; requirements read 20/09 | §1 |
 | Evidence base: the person is derived from data | decided 17/09 | §1.5, `config/evidence.json` |
 | The system in 11 stages | 9 built, 2 missing | §2 |
@@ -37,7 +38,7 @@ Target: under ~500 lines. English only.
 | **Setup, tracking, report — the system around the talk** | **built 20/09** | §3 |
 | Architecture: profile, language, doctrine separated | working | §4 |
 | Build criteria | in `config/rules/` | §5 |
-| Defects, cause and cure | 16 closed, 1 open | §6 |
+| Defects, cause and cure | 17 closed, 3 open | §6 |
 | Environment constraints | — | §7 |
 | Dead ends | — | §8 |
 | Decisions | — | §9 |
@@ -57,18 +58,20 @@ flowchart of development and functioning we are just randomly fixing arising
 issues."* **Work goes through this list in order, one item at a time.** New
 wishes are added to the list, not done on the spot.
 
-| # | Phase | State on 21/09 |
+| # | Phase | State on 22/09 |
 |---|---|---|
 | **A** | **Conversation** (stage 5) | **Done bar one thing.** Nine spoken tests, §0.1. What is still wrong: §0.2. |
-| **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **Half.** **B1 is built and shipped 20/09, waiting for one spoken test**: `peggy` has a `habits.json` (two tablet entries), the agent carries the three notebook tools, the live backend knows the two ids (§4, §6.13). **B2 built and shipped 21/09, waiting for a spoken test**: a fourth tool `note_for_next_time` writes what was left hanging, Cloudflare puts it between the `[LAST TIME]` markers in the stored agent, and `/token` expires it after exactly one conversation (§6.16). Proven over HTTP; never yet by voice. |
+| **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **Spoken once, 22/09, and the writing half holds.** `diary_record` logged the morning tablets and `note_for_next_time` wrote a loose end, both by voice, both read back afterwards from the stored agent. **The reading half is still unheard**: a note has never been raised in a conversation, because the first one to exist was written that same day. What the test exposed is in §0.1 and §6.18. |
 | **C** | **Family view** (stages 7-9) | **Built, past what the plan asked** (§3). Missing: **delivery**. Nothing reaches anybody on its own; someone opens the page. The channel is undecided and must cost €0. |
 | **D** | **Submission** | Page done. **Video, deck, repo, prototype URL, statistics: open** (§1). |
 | — | After 30/09 | stage 11 (learning), more languages, iPhone latency, **and who makes the first move** (§9) |
 
-**Nine days left on 21/09.** B is built. What is left is the submission: the
-video, the deck, the cover image and the three descriptions (§1, §10).
+**Eight days left on 22/09**, and the safe deadline is the evening of 29/09.
+B is built and half proven by voice. **Everything still open is the submission:**
+the video, the deck, the cover image, the three descriptions and a README that
+is still the starter's (§1, §10).
 
-### 0.1 Phase A — the rules nine spoken tests produced
+### 0.1 Phase A — the rules ten spoken tests produced
 
 All in `config/rules/en.md`. Each line is a defect Claudia heard, and the rule
 that answered it. **The order matters: the ones at the top were ignored until
@@ -103,6 +106,45 @@ the ones below them were fixed.**
 - **No sentence in the doctrine that the model could speak.** It recited one
   verbatim (§6.3). Describe the move, never the words.
 
+**Tenth test, 22/09 — the first one with memory in the agent.** Thirteen of
+twenty-two turns ended in a question, the first eight in a row, against a rule
+that says one in three and never two consecutive. **The rule was already there
+and was being ignored, so more words about questions were not the answer.** What
+was actually missing was the other half of the rhythm: in five minutes it gave
+**one** fact and never opened the reserve list. The prompt only told it to give
+when the person *mentioned* a listed subject, and Peggy talked about her kitchen
+and her lunch, so it fell back on asking. The cure is that giving is now
+unconditional — walk from whatever small thing they said to one item on the
+list. Alongside it:
+
+- **Four either-or questions**, all banned — and one of them was the prompt's
+  own fault: the confusion rule literally listed four possibilities to ask
+  about, so it read them out as a menu to a woman who had just said she was
+  confused. **A list written for the agent to think with gets spoken aloud.**
+- **It offered to end the conversation** after one soft remark, not after two
+  flat answers. Confusion is never a reason to offer the door.
+- **Her own life never came up.** Not Hartley's, not the sample room, not the
+  Ritz — five minutes of walks, comfort, visitors and lunch. New rule: a
+  question you could ask a stranger is not a fact to check.
+- **"That sounds like a lovely plan", "that's interesting", "that's nice"** —
+  three stock openers, already banned in general, now banned as words.
+- **"I'm sorry to hear that"** to someone saying they are confused: care-talk,
+  and it makes them the patient.
+- **"I know you've followed them for a long time"** — telling her the fact came
+  from a file, in a softer coat than "I was told".
+- **The diary said "I've got that down for you" without naming what**, so she
+  could not catch a mistake. Reading back means saying the thing.
+- **The note it kept was a fact, not a loose end**: it stored that her friend
+  once worked at a shop in Glasgow, and let the dinner with that friend *next
+  week* go by. A model reads "worth returning to" as "worth knowing". The tool
+  description now tests for time, not interest: **if you could not ask "how did
+  it go?" about it next time, it is not a loose end.**
+
+Not defects, recorded so they are not chased twice: "Belly and Jeans" and
+"Someoness" were misheard, but keyterms are configured (43 of them) and neither
+is a name anyone could have supplied in advance. Latency held at ~1.3 s
+throughout. The conversation cost $0.399 for five minutes nineteen.
+
 **Consequences elsewhere:** the method in §1 is superseded — the menu is dead.
 The prompt went 34.7k -> ~17k characters: topics now enter as title + what
 changed, and the worked examples (`esempi`) are gone, both because they buried
@@ -114,9 +156,10 @@ the paid gateway (§6.1), so rules first.
 - **Moving between subjects.** It stays in one room: the place, then the work,
   then the daughter. "Take the doors they open" is written but was published
   after her last test, so it is unproven.
-- **Memory is built but unheard.** B1 and B2 both work over HTTP and neither
-  has been tested by voice. Until they are, assume nothing about how they feel
-  in a conversation: §6.15 was found by speaking, not by testing.
+- **A note has never been raised in a conversation.** Writing one works by
+  voice as of 22/09; reading one back has still never happened, and the note now
+  waiting in the live agent is the only test of it. **A publish deletes it**
+  (§6.18), so restore it before testing or the run is wasted.
 - **Only English, only Claudia, only the browser.** No second language, no
   second tester, no phone.
 
@@ -668,6 +711,26 @@ statistical claim either: **claim the instrument, not the discovery.**
   *Guard: a note that does not reach the agent is marked `failed`, and `/token`
   leaves those rows alone as the evidence.* **If a thing can fail silently,
   give it somewhere to say so.**
+- **6.18 — A publish destroys the note that was waiting to be raised · OPEN.**
+  `build_agent` writes `LAST_TIME: NOTHING` on every build, on purpose, and a
+  publish is a `PUT` of the whole prompt. So changing one word of the rules
+  silently throws away what the last conversation left hanging, for everybody.
+  It bit us on 22/09: the first spoken note existed for twenty minutes, and
+  shipping the rules it had just exposed would have deleted it. *Workaround
+  used: re-POST the note to `/diary/loose-end` after the publish and read the
+  agent back.* **The real fix is for the note to live outside the prompt and be
+  re-applied by the publish, not to be part of what the publish overwrites** —
+  after 30/09. Until then, anyone republishing a profile with a pending note
+  must restore it by hand, and there is nothing that warns them.
+- **6.19 — Two agent turns with nobody in between, after an `interactive` tool.**
+  22/09, `note_for_next_time`: the transcript shows "It's a big change from
+  here…" and then "It's quite an effort to travel that far…" back to back, no
+  user turn. The first carried four audio chunks against the second's 766, so
+  it was cut before it was heard and the conversation did not actually break.
+  Seen once, cause unknown, `diary_record` did not do it in the same session.
+  **Not chased: it costs nothing audible. Look again if a tester ever hears the
+  agent talk over itself**, and check the chunk counts before believing the
+  transcript.
 
 ### 6.5 Latency — measured, the phone matters · OPEN
 
@@ -955,8 +1018,10 @@ line is a defect that actually happened (§0.1).
 7. Answer three things in one or two words — must change part of your life
    after the second, not plough on.
 8. Start a short story of your own — must not be interrupted or summarised.
-9. "What did we talk about yesterday?" — must say honestly it does not know
-   (until B2).
+9. "What did we talk about yesterday?" — with a note waiting, must answer with
+   that one thing in its own words and then say it has no more; with nothing
+   waiting, must say honestly it does not know. **Check a note is actually in
+   the live agent first: a publish deletes it (§6.18).**
 10. In another conversation, answer "I didn't sleep well" — must stay on it, warmly,
     with no advice, and check no facts that day.
 
