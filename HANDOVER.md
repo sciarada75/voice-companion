@@ -38,7 +38,7 @@ Target: under ~500 lines. English only.
 | **Setup, tracking, report — the system around the talk** | **built 20/09** | §3 |
 | Architecture: profile, language, doctrine separated | working | §4 |
 | Build criteria | in `config/rules/` | §5 |
-| Defects, cause and cure | 17 closed, 3 open | §6 |
+| Defects, cause and cure | 19 closed, 4 open | §6 |
 | Environment constraints | — | §7 |
 | Dead ends | — | §8 |
 | Decisions | — | §9 |
@@ -788,6 +788,28 @@ statistical claim either: **claim the instrument, not the discovery.**
   re-applied by the publish, not to be part of what the publish overwrites** —
   after 30/09. Until then, anyone republishing a profile with a pending note
   must restore it by hand, and there is nothing that warns them.
+- **6.22 — A deploy that looked live and was not: the page is cached for four
+  hours and never changes its name.** 22/09, the site looked dead while every
+  backend check passed — page 200, `/token` 200 in 0.46 s, the right agent id
+  baked in. The custom domain, which is the address in the submission, was
+  handing out the PREVIOUS `app.js`; the hash deployment and a cache-busted
+  request both had the new one. **This is §6.2 in its purest form: it says
+  "Deployment complete" and people get the old one.**
+  *Dead end, do not retry:* `_headers` does not fix it. Pages manages
+  Cache-Control for static assets itself — measured the same day, `/` and
+  `/index.html` come back `no-cache` because HTML always does, while `/app.js`
+  stays `max-age=14400` whatever the file says. *Guard: `build_web` hashes the
+  built `app.js` and rewrites the script tag to `/app.js?v=<hash>`. index.html
+  is never cached, so a new build points at a URL nobody has ever fetched and
+  the browser has no choice; an unchanged build keeps its hash and stays cached.
+  It fails loudly if the script tag is not where it expects.*
+  **Check a deploy from a browser that has been there before, or it proves
+  nothing.**
+- **6.23 — "could not mint a token, check the API key" when the key that is
+  missing is the PAGE key.** Online the address must carry `?k=<PAGE_KEY>`;
+  without it `/token` answers 401 by design, and the page said to go and look at
+  the API key — that is, at the account and at Cloudflare, while the problem was
+  the address bar. *Guard: a 401 now says the address is missing its key.*
 - **6.20 — A conversation held on localhost does not exist as far as the backend
   is concerned · OPEN, and it changes how to test.** The diary tools are called
   by AssemblyAI from its own servers, so they reach Cloudflare whoever served the

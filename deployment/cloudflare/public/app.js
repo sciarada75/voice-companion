@@ -323,6 +323,14 @@ async function start() {
 
     await audioReady
     const res = await tokenRequest
+    // A 401 is NOT a broken key, it is a missing one: online the page needs
+    // ?k=<PAGE_KEY> in the address and without it /token refuses, by design.
+    // The old message here said "check the API key", which sent you looking at
+    // the account and at Cloudflare while the address bar was the problem.
+    // 22/09: exactly that, and the site looked dead when it was working.
+    if (res.status === 401) {
+      throw new Error('this address is missing its key: open the link ending in ?k=...')
+    }
     if (!res.ok) throw new Error('could not mint a token, check the API key')
     const { token } = await res.json()
 

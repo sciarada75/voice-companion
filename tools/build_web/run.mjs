@@ -21,6 +21,7 @@
 // looks fine and online it is broken.
 
 import { spawn } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -152,6 +153,36 @@ try {
     }
     file[patch.file] = before.split(patch.find).join(patch.put);
   }
+
+  // THE PAGE IS CACHED FOR FOUR HOURS AND ITS NAME NEVER CHANGES.
+  //
+  // 22/09: a deployed fix was live on the hash URL and on a cache-busted
+  // request, while the custom domain — the address in the hackathon submission
+  // — kept handing out the PREVIOUS app.js. Every backend check passed and the
+  // site still looked broken. This is 6.2 in its purest form: the thing says it
+  // deployed, and what people get is the old one.
+  //
+  // `_headers` does NOT fix it. Cloudflare Pages manages Cache-Control for
+  // static assets itself and ignores the file for them: measured the same day,
+  // `/` and `/index.html` come back `no-cache` because HTML always does, while
+  // `/app.js` stays `max-age=14400` whatever `_headers` says. So the header
+  // route is a dead end — do not try it again.
+  //
+  // What DOES work is changing the name when the content changes. index.html is
+  // never cached, so a new index.html points at a URL nobody has ever fetched,
+  // and the browser has no choice. Content-addressed, so an unchanged build
+  // keeps the same URL and stays cached, which is the point.
+  const stamp = createHash('sha256').update(file['app.js']).digest('hex').slice(0, 8);
+  const ref = '<script src="/app.js"></script>';
+  if (!file['index.html'].includes(ref)) {
+    throw new Error(
+      `cannot find ${ref} in index.html, so app.js cannot be given a version.\n` +
+      '  Without it a deployed fix can sit invisible behind a four-hour cache.\n' +
+      '  server.mjs has changed: update this, do NOT remove it.',
+    );
+  }
+  file['index.html'] = file['index.html'].replace(ref, `<script src="/app.js?v=${stamp}"></script>`);
+  console.log(`  app.js version ${stamp}`);
 
   mkdirSync(OUT, { recursive: true });
   for (const [name, text] of Object.entries(file)) {
