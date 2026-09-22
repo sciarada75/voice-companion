@@ -965,6 +965,16 @@ No fixed date except the submission, **30 September**.
 - [ ] Peggy's 12 topics are all `verificato: false`.
 
 **Submission** (requirements in §1):
+- [x] **Video script written 22/09**, `docs/submission/video-script.md`. Shape is
+      Claudia's: the charming grandmother-and-robot clip everyone has seen, then
+      the data, then "so what", then the product, with dry irony rather than
+      warmth. **The script is bound by §5.4 like the product is** — it never says
+      detects, decline, cognitive or risk, and the section that says so out loud
+      is the one that earns the trust. **Only figures marked `primary` are spoken**;
+      polypharmacy and the UK 85+ growth are both `search-summary` and are left
+      out on purpose until someone reads the originals.
+      **It cost two rewrites to learn that 5 minutes is about 570 spoken words**,
+      not the 800 that a full draft naturally reaches.
 - [x] Public GitHub repo, secret-check done (20/09).
 - [ ] **Video (5 min), deck (PDF), cover image, descriptions.**
 - [x] The prototype URL: `lablab.claudiaonclaude.com` (see §1).
