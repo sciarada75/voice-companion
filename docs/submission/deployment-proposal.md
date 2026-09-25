@@ -97,8 +97,8 @@ The architecture separates three things that are usually tangled: **the person**
 behaves). A new country is a configuration, not a rewrite. A new person is a
 form, filled in twenty minutes by someone who is not technical.
 
-The conversation rules are the part that took the work: nine spoken tests, each
-producing one rule. The agent picks one subject rather than offering a menu.
+The conversation rules are the part that took the work: eleven spoken tests,
+each producing one rule. The agent picks one subject rather than offering a menu.
 Most turns end without a question, because an open question opens a subject the
 person then has to carry. It never says where a fact came from. Two flat answers
 in a row and it stops.

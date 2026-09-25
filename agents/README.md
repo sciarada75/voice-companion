@@ -2,6 +2,8 @@
 
 One file per agent. The JSON is the request body for `POST /v1/agents`, with no wrapper fields and no keys the starter invents.
 
+**`peggy.jsonc` is the exception: it is GENERATED** from a profile and the doctrine, by `tools/build_agent`, and any edit to it is overwritten by the next `npm run ship`. Change `config/profiles/peggy/` or `config/rules/<lang>.md` instead. Everything else here is a hand-written starter example.
+
 The files use the `.jsonc` extension so that each field can carry a comment and a link to the documentation page defining it. Comments and trailing commas are removed before the file is sent.
 
 ## Writing your own

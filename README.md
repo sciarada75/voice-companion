@@ -1,199 +1,135 @@
-<img src="assemblyai.png" width="500"/>
+# Closer
 
----
+**A voice companion for someone living alone — configured to that one person, in their language.**
 
-[![Voice Agent API](https://img.shields.io/badge/docs-Voice%20Agent%20API-2545E6)](https://www.assemblyai.com/docs/voice-agents/voice-agent-api)
+*Closer, if not near.*
+
+[![Voice Agent API](https://img.shields.io/badge/built%20on-AssemblyAI%20Voice%20Agent%20API-2545E6)](https://www.assemblyai.com/docs/voice-agents/voice-agent-api)
 [![Node](https://img.shields.io/badge/node-%E2%89%A518-5FA04E?logo=node.js&logoColor=white)](https://nodejs.org)
 [![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](package.json)
-[![AssemblyAI Twitter](https://img.shields.io/twitter/follow/AssemblyAI?label=%40AssemblyAI&style=social)](https://twitter.com/AssemblyAI)
-[![AssemblyAI YouTube](https://img.shields.io/youtube/channel/subscribers/UCtatfZMf-8EkIwASXM4ts0A)](https://www.youtube.com/@AssemblyAI)
 
-# AssemblyAI Voice Agent Starter for JS
+In Italy, **2.7 million** people aged 75 and over live on their own — one
+household in ten. **92.8% of them say they can count on a relative. 3.2% have
+nobody.** *(ISTAT, Censimento permanente della popolazione, 2023.)*
 
-Voice agents defined as JSON files. Publish one to your AssemblyAI account, then talk to it in a browser tab or by calling a phone number.
+So this is not built for the abandoned. It is built for the overwhelming
+majority whose family is willing and not there: work, full days, three hours of
+motorway. What is missing is not love. It is the ordinary daily contact, where
+somebody would simply have noticed.
 
-Each file in [agents/](agents/) is the request body for `POST /v1/agents`. The starter sends it unchanged, saves the agent ID it gets back to `.env`, and both deployments connect using that ID. An agent you already have goes the other way, `npm run import <agent-id>` turns it into one of these files. Built on the [AssemblyAI Voice Agent API](https://www.assemblyai.com/products/voice-agent-api). Node 18 or later, no dependencies.
+Closer speaks to that person on a day when nothing is wrong. It knows who they
+are, who comes on a Thursday, and what they take in the morning. It keeps a
+diary they can correct out loud. And it gives the people who love them a page —
+not a transcript, and not an opinion about anyone's mind, but what changed
+against that person's own usual week.
 
-There is a [Python version of this repo](https://github.com/AssemblyAI/voice-agent-starter-python) with the same agents and the same steps.
+## Talk to it
 
-## Quickstart
+**[lablab.claudiaonclaude.com](https://lablab.claudiaonclaude.com)** — the
+address needs the access key that goes with it; the link in the hackathon
+submission carries it. The same published agent also answers an ordinary phone
+line, so nothing about the conversation depends on owning a smartphone.
 
-### 1. Clone
+## What happens, end to end
 
-```sh
-git clone https://github.com/AssemblyAI/voice-agent-starter-js
-cd voice-agent-starter-js
-cp .env.example .env
-```
+1. **Somebody describes them in free text.** Nobody fills in a forty-field form
+   about their mother; anyone can talk about her for five minutes. A form
+   collects the rest — the circle, what each person may see, the routine, a
+   *never mention* list, consent — and it writes nothing without the consent.
+2. **That becomes a profile, and the profile becomes an agent.** The generator
+   turns the text into a persona and a set of subjects worth talking about, and
+   flags every field it *inferred* rather than read, to be confirmed before
+   anyone talks to it. A wrong detail about someone's life is the fastest way to
+   prove the system does not know them.
+3. **They talk.** One subject at a time, picked by the companion rather than
+   offered as a menu. Most turns end without a question, because an open
+   question hands the person something to carry. It never says where it knows
+   something from.
+4. **It writes down what they said** — the tablets, the walk, the visit on
+   Sunday — as they said it. That path is ordinary code, not a model, because
+   this is the one place where inventing, inferring or rounding a number would
+   be dangerous.
+5. **The family opens a page.** Five indicators, each at three scales — today,
+   seven days, thirty days — with the person's own words underneath, and a
+   counted table of how they spoke. Only the people they named can open it, each
+   with their own key, and each sees only what they were allowed to see.
 
-### 2. Add your key
+<p align="center"><img src="report.png" width="620" alt="The family page: five indicators at three scales, with her own words and a counted table."></p>
 
-From [assemblyai.com/dashboard/api-keys](https://www.assemblyai.com/dashboard/api-keys):
+## What it will not do
 
-```sh
-# .env
-ASSEMBLYAI_API_KEY=your_key_here
-```
+- **It does not detect anything.** It is not a medical device and does not
+  audition for the part. It notices that someone who talked for nine minutes
+  last week talked for two today, and tells the people who love them. It claims
+  the instrument, never the discovery.
+- **Nothing reaches anybody on its own.** No alert, no message, no email.
+  Somebody opens the page. Where a human being is needed, a human being is
+  fetched — that is a decision, not a missing feature.
+- **The recordings do not stay with the speech provider.** Each conversation is
+  pulled down, secrets are masked out before anything is written, and the copy
+  at AssemblyAI is **deleted**. Only the fact that a secret came up is kept.
+- **The companion refuses to be told a PIN**, itself included, and tells the
+  person not to give one to anyone on the phone.
+- **The family page holds no transcript.** They do not get to read her post.
 
-### 3. Get an agent
+## Run it yourself
 
-Publish one of the examples:
-
-```sh
-npm run publish                       # agents/minimal.jsonc
-# AGENT=http-tools npm run publish    # or any other file in agents/
-```
-
-Or import one you already have, shaped in the playground or the dashboard:
-
-```sh
-npm run import <agent-id>          # writes agents/<its-name>.jsonc
-```
-
-Either way you end up with the same pair: a file in `agents/` and its id in `.env` as `AGENT_ID_<NAME>`. Publishing again updates that agent rather than creating another, and each file keeps its own, so switching with `AGENT=` never overwrites the last one.
-
-### 4. Talk to it
-
-```sh
-npm start
-```
-
-Open http://localhost:3000 and start the conversation.
-
-### 5. Put it on a phone number
-
-```sh
-# .env
-TWILIO_ACCOUNT_SID=AC...                          # console.twilio.com, top of the page
-TWILIO_AUTH_TOKEN=your_token_here                 # same place, hidden until you click it
-TWILIO_PHONE_NUMBER=+15551234567                  # a number already in your account, E.164
-TWILIO_TRUNK_DOMAIN=acme-agent.pstn.twilio.com    # a name you invent, must end .pstn.twilio.com
-```
-
-The trunk domain does not exist yet. You are naming the SIP trunk that gets created for you, and the name has to be unique across all of Twilio, so put something specific to you in front of `.pstn.twilio.com`. The phone number does have to exist already: buy one under Phone Numbers in the Twilio console first.
-
-```sh
-npm run phone
-```
-
-This creates the trunk, routes it to AssemblyAI, attaches your number to it, and binds the agent. Then call the number. Details in [deployment/telephony](deployment/telephony/).
-
----
-
-## Core examples
-
-Nine agent files. Four demonstrate a parameter, five demonstrate an integration.
-
-| `AGENT=` | Demonstrates | Requires |
-| --- | --- | --- |
-| [`minimal`](agents/minimal.jsonc) | the three required fields, and the defaults applied to the rest | |
-| [`keyterms`](agents/keyterms.jsonc) | biasing transcription toward names and jargon | |
-| [`turn-taking`](agents/turn-taking.jsonc) | silence thresholds and interruption handling | |
-| [`byo-llm`](agents/byo-llm.jsonc) | Claude through the AssemblyAI gateway, or your own endpoint | |
-| [`http-tools`](agents/http-tools.jsonc) | tools that AssemblyAI calls on the agent's behalf | |
-| [`exa-search`](agents/exa-search.jsonc) | web search during a conversation | `EXA_API_KEY` |
-| [`airtable-crm`](agents/airtable-crm.jsonc) | reading a caller record and writing one back | `AIRTABLE_*` |
-| [`cal-booking`](agents/cal-booking.jsonc) | checking availability, then booking a slot | `CAL_*` |
-| [`dtmf`](agents/dtmf.jsonc) | PCI compliance: card entry on the keypad, never in the transcript, the logs or the model | `DTMF_WEBHOOK_URL` |
+Node 18 or later, no dependencies, and an
+[AssemblyAI API key](https://www.assemblyai.com/dashboard/api-keys).
 
 ```sh
-AGENT=exa-search npm run publish
-npm start
+cp .env.example .env          # ASSEMBLYAI_API_KEY
+npm run setup                 # the intake form, on :3100
+npm run profile -- --name peggy --from intake/peggy.txt --lang en
+PROFILE=peggy npm run ship    # build -> publish -> page -> deploy
+npm start                     # then open http://localhost:3000 and talk
 ```
 
-To write your own, copy the closest file: `cp agents/http-tools.jsonc agents/my-agent.jsonc`. Every field is commented, with a link to the documentation page that defines it.
-
-## Importing an agent
-
-The playground is the quickest way to shape an agent. This is how it moves into code without being rebuilt by hand:
+Afterwards:
 
 ```sh
-npm run import 8f3c1e2a-...
+PROFILE=peggy npm run sessions   # pull the conversations, mask, delete theirs
+PROFILE=peggy npm run metrics    # arithmetic, no model: same numbers for anyone
+PROFILE=peggy npm run report     # the family page, on :3200
 ```
 
-It writes `agents/<name>.jsonc`, the live agent as a file, headed with the id it came from. It records `AGENT_ID_<NAME>` in `.env`, so `npm run publish` sends a `PUT` to that same agent instead of creating a second one. It drops `id`, `created_at` and `updated_at`, which are not part of a create request. And it refuses to overwrite an existing file unless you pass `AGENT=<other-name>` or `OVERWRITE=1`.
+## How it is built
 
-Credentials are the one thing it cannot recover. Tool header values and `llm[].api_key` are write-only on the API, so they come back blank. The import names the ones to restore, and they belong in `.env`, referenced from the file as `${VARS}`:
-
-```
-Header values are write-only and did not come back for: lookup.
-Put them in .env and reference them as ${VARS}.
-```
-
-From there it behaves like any other file in `agents/`: edit it, publish, talk.
-
-## Where it answers
-
-| | | |
-| --- | --- | --- |
-| [Browser](deployment/browser/) | `npm start` | Serves a page with a button to start a conversation, and mints session tokens. The API key stays on the server. |
-| [Phone](deployment/telephony/) | `npm run phone` | Configures a Twilio SIP trunk and attaches the agent to your number. |
-
-Twilio passes the call to AssemblyAI over SIP, so nothing in this repo sits in the audio path.
-
-## Hosting the browser app
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/AssemblyAI/voice-agent-starter-js)
-
-Render reads [render.yaml](render.yaml) and prompts for exactly one value, `ASSEMBLYAI_API_KEY`, because that is the only variable marked `sync: false`. It sets `PORT` itself. The other two arrive with defaults you can change under Environment on the service:
-
-| Variable | Default | What it does |
-| --- | --- | --- |
-| `ASSEMBLYAI_API_KEY` | prompted | Stays on the server. Never sent to the page. |
-| `AGENT` | `minimal` | Which `agents/<name>.jsonc` the service publishes when it boots. |
-| `AGENT_ID` | empty | Paste an id from your `.env` to serve that exact agent, whichever file it came from. |
-
-Leaving `AGENT_ID` empty is fine. The service publishes `AGENT` on boot, and on later restarts it updates the agent of that name rather than creating another one. Setting it is still better, since the deployment then uses the same agent you tested locally and your phone number answers with.
-
-Anyone with the URL can start sessions billed to that key.
-
-## How it works
+Three things that are usually tangled are kept apart, which is why a new country
+is a configuration and not a rewrite:
 
 ```
-  copy an example                     npm run import <id>
-  or write your own                   an agent you already have
-           │                                   │
-           ▼                                   ▼
-agents/exa-search.jsonc     body of POST /v1/agents
-        + .env              the ${VARS} it references
-           │
-           ▼  npm run publish
-      AGENT_ID_EXA_SEARCH
-           ├──  npm start        browser tab
-           └──  npm run phone    phone number
+config/rules/<lang>.md                  the doctrine — how it behaves, true for anyone
+config/profiles/<name>/persona.json     the person
+config/profiles/<name>/topics.json      what is worth talking about with them
+config/profiles/<name>/habits.json      the routine it may write down
+                    |
+                    v   tools/build_agent
+        agents/<name>.jsonc  ->  POST /v1/agents  ->  a browser tab, or a phone number
 ```
 
-The first publish sends `POST /v1/agents` and stores the returned ID in `.env` under a key of its own, `AGENT_ID_EXA_SEARCH` for that file. Later publishes send `PUT /v1/agents/{id}`, so the browser tab and the phone number both pick up the change on the next call, and publishing a different file leaves this one alone. A bare `AGENT_ID` overrides every per-file key.
+The doctrine is the part that took the work: **eleven spoken tests, each
+one producing a rule**, in `config/rules/`. Every line there is a fault somebody
+heard in a real conversation.
 
-Values written as `${VAR}` anywhere in an agent file are substituted at publish time from `.env`, or from `agents/<name>.env` for credentials only one agent uses. Both files are gitignored, so the JSON can be committed.
+Deployment is a static page on Cloudflare Pages plus one live endpoint that
+mints a 60-second token, so the API key never reaches the browser and the audio
+goes from the browser to AssemblyAI directly.
 
-## Build with AI coding agents
+## What is not finished
 
-This repo includes [AGENTS.md](AGENTS.md), which Claude Code, Cursor and Copilot read for its conventions. The Voice Agent API changes, so point coding tools at the current documentation rather than letting them work from memory:
+The companion can leave itself a note about something still ahead — a visit, a
+result someone is waiting on — for the next conversation to pick up. It works,
+and it is the weakest part of the system: across twelve conversations it has
+fired once. The honest state of everything, including this, is in
+[HANDOVER.md](HANDOVER.md).
 
-> Always fetch https://assemblyai.com/docs/llms.txt before writing AssemblyAI code. The API has changed, do not rely on memorized parameter names.
+## Credit
 
-```sh
-claude mcp add --transport http --scope user assemblyai-docs https://mcp.assemblyai.com/docs
-npx skills add AssemblyAI/assemblyai-skill --global
-```
-
-See [Build with AI tools](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/build-with-ai-tools) and [Coding agent prompts](https://www.assemblyai.com/docs/coding-agent-prompts).
-
-## Voice Agent API
-
-Product: [Voice Agent API](https://www.assemblyai.com/products/voice-agent-api) · [Pricing](https://www.assemblyai.com/pricing) · [Dashboard](https://www.assemblyai.com/dashboard)
-
-Start here: [Documentation](https://www.assemblyai.com/docs/voice-agents/voice-agent-api) · [Create an agent](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/create-agent) · [Manage agents](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/manage-agents) · [Prompting guide](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/prompting-guide) · [Best practices](https://www.assemblyai.com/docs/voice-agents/best-practices)
-
-Configuration: [Voices](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/voices) · [Greeting](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/greeting) · [Turn detection](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/turn-detection-and-interruptions) · [Keyterms](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/transcription-prompt) · [Languages](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/supported-languages) · [Noise suppression](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/noise-suppression) · [Custom LLM](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/connect-your-own-llm)
-
-Tools: [Overview](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/tools/overview) · [HTTP tools](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/tools/http-tools) · [Client-side tools](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/tools/client-side-tools)
-
-Deployment: [Deploy](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/deploy) · [Browser integration](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/browser-integration) · [Connect to Twilio](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/connect-to-twilio) · [Use your own number](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/twilio-own-number) · [Webhooks](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/webhooks)
-
-Reference: [Session configuration](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/session-configuration) · [Events](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/events-reference) · [Message sequence](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/message-sequence) · [Session history](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/session-history) · [Troubleshooting](https://www.assemblyai.com/docs/voice-agents/voice-agent-api/troubleshooting)
-
-## Cost
-
-Sessions are billed to the API key that published the agent. Anyone with the deployed URL or the phone number can start a session on that key.
+Built on the [AssemblyAI Voice Agent API](https://www.assemblyai.com/products/voice-agent-api),
+and started from the
+[JS voice agent starter](https://github.com/AssemblyAI/voice-agent-starter-js) —
+its conventions still govern `agents/`, `publish.mjs` and `deployment/`, and the
+browser client here is its client with the local changes marked in the source.
+Conventions for anyone, human or otherwise, working in this repo:
+[AGENTS.md](AGENTS.md).

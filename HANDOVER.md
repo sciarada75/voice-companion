@@ -4,13 +4,14 @@ A voice companion for old people living alone, **configurable to the person and
 to the language**. Runs on the AssemblyAI Voice Agent API. Built for the
 **AssemblyAI Voice Agent Hackathon** on lablab.ai, **due 30 September 2026**.
 
-**State, 22/09:** the whole pipe runs — a form describing a person -> profile
+**State, 25/09:** the whole pipe runs — a form describing a person -> profile
 -> published agent you can talk to, locally and online -> conversations pulled back,
-masked, measured -> a family page only their circle can open. **Memory has now
-been spoken to once:** the notebook recorded a habit by voice and a loose end was
+masked, measured -> a family page only their circle can open. **Memory has been
+spoken to once:** the notebook recorded a habit by voice and a loose end was
 written by voice, both verified in the stored agent afterwards. **No note has
 ever been raised back in a conversation** (§0, phase B). **Nothing reaches
-anybody on its own.**
+anybody on its own.** The **film is finished** (§10); the submission is four
+items short of complete.
 **Updated:** 2026-09-25
 
 **How to read this file.** It records the *why*, not the state: where we are is
@@ -60,17 +61,17 @@ wishes are added to the list, not done on the spot.
 
 | # | Phase | State on 22/09 |
 |---|---|---|
-| **A** | **Conversation** (stage 5) | **Done bar one thing.** Nine spoken tests, §0.1. What is still wrong: §0.2. |
+| **A** | **Conversation** (stage 5) | **Done bar one thing.** Eleven spoken tests, §0.1. What is still wrong: §0.2. |
 | **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **B1 DONE. B2 NOT PROVEN — reopened 24/09**, and the earlier "done" was one lucky call: `note_for_next_time` has fired **once in twelve conversations**, and the once it fired it wrote the wrong kind of note. Anything that depends on the loose end — including the pitch video's claim that *"each conversation leaves one loose end for the next"* — is unsupported until a voice test says otherwise. See the entry in §0.1. Evidence lives in `sessions/peggy/*.json`, where each turn carries `tool_calls`. **Original 22/09 note follows, kept because the reading half genuinely works:** Writing: `diary_record` logged the tablets, `note_for_next_time` wrote a loose end. Reading: the next conversation opened with *"I remember us talking about your friend who used to work in a shop in Glasgow. I don't have the rest of that conversation"* — the one note, in its own words, no mention of having written it down, honest about the rest. What the two tests exposed about the CONVERSATION is in §0.1; the defect they exposed about publishing is §6.18. |
 | **C** | **Family view** (stages 7-9) | **Built, past what the plan asked** (§3). Missing: **delivery**. Nothing reaches anybody on its own; someone opens the page. The channel is undecided and must cost €0. |
-| **D** | **Submission** | Page, repo, prototype URL and **the film** done (§10). **Open: deck PDF, cover image, the three descriptions, README.** |
+| **D** | **Submission** | Page, repo, README, prototype URL and **the film** done (§10). **Open: deck PDF, cover image, the three descriptions.** |
 | — | After 30/09 | stage 11 (learning), more languages, iPhone latency, **and who makes the first move** (§9) |
 
 **The safe deadline is the evening of 29/09** (the deadline's own time zone is
 unknown, §1). B is built and half proven by voice. **Everything still open is
-the submission, and it is now four things:** the deck as a PDF, the 16:9 cover
-image, the three descriptions, and a README that is still the starter's
-(§1, §10). The film is done — `docs/submission/CLOSER.mp4`, 4:59.11.
+the submission, and it is now three things:** the deck as a PDF, the 16:9
+cover image, and the three descriptions (§1, §10). The film is done —
+`docs/submission/CLOSER.mp4`, 4:59.11.
 
 ### 0.1 Phase A — the rules eleven spoken tests produced
 
@@ -1159,7 +1160,7 @@ No fixed date except the submission, **30 September**.
       79 MB**, against a hard 5:00 and 300 MB. Its source is `video/` and is
       tracked; `video/public/` (footage, wav) is not. `video/render-all.sh`
       re-renders that same file; pass a section name to look at one on its own.
-- [ ] **Deck (PDF), cover image (16:9), title / short / long description, README.**
+- [ ] **Deck (PDF), cover image (16:9), title / short / long description.**
 - [x] **The video is built in code, not in an editor** (22/09). Claudia asked for
       CapCut; a GUI editor cannot be driven by an agent, so the video would have
       gone back to being her job. It is **Remotion** instead — the video is a web
@@ -1280,9 +1281,21 @@ things learned doing it, each of which cost a cycle:
 - [x] Discord question **skipped by Claudia's decision, 20/09**: the full
       history stays public. The deadline's time zone is still unknown, so
       finish before the evening of 29/09 in Italy.
-- [ ] **The README is still the AssemblyAI starter's, unchanged** (title, logo,
-      badges, clone URL). It is the first thing a judge reads. Rewrite it for
-      this project and credit the starter.
+- [x] **`README.md` and `AGENTS.md` were the STARTER's, and that cost every
+      session its first half hour** (25/09). The README described
+      `voice-agent-starter-js` — its title, its logo, its clone URL — on the page
+      a judge lands on from the submission. `AGENTS.md` was worse, because
+      `CLAUDE.md` is one line (`@AGENTS.md`): **the file every coding agent reads
+      first was a description of a different project**, so each session began by
+      learning conventions for a starter kit and then discovering this repo by
+      hand. Both are now this project's, the starter credited in each and its
+      conventions kept in the half of `AGENTS.md` that still governs `agents/`,
+      `publish.mjs` and `deployment/`. `assemblyai.png` went with the old header.
+      **What a new session is now told up front:** read `HANDOVER.md` first and
+      search it before calling a defect new · §5.4 binds the film too · read the
+      agent back after every publish · never hand-edit what is generated ·
+      nothing about a real person goes in git · and the four things that have
+      already fooled a session, including the stripped `state/report-*.html`.
 
 ### Found by reading every file during the English rename, 20/09 — not fixed
 
