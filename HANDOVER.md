@@ -11,7 +11,7 @@ been spoken to once:** the notebook recorded a habit by voice and a loose end wa
 written by voice, both verified in the stored agent afterwards. **No note has
 ever been raised back in a conversation** (§0, phase B). **Nothing reaches
 anybody on its own.**
-**Updated:** 2026-09-22
+**Updated:** 2026-09-25
 
 **How to read this file.** It records the *why*, not the state: where we are is
 already said by the code and `git log`. Organised by subject, never by date — a
@@ -61,15 +61,16 @@ wishes are added to the list, not done on the spot.
 | # | Phase | State on 22/09 |
 |---|---|---|
 | **A** | **Conversation** (stage 5) | **Done bar one thing.** Nine spoken tests, §0.1. What is still wrong: §0.2. |
-| **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **DONE, proven by voice 22/09.** Writing: `diary_record` logged the tablets, `note_for_next_time` wrote a loose end. Reading: the next conversation opened with *"I remember us talking about your friend who used to work in a shop in Glasgow. I don't have the rest of that conversation"* — the one note, in its own words, no mention of having written it down, honest about the rest. What the two tests exposed about the CONVERSATION is in §0.1; the defect they exposed about publishing is §6.18. |
+| **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **B1 DONE. B2 NOT PROVEN — reopened 24/09**, and the earlier "done" was one lucky call: `note_for_next_time` has fired **once in twelve conversations**, and the once it fired it wrote the wrong kind of note. Anything that depends on the loose end — including the pitch video's claim that *"each conversation leaves one loose end for the next"* — is unsupported until a voice test says otherwise. See the entry in §0.1. Evidence lives in `sessions/peggy/*.json`, where each turn carries `tool_calls`. **Original 22/09 note follows, kept because the reading half genuinely works:** Writing: `diary_record` logged the tablets, `note_for_next_time` wrote a loose end. Reading: the next conversation opened with *"I remember us talking about your friend who used to work in a shop in Glasgow. I don't have the rest of that conversation"* — the one note, in its own words, no mention of having written it down, honest about the rest. What the two tests exposed about the CONVERSATION is in §0.1; the defect they exposed about publishing is §6.18. |
 | **C** | **Family view** (stages 7-9) | **Built, past what the plan asked** (§3). Missing: **delivery**. Nothing reaches anybody on its own; someone opens the page. The channel is undecided and must cost €0. |
-| **D** | **Submission** | Page done. **Video, deck, repo, prototype URL, statistics: open** (§1). |
+| **D** | **Submission** | Page, repo, prototype URL and **the film** done (§10). **Open: deck PDF, cover image, the three descriptions, README.** |
 | — | After 30/09 | stage 11 (learning), more languages, iPhone latency, **and who makes the first move** (§9) |
 
-**Eight days left on 22/09**, and the safe deadline is the evening of 29/09.
-B is built and half proven by voice. **Everything still open is the submission:**
-the video, the deck, the cover image, the three descriptions and a README that
-is still the starter's (§1, §10).
+**The safe deadline is the evening of 29/09** (the deadline's own time zone is
+unknown, §1). B is built and half proven by voice. **Everything still open is
+the submission, and it is now four things:** the deck as a PDF, the 16:9 cover
+image, the three descriptions, and a README that is still the starter's
+(§1, §10). The film is done — `docs/submission/CLOSER.mp4`, 4:59.11.
 
 ### 0.1 Phase A — the rules eleven spoken tests produced
 
@@ -134,11 +135,26 @@ list. Alongside it:
   from a file, in a softer coat than "I was told".
 - **The diary said "I've got that down for you" without naming what**, so she
   could not catch a mistake. Reading back means saying the thing.
-- **The note it kept was a fact, not a loose end**: it stored that her friend
-  once worked at a shop in Glasgow, and let the dinner with that friend *next
-  week* go by. A model reads "worth returning to" as "worth knowing". The tool
-  description now tests for time, not interest: **if you could not ask "how did
-  it go?" about it next time, it is not a loose end.**
+- **The note it kept was a fact, not a loose end · SECOND OCCURRENCE 24/09, and
+  the first guard made it worse.** 22/09 it stored that her friend once worked
+  at a shop in Glasgow and let the dinner with that same friend *next week* go
+  by: a model reads "worth returning to" as "worth knowing". The guard added a
+  prohibition — *"if you could not ask 'how did it go?' about it next time, do
+  not use this tool"*. **It killed the false positive and never made the true
+  one.** In the nine conversations since, `note_for_next_time` fired **zero**
+  times, including 24/09's *"we plan to have dinner together on Saturday
+  evening"* followed by *"we are going out for dinner to Marco's"* — the same
+  dinner again, now with a day and a place on it. `diary_record` fired three
+  times the same day, so the model calls tools perfectly well; the description
+  was the fault. Evidence is in `sessions/peggy/`: the timeline records
+  `tool_calls` per turn, which is how to settle "did it fire" in one command
+  instead of guessing at the database.
+  *Guard: the description was rewritten so the TRIGGER leads and is concrete
+  enough to act on ("a plan with a day attached — a dinner, a visit, an
+  appointment"), says once in the positive that a plan IS this tool, and keeps
+  the exclusion as the last line. The rule behind it, which is the part worth
+  keeping:* **a tool description that only says when NOT to fire will not
+  fire.** *Re-test by voice before trusting it — it has been wrong twice.*
 
 **Eleventh test, 22/09 — the memory worked, and two things Claudia named.**
 
@@ -312,6 +328,11 @@ contacts. Checked 20/09: none tracked, the key is in no commit.
 subdomain per hackathon on purpose, because the page uses root-relative paths
 `/app.js` and `/token` that a URL path prefix would break). Without the key the
 page loads but `/token` answers 401, so no session can start.
+
+**Since 24/09 the key only has to be given once per browser** (§6.23): opening
+the keyed link stores it and clears it from the address bar, after which the
+bare `https://lablab.claudiaonclaude.com/` works in that browser. **The
+submitted link must still carry `?k=`** — a judge's browser has never seen it.
 
 ---
 
@@ -499,6 +520,15 @@ useless to put all the log data this way"*. So there is no conversation log.
 - **The acknowledgement is signed by the link**, never by a typed name, and
   stores the **sentence that was on the page at the time**. The saved HTML copy
   has no such button: pressing it would write nowhere.
+  **This trips up anything that reads the saved copy and concludes the feature
+  is missing** — I did exactly that on 24/09 and told Claudia the report had no
+  acknowledgement box, when `page()` has always rendered one and the write to
+  `state/report-<profile>.html` strips it with a regex. It is also why the first
+  cut of the film's section 6 promised a button the footage did not contain.
+  **To see the real page, run the server** (`PROFILE=peggy npm run report`) and
+  open a circle link; do not judge the feature from `state/`. The video's
+  filming copy at `scratchpad/closer-video/public/report-peggy.html` now carries
+  the served markup deliberately.
 - **It works:** the first run caught, unprompted, that her account of where she
   had lived changed across conversations — the self-awareness signal, produced by
   Claudia's own testing.
@@ -820,11 +850,26 @@ statistical claim either: **claim the instrument, not the discovery.**
   It fails loudly if the script tag is not where it expects.*
   **Check a deploy from a browser that has been there before, or it proves
   nothing.**
-- **6.23 — "could not mint a token, check the API key" when the key that is
-  missing is the PAGE key.** Online the address must carry `?k=<PAGE_KEY>`;
-  without it `/token` answers 401 by design, and the page said to go and look at
-  the API key — that is, at the account and at Cloudflare, while the problem was
-  the address bar. *Guard: a 401 now says the address is missing its key.*
+- **6.23 — the page key had to be in the address bar on every visit, and the
+  address bar is the one thing you cannot keep.** Online `/token` answers 401
+  without `?k=<PAGE_KEY>`. First the page blamed the API key, which sent you to
+  the account and to Cloudflare while the problem was the address; that message
+  was fixed 22/09. It was not enough: on **24/09 the bare URL locked Claudia out
+  twice in one afternoon**, because a bookmark, a history entry or typing the
+  domain all give you the domain WITHOUT the query, and every backend check
+  passes while the site looks dead. Worse, the key was **legible in the address
+  bar of the screen recordings shot for the pitch video** — a password on its way
+  to a public video.
+  *Guard: `KEY` at the top of `clientApp` in `deployment/browser/server.mjs`
+  reads `?k=` once, keeps it in `localStorage`, and `history.replaceState`s it
+  out of the address. The bare domain then works in that browser and the address
+  bar is clean on camera. It does not widen the gate — a stranger who never had
+  the key still gets 401. `REQUIRED` in `tools/build_web/run.mjs` fails the build
+  if any of the three moving parts is renamed away.*
+  **Consequence for the build:** the old `PATCHES` entry that rewrote
+  `fetch('/token')` into `fetch('/token' + location.search)` is gone, because
+  `KEY` is empty locally and does the right thing in both places. Do not put it
+  back.
 - **6.20 — A conversation held on localhost does not exist as far as the backend
   is concerned · OPEN, and it changes how to test.** The diary tools are called
   by AssemblyAI from its own servers, so they reach Cloudflare whoever served the
@@ -1062,8 +1107,16 @@ No fixed date except the submission, **30 September**.
 ## 10. Open
 
 **The build** — see §0 for order and state. Beyond it:
-- [ ] **The product has no name.** Blocks nothing (§7). Domain on
-      claudiaonclaude.com once named.
+- [x] **The product is named: Closer**, tagline *Closer, if not near.* (22/09; "Close" until 25/09, when Claudia settled it — "closer" is the comparative the product name already is, so the line reads as the promise rather than as an adjective).
+      Chosen because English *close* holds both meanings — near, and intimate —
+      and the gap between them **is** the argument: the families exist, they are
+      three hours away. It also survives translation; Italian *vicino* does the
+      same work. *Closer* was preferred to *Close Enough* and *Close Company*
+      because it names a **direction**, not a state: it never claims to make
+      anyone near. **Rejected: Close Call** — the best pun of the set, but it
+      means danger narrowly escaped, and §5.4 exists to promise the opposite.
+      **The companion stays Iris**: she says that name in every recording. Iris
+      answers the phone, Closer is what the family buys.
 - [x] **Greeting rotation — done 22/09.** `persona.json` now holds one
       `introduction` plus three lines per time-of-day band; `/token` picks one
       before every conversation and PUTs it onto the stored agent. **Only
@@ -1102,7 +1155,127 @@ No fixed date except the submission, **30 September**.
       **It cost two rewrites to learn that 5 minutes is about 570 spoken words**,
       not the 800 that a full draft naturally reaches.
 - [x] Public GitHub repo, secret-check done (20/09).
-- [ ] **Video (5 min), deck (PDF), cover image, descriptions.**
+- [x] **THE FILM IS DONE — 25/09.** `docs/submission/CLOSER.mp4`, **4:59.11,
+      79 MB**, against a hard 5:00 and 300 MB. Its source is `video/` and is
+      tracked; `video/public/` (footage, wav) is not. `video/render-all.sh`
+      re-renders that same file; pass a section name to look at one on its own.
+- [ ] **Deck (PDF), cover image (16:9), title / short / long description, README.**
+- [x] **The video is built in code, not in an editor** (22/09). Claudia asked for
+      CapCut; a GUI editor cannot be driven by an agent, so the video would have
+      gone back to being her job. It is **Remotion** instead — the video is a web
+      page rendered frame by frame through headless Chrome into ffmpeg. Free for
+      individuals (licence read 22/09), and it buys three things an editor does
+      not: subtitles fall out of measured narration durations instead of being
+      dragged by hand, **the script file drives the runtime** so a trimmed
+      sentence retimes the section automatically, and `remotion studio` still
+      gives her a scrubbable timeline to watch. **The build lives in `video/`, in
+      the repo since 25/09** — it spent three days in a `/private/tmp` session
+      scratchpad, one cleanup away from a film that could not be re-rendered.
+- [x] **Section 6 of the script is new** (22/09): the family follow-up was one
+      line and three seconds inside section 5, which is the wrong allocation —
+      it is the only part that speaks to whoever pays. It is now its own 28
+      seconds, paid for by moving the setup-form line to the deck.
+- [x] **The deck's deployment argument is written**, `docs/submission/deployment-proposal.md`.
+      First customer is **telecare providers** (Beghelli, Tunstall, Age UK
+      alarms) because they already own the customer, the phone line and a 24-hour
+      call centre — which is the **escalation path this project deliberately does
+      not build**. Their pendant only speaks when pressed; Closer is the half
+      that speaks first.
+
+- [x] **What making it taught, in four lines** (22-25/09). The blow-by-blow is
+      in `git log`; these are the parts that would cost a day to learn again.
+      - **Pace lives in the silences, not in the speech.** Claudia: *"when a
+        frame finishes it has to stay still, with the text there, for 1 second.
+        still too fast."* Two faults, one of them free: the cards began fading
+        on the frame the voice stopped, so **every block ended on an empty
+        screen**. Holding them through the silence costs nothing and was most of
+        what read as rushed. The one-second floor itself (`HOLD` / `MIN_GAP` in
+        `video/src/theme.ts`, a floor not a beat, `hard: true` opts a cut out)
+        costs **14.4s**. A brisker read was measured and rejected as the wrong
+        lever: `say -r` barely moves a neural voice (150→180 is 9% real), and
+        speeding the voice undoes the stillness being bought.
+      - **Nothing overlaps.** `MIN_GAP` was briefly `HOLD` alone, which let an
+        incoming card rise while the outgoing one was still at full opacity —
+        defended in a code comment as a dissolve until Claudia watched it:
+        *"text from one frame overlaps to the previous. do not do that."* It is
+        `HOLD + FALL + RISE` now, and each card carries its own hold and fall.
+      - **One composition, not nine concatenated.** Each section render carried
+        ~50ms of AAC padding — **half a second** across the film, against a
+        margin of 0.2s. As a Remotion `Series` the runtime is the frame count and
+        nothing else, so what `remotion compositions` prints is what the file
+        measures.
+      - **Ask what is still animating when the clock runs out.** The end card's
+        two addresses faded in from 1.9s to 2.6s on a card whose window **ended
+        at 1.9s**: since the card was written, the last frame of the film showed
+        the URLs a judge would type at a few per cent, and then faded them out.
+- [x] **Section 4 is the conversation, heard before it is explained** (25/09,
+      rewritten twice the same day). The first version put the narration OVER
+      the recording at bed level: *"the overlap is not effective. instead, let
+      the 2 voices start and talk for 3-4 sentences each first. then start with
+      your explanation."* So nothing talks over anything. The real recording runs
+      at full level, **two lines each**, with the page scrolled off the session's
+      own millisecond timings so it cannot drift from the audio — and **the
+      pauses between turns are the agent's real response time and are NOT
+      tightened**, offered and refused on the grounds that a voice competition
+      judges exactly that. The replay went too (*"cut the record of the voice on
+      the joke. the screenshot is enough."*), and one callout survives, because
+      the viewer has just heard the other one happen.
+      **What the listen cost:** 24s. Tightening every silence to its floor
+      yielded **5.2s and no more** — the floor is the hold itself — which is
+      worth knowing before anyone goes looking for dead air again. The rest came
+      out of the script: three lines each -> two, and the first callout.
+- [x] **Watching it caught three things reading it had not** (25/09, all hers).
+      The voices frame said *"There is Anna, or Mary, or George"* over a still of
+      the **voice list** — it read as the person's name, and now says a list of
+      voices and a name the user gives the companion, which is what
+      `tools/setup_ui/run.mjs` actually asks for. Section 6 said *"it is
+      **detected** and quietly reported"* — **a §5.4 breach in the spoken
+      words**, in the script and in every rendered cut; §5.4 binds the video and
+      nothing checked it. And **"she" was doing double duty** in section 4: *"as
+      the companion's choice is female, the viewer get confused."* That section
+      says **the user** and **the companion** now; the rest of the film still
+      says she, because there the companion is not on screen.
+
+**The narrator: Jamie (Premium), macOS built-in, €0.** Claudia heard the base
+`say` voices and rejected them outright — correctly, they are pre-neural and
+sound it. The Premium and Enhanced tiers are a free download in System Settings
+that **only she can do** (no CLI installs them), and the jump is large. Three
+things learned doing it, each of which cost a cycle:
+
+- **`say -r` barely moves a neural voice.** The old formant voices stretch
+  cleanly; Jamie reads at ~180-190 words a minute whatever rate is asked for.
+  **So pace lives in the silences, not in the speech**: the beats between spoken
+  blocks were widened instead, which is how real narration works anyway.
+- **Piper is not an option on this Mac.** Its official macOS release is broken —
+  the binary links three dylibs and the tarball ships none. Verified 22/09, do
+  not spend another hour on it.
+- **`src/pronounce.json` exists because one file was serving two masters.**
+  `lines.json` supplies both what the voice says and what is printed on screen,
+  so respelling a word for the voice would have corrupted the subtitle. The
+  dictionary applies **only on the way to the voice**. First and so far only
+  real entry: **`person` -> `persun`**, which both Jamie tiers mangle. Its own
+  comment carries the rule: add an entry when a word is *heard* wrong, never on
+  suspicion, or it fills with superstition.
+
+**Two things the film exposed that the rest of the system should know.**
+
+- **The report HTML ships collapsed**, and that is right for a family on a phone
+  and wrong for film: the narration promises her own words and the counted part
+  and the page shows neither. The renderer opens `details.riga` (the first
+  indicator) and `details.blocco` (the counted table) **before measuring
+  layout**, and leaves the other four rows shut on purpose, because four rows
+  reading *fine* is the argument that a quiet week reads quiet.
+- **The best existing section-4 clip breaks §0.1.** Session `a3e03084b7af` has
+  the ideal run — Ashton Moss, then the sample room, then *"you made the first
+  version of any new garment"* — but two of its turns say *"I heard you used
+  to"* and *"I understand you were"*, the exact rule about never saying where a
+  fact came from. It is a pre-rule recording. **Decision 22/09: record a fresh
+  conversation** rather than ship the violation.
+- **The deck's figures were softened to match the report.** HANDOVER's 26% share
+  of words and 12-word answers are the **best conversations**; the report's
+  thirty-day averages are 13% and 7 words. The deck now says both, because the
+  film shows the report and a judge who checks one figure and finds it soft
+  discounts the rest.
 - [x] The prototype URL: `lablab.claudiaonclaude.com` (see §1).
 - [x] Discord question **skipped by Claudia's decision, 20/09**: the full
       history stays public. The deadline's time zone is still unknown, so

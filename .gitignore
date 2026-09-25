@@ -14,3 +14,24 @@ state/
 # Transcripts of real calls. Personal data: stays on the machine.
 sessions/*/
 config/profiles/*/setup.json
+
+# Source footage for the pitch video. Big, and the screen recordings show
+# the page key in the address bar. The repo is public.
+videos/
+
+# The film itself: Remotion project, its rendered pages and its audio. Source is
+# small, public/ is 150MB of footage and wav. Kept OUT of git and IN the repo -
+# it lived in a /private/tmp session scratchpad until 25/09, one cleanup away
+# from a submission that could not be re-rendered.
+video/node_modules/
+video/out/
+video/public/footage/
+video/public/audio/
+
+# The rendered film. 79 MB, and git is not where it belongs - it is uploaded to
+# lablab, not cloned. Re-render it with video/render-all.sh; its SOURCE is in
+# video/src and is tracked.
+docs/submission/*.mp4
+
+.DS_Store
+.playwright-mcp/

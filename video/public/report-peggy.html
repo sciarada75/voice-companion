@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Closer report, sept 18th, 18.23</title>
+<style>
+ :root{color-scheme:light dark;--ink:#1c1a17;--bg:#f7f4ef;--line:#d8d3cb;--soft:#efece5;--accent:#1d6f5c;
+       --basso:#1d6f5c;--medio:#9a6b1f;--alto:#a33028}
+ @media (prefers-color-scheme: dark){:root{--ink:#f0ece5;--bg:#17150f;--line:#3a3630;--soft:#201d16;--accent:#79c9b1;
+       --basso:#79c9b1;--medio:#dcae5f;--alto:#e98a80}}
+ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 ui-serif,Georgia,serif}
+ main{max-width:56rem;margin:0 auto;padding:2.6rem 1.1rem 5rem}
+ h1{font-size:.95rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;opacity:.6;margin:0 0 1.1rem}
+ h2{font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;opacity:.6;margin:2.4rem 0 .6rem}
+ .titolo{font-size:1.65rem;line-height:1.35;margin:0 0 1.2rem}
+ .call{background:var(--soft);border-left:3px solid var(--accent);padding:.85rem 1rem;border-radius:.3rem;margin:0 0 1.4rem}
+ .riga{border-bottom:1px solid var(--line)}
+ .riga summary{display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap;
+   padding:.75rem .2rem;cursor:pointer;list-style:none}
+ .riga summary::-webkit-details-marker{display:none}
+ .riga summary::before{content:'+';font-family:ui-monospace,monospace;opacity:.45;width:1rem;flex:0 0 auto}
+ .riga[open] summary::before{content:'–'}
+ .riga:hover summary{background:var(--soft)}
+ .nome{flex:1 1 14rem;font-weight:600}
+ .nome small{display:block;font-weight:400;opacity:.6;font-size:.8rem;line-height:1.35;margin-top:.1rem}
+ .livelli{display:flex;gap:.4rem;flex:0 0 auto;flex-wrap:wrap}
+ .pallino{min-width:8.4rem;padding:.3rem .55rem;border-radius:.3rem;background:var(--soft);
+   font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600;text-align:center}
+ .pallino i{display:block;font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;
+   font-size:.72rem;opacity:.6;margin-bottom:.1rem}
+ .mini{padding:.28rem .5rem;border-radius:.3rem;background:var(--soft);font-size:.7rem;letter-spacing:.04em;
+   text-transform:uppercase;font-weight:600}
+ .basso,.pallino.basso,.mini.basso{color:var(--basso)}
+ .medio,.pallino.medio,.mini.medio{color:var(--medio)}
+ .alto,.pallino.alto,.mini.alto{color:var(--alto)}
+ .pallino.medio,.mini.medio{background:color-mix(in srgb, var(--medio) 12%, transparent)}
+ .pallino.alto,.mini.alto{background:color-mix(in srgb, var(--alto) 14%, transparent)}
+ .pallino.vuoto{opacity:.4}
+ .dettagli{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1.1rem;
+   padding:.2rem .2rem 1.2rem 1.2rem}
+ .mese-dettagli .sommario{grid-column:1/-1;margin:0;font-size:1.02rem}
+ .scala b{font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;opacity:.75}
+ .scala b span{opacity:1}
+ .scala p{margin:.3rem 0 0;font-size:.93rem}
+ .scala q{display:block;font-size:.87rem;opacity:.75;margin-top:.4rem;font-style:italic}
+ .vuoto{opacity:.45}
+ details.blocco>summary{cursor:pointer;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;opacity:.6;
+   margin:2.4rem 0 .6rem}
+ table{border-collapse:collapse;width:100%}
+ th,td{text-align:left;padding:.55rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+ thead th{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;opacity:.6;font-weight:600}
+ .numeri td{font-variant-numeric:tabular-nums}
+ .letto{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;background:var(--soft);border-radius:.4rem;
+   padding:.8rem 1rem;margin:0 0 2rem;font-size:.93rem}
+ .letto select,.letto input{font:inherit;padding:.45rem .5rem;border:1px solid var(--line);border-radius:.3rem;
+   background:transparent;color:inherit}
+ .letto button{font:inherit;font-weight:600;padding:.5rem 1rem;border-radius:.3rem;border:1px solid var(--accent);
+   background:var(--accent);color:#fff;cursor:pointer}
+ .letto .storia{opacity:.7;font-size:.85rem;flex-basis:100%;margin:0}
+ .read{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;background:var(--soft);border-radius:.4rem;
+   padding:.8rem 1rem;margin:0 0 2rem;font-size:.93rem}
+ .read button{font:inherit;font-weight:600;padding:.5rem 1rem;border-radius:.3rem;border:1px solid var(--accent);
+   background:var(--accent);color:#fff;cursor:pointer}
+ footer{margin-top:2.6rem;font-size:.85rem;opacity:.72}
+ footer p{margin:.5rem 0}
+</style></head><body><main>
+<h1>Closer report, sept 18th, 18.23</h1>
+<p class="titolo">A week of mostly cheerful chats; her account of where she has lived shifted between calls, worth a look.</p>
+<p class="call"><strong>Worth a call:</strong> A gentle chat about her old homes and Ashton could be nice, since her account of where she has lived moved around this week.</p>
+
+<form class="read" method="post" action="/acknowledge">
+  <span><strong>Nobody has acknowledged this yet.</strong></span>
+  <span style="opacity:.7">You are reading as <strong>Sylvia</strong>.</span>
+  <button type="submit">I have read this</button>
+</form>
+
+
+
+
+<h2>At a glance</h2>
+<p style="margin:.2rem 0 1rem;font-size:.9rem;opacity:.72">Green needs nothing. Open a row to see what was said, today and over the weeks behind it.</p>
+<details class="riga medio">
+  <summary><span class="nome">Knowing where they are<small>who they are, where they are, who is around, and whether it all holds together</small></span><span class="livelli"><span class="pallino medio"><i>today</i>to be verified</span><span class="pallino medio"><i>seven days</i>to be verified</span><span class="pallino medio"><i>thirty days</i>to be verified</span></span></summary>
+  <div class="dettagli"><div class="scala"><b>today &middot; <span class="medio">to be verified</span></b>
+    <p>Within the same period she gave several different life stories: moved to Germany for 40 years, lived in Ashton since 1968, moved away 20 years ago, and grew up there. She twice said she felt confused.</p><q>we actually moved to Germany... almost all my lifetime, 40 years</q></div><div class="scala"><b>seven days &middot; <span class="medio">to be verified</span></b>
+    <p>Across calls her account of home changed: Ashton since 1968 where she grew up, then moving to Germany for 40 years, then moving away 20 years ago. These do not line up with each other. She twice said she felt muddled.</p><q>we actually moved to Germany ... almost all my lifetime, 40 years</q></div><div class="scala"><b>thirty days &middot; <span class="medio">to be verified</span></b>
+    <p>In one call she said Ashton since 1968 and that she grew up there. In others she said she moved to Germany for forty years, and that she moved away about twenty years ago and could not recall the neighbourhood. These accounts do not line up with each other. She is the authority, so this is only worth someone checking with her.</p><q>No, we actually moved to Germany. / It's the place where I grew up.</q></div></div>
+</details>
+<details class="riga basso">
+  <summary><span class="nome">Their routine<small>medicines, moving about, waking and sleeping</small></span><span class="livelli"><span class="pallino basso"><i>today</i>fine</span><span class="pallino basso"><i>seven days</i>fine</span><span class="pallino basso"><i>thirty days</i>fine</span></span></summary>
+  <div class="dettagli"><div class="scala"><b>today &middot; <span class="basso">fine</span></b>
+    <p>Sunday morning held together. Coffee, water and her vitamins, a walk planned, and her daughter due to visit.</p><q>I just woke up and have a couple of cups of coffee and some water and my medicines</q></div><div class="scala"><b>seven days &middot; <span class="basso">fine</span></b>
+    <p>On Sunday morning she described a calm, steady start: coffee, water, her vitamins, a planned walk, and waiting for her daughter. The routine held.</p><q>I just woke up and have a couple of cups of coffee and some water and my medicines ... I just take vitamins in the morning</q></div><div class="scala"><b>thirty days &middot; <span class="basso">fine</span></b>
+    <p>On Sunday morning she described a calm start: coffee, water and her vitamins, then a planned walk and waiting for her daughter to visit. The routine held.</p><q>I just woke up and have a couple of cups of coffee and some water and my medicines. / I just take vitamins in the morning.</q></div></div>
+</details>
+<details class="riga basso">
+  <summary><span class="nome">Mood<small>weeping, worry, anger, disappointment, or content</small></span><span class="livelli"><span class="pallino basso"><i>today</i>fine</span><span class="pallino basso"><i>seven days</i>fine</span><span class="pallino basso"><i>thirty days</i>fine</span></span></summary>
+  <div class="dettagli"><div class="scala"><b>today &middot; <span class="basso">fine</span></b>
+    <p>Mostly content and happy to talk. She took things in her stride.</p><q>I'm happy. And happy to have this conversation</q></div><div class="scala"><b>seven days &middot; <span class="basso">fine</span></b>
+    <p>She sounded content and open across most calls, glad to talk. She spoke warmly of family and took her daughter's busy schedule in her stride.</p><q>I'm happy. And happy to have this conversation</q></div><div class="scala"><b>thirty days &middot; <span class="basso">fine</span></b>
+    <p>She sounded content and friendly across the calls, glad to talk and easy about how the day would go. She said she felt muddled a few times but stayed warm about it.</p><q>I'm happy. And happy to have this conversation. / Ah, that's life.</q></div></div>
+</details>
+<details class="riga basso">
+  <summary><span class="nome">The body<small>pain, aches, tremor, cold, chills, in their words</small></span><span class="livelli"><span class="pallino basso"><i>today</i>fine</span><span class="pallino basso"><i>seven days</i>fine</span><span class="pallino basso"><i>thirty days</i>fine</span></span></summary>
+  <div class="dettagli"><div class="scala"><b>today &middot; <span class="basso">fine</span></b>
+    <p>Only that she felt tired in the evening. No pain or aches mentioned.</p><q>I'm pretty tired because it's evening here</q></div><div class="scala"><b>seven days &middot; <span class="basso">fine</span></b>
+    <p>The only physical thing she mentioned was feeling tired in the evening. No pain, no aches, nothing else.</p><q>I'm pretty tired because it's evening here</q></div><div class="scala"><b>thirty days &middot; <span class="basso">fine</span></b>
+    <p>Nothing physical beyond feeling tired in the evening, which she put down to the time of day.</p><q>I'm pretty tired because it's evening here.</q></div></div>
+</details>
+<details class="riga basso">
+  <summary><span class="nome">Private information<small>anyone asking about accounts, PINs, cards, documents or money</small></span><span class="livelli"><span class="pallino basso"><i>today</i>fine</span><span class="pallino basso"><i>seven days</i>fine</span><span class="pallino basso"><i>thirty days</i>fine</span></span></summary>
+  <div class="dettagli"><div class="scala"><b>today &middot; <span class="basso">fine</span></b>
+    <p>No one asked for money, accounts or details. No money worries came up.</p></div><div class="scala"><b>seven days &middot; <span class="basso">fine</span></b>
+    <p>Nobody asked her for money, accounts, PINs or documents, and she raised no money worries or pressure from anyone.</p></div><div class="scala"><b>thirty days &middot; <span class="basso">fine</span></b>
+    <p>No one asked her for money, an account, a card or any documents, and she mentioned no money worries or pressure from anyone.</p></div></div>
+</details>
+
+<h2>Month by month, since 9/19/2026</h2>
+<p style="margin:.2rem 0 1rem;font-size:.9rem;opacity:.72">Newest first. The five marks are the same indicators, so a run of quiet months is visible without opening anything.</p>
+<details class="riga mese medio">
+  <summary><span class="nome">September 2026<small>12 calls &middot; 15 minutes &middot; 13% of the talking theirs</small></span>
+  <span class="livelli"><span class="mini medio" title="Knowing where they are: to be verified">awareness</span><span class="mini basso" title="Their routine: fine">routine</span><span class="mini basso" title="Mood: fine">mood</span><span class="mini basso" title="The body: fine">body</span><span class="mini basso" title="Private information: fine">private</span></span></summary>
+  <div class="dettagli mese-dettagli">
+    <p class="sommario">Quiet week with a steady Sunday routine, but her account of Ashton and where she has lived changed from call to call.</p>
+    <div class="scala"><b>Knowing where they are &middot; <span class="medio">to be verified</span></b>
+    <p>Across calls in this period her own story shifted. One call she moved to Germany for forty years, another she moved away twenty years ago, and on 9/20 Ashton is where she grew up and has lived since 1968. Worth a person reading these back to back.</p><q>Yes, I did. It's the place where I grew up. / No, we actually moved to Germany.</q></div><div class="scala"><b>Their routine &middot; <span class="basso">fine</span></b>
+    <p>On Sunday morning she was up, had coffee, water and her vitamins, planned a short walk and was waiting for her daughter. The routine held.</p><q>I just woke up and have a couple of cups of coffee and some water and my medicines.</q></div><div class="scala"><b>Mood &middot; <span class="basso">fine</span></b>
+    <p>Mostly content and glad to talk. She said a few times she felt confused or tired, and sounded a little wistful that her daughter cannot visit more.</p><q>I would love her to come more often, but she cannot because of the work.</q></div><div class="scala"><b>The body &middot; <span class="basso">fine</span></b>
+    <p>She mentioned being tired in the evening. No pain or other physical thing came up.</p><q>I'm pretty tired because it's evening here.</q></div><div class="scala"><b>Private information &middot; <span class="basso">fine</span></b>
+    <p>No one asked her for money, a card, an account or documents. No money worries were raised.</p></div>
+  </div>
+</details>
+
+<details class="blocco"><summary>How they spoke &mdash; the counted part</summary>
+<p style="margin:.2rem 0 .8rem;font-size:.9rem;opacity:.72">Counted, not interpreted. The useful one is the change against their own earlier calls.</p>
+<table class="numeri"><thead><tr><th></th><th>today</th><th>seven days</th><th>thirty days</th></tr></thead><tbody>
+<tr><th>calls</th><td>10</td><td>12</td><td>12</td></tr>
+<tr><th>minutes talking</th><td>13</td><td>15</td><td>15</td></tr>
+<tr><th>their share of the words</th><td>15%</td><td>13%</td><td>13%</td></tr>
+<tr><th>average answer</th><td>8 words</td><td>7 words</td><td>7 words</td></tr>
+<tr><th>one-word answers</th><td>13</td><td>13</td><td>13</td></tr>
+<tr><th>times two came in a row</th><td>6</td><td>6</td><td>6</td></tr>
+<tr><th>pause before they answer</th><td>1.9 s</td><td>1.8 s</td><td>1.8 s</td></tr>
+<tr><th>turns where a code or account came up</th><td>0</td><td>0</td><td>0</td></tr>
+</tbody></table></details>
+
+<footer>
+<p>There is nothing earlier to compare with yet, so these calls are the baseline.</p>
+<p>A pause before answering is not only them: it includes the time the companion waits to be sure they have finished.</p>
+<p>This describes phone calls. It is not a medical opinion and it is not advice. Anything that looks like a code, an account or a card number is removed before a call is stored, and only the fact that one came up is kept.</p>
+<p>Who may see this: Sylvia (the regular summary, and emergencies). Peggy decides that, and can change it.</p>
+<p>Written 18 September 2026, 18.23 from calls stored on this machine. Nothing was sent anywhere.</p>
+</footer></main></body></html>
