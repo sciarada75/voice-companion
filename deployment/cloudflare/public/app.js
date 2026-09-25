@@ -4,6 +4,57 @@ const $ = (id) => document.getElementById(id)
 // ignore the rate an AudioContext asks for.
 const WIRE_RATE = 24_000
 const AGENT = window.AGENT
+
+// THE PAGE KEY LIVES IN THE BROWSER, NOT IN THE ADDRESS BAR.
+//
+// Online the backend wants ?k=<PAGE_KEY> on /token and /latency. It used to be
+// read straight off location.search, which meant the key had to be in the
+// address on every single visit. Two things went wrong with that, both real:
+//
+//   1. 24/09, twice in one afternoon: opening the page from a bookmark, from
+//      history, or by typing the domain gives you the bare URL, Chrome drops
+//      the query, /token answers 401 and the site looks dead. The message from
+//      6.23 tells you the key is missing, which is right, and you still have to
+//      go and find the address again.
+//   2. The key was ON CAMERA. The pitch video films this page, and a password
+//      legible in the address bar of a video going on the public internet is a
+//      published secret.
+//
+// So: if the address carries the key, keep it and take it OUT of the address
+// bar. From then on this browser knows it, and the bare domain works.
+//
+// This does NOT widen the gate. Someone who has never been given the key still
+// gets 401 and still cannot spend the credits — see HANDOVER §5, the 20/09
+// decision to put the public address in the submission. It only stops the
+// person who HAS the key being locked out by their own address bar.
+//
+// localStorage, not sessionStorage, on purpose: sessionStorage is per tab, and
+// a new tab on the bare domain is exactly the failure this exists to stop.
+// Locally there is no key and no gate: nothing is found, nothing is stored,
+// KEY is the empty string and every fetch below is the plain path it always was.
+const KEY = (() => {
+  const STORE = 'closer.pagekey'
+  const fromAddress = () => new URLSearchParams(location.search).get('k') || ''
+  let k = ''
+  try {
+    k = fromAddress()
+    if (k) {
+      localStorage.setItem(STORE, k)
+      // Out of the address bar, without reloading. Any other query parameter is
+      // left alone: this removes the secret, not the address.
+      const url = new URL(location.href)
+      url.searchParams.delete('k')
+      history.replaceState(null, '', url.pathname + url.search + url.hash)
+    } else {
+      k = localStorage.getItem(STORE) || ''
+    }
+  } catch {
+    // A private window, or site data blocked, throws on both storage calls.
+    // Falling back to the address is the old behaviour, which still works.
+    k = fromAddress()
+  }
+  return k ? '?k=' + encodeURIComponent(k) : ''
+})()
 // LOCAL CHANGE. How much audio is set aside before playback starts (see the
 // comment inside PLAYBACK_WORKLET). It lives here and not in there because it
 // is also one part of the delay the person hears, and the measurement below
@@ -318,18 +369,26 @@ async function start() {
     micRequested.catch(() => {})
 
     // The API key never reaches the page; this token expires in 60 seconds.
-    const tokenRequest = fetch('/token' + location.search)
+    const tokenRequest = fetch('/token' + KEY)
     // --- end of the block that has to stay synchronous ---
 
     await audioReady
     const res = await tokenRequest
-    // A 401 is NOT a broken key, it is a missing one: online the page needs
-    // ?k=<PAGE_KEY> in the address and without it /token refuses, by design.
-    // The old message here said "check the API key", which sent you looking at
-    // the account and at Cloudflare while the address bar was the problem.
-    // 22/09: exactly that, and the site looked dead when it was working.
+    // A 401 is NOT a broken key, it is a missing one: /token refuses without
+    // ?k=<PAGE_KEY>, by design. The message here used to say "check the API
+    // key", which sent you looking at the account and at Cloudflare while the
+    // address bar was the problem (22/09, and the site looked dead when it was
+    // working).
+    //
+    // Since KEY above remembers the key, a 401 now means this browser has NEVER
+    // been given it — so the fix is to open the full link once, not to keep the
+    // key in the address forever. Said in that order, because the second half
+    // is the part that was missing on 24/09.
     if (res.status === 401) {
-      throw new Error('this address is missing its key: open the link ending in ?k=...')
+      throw new Error(
+        'this browser has not been given the key yet: open the full link ending in ?k=... once, ' +
+          'and it will be remembered',
+      )
     }
     if (!res.ok) throw new Error('could not mint a token, check the API key')
     const { token } = await res.json()
@@ -602,7 +661,7 @@ function measureLatency() {
   // audio.
   // Only the timings go: not one word of what they said to each other.
   try {
-    fetch('/latency' + location.search, {
+    fetch('/latency' + KEY, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ turn, model, voice, cushion, total }),

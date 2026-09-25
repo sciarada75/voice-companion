@@ -32,15 +32,46 @@ const OUT = join(ROOT, 'deployment/cloudflare/public');
 const PORT = 3999;
 
 // --- the patches -------------------------------------------------------------
-const PATCHES = [
+// EMPTY SINCE 24/09, and that is a fix, not a removal.
+//
+// There used to be one patch here, rewriting fetch('/token') into
+// fetch('/token' + location.search), because online /token wants ?k=<PAGE_KEY>
+// and locally it wants nothing. server.mjs now works that out for itself: the
+// KEY constant at the top of clientApp reads the key from the address ONCE,
+// remembers it, and is the empty string when there is no key — which is exactly
+// what localhost needs. One behaviour in one place, so there is no longer a
+// version of the page that only exists after a build step.
+//
+// Do not put the patch back. If online minting breaks, the thing to look at is
+// KEY in server.mjs, and REQUIRED below is what fails the build if it is gone.
+const PATCHES = [];
+
+// --- what the built page must contain ------------------------------------------
+// A patch that fails to apply stops the build (see the throw below). Deleting
+// the patch removed that protection, so this replaces it: the same guarantee,
+// stated as a fact about the output rather than as an edit to it.
+const REQUIRED = [
   {
     file: 'app.js',
-    find: "fetch('/token')",
-    put: "fetch('/token' + location.search)",
+    text: "fetch('/token' + KEY)",
     why:
-      'Online /token wants the password. It is in the address of the page ' +
-      '(?k=...), so we pass it on to the token request. Locally the query is ' +
-      'empty and nothing changes.',
+      'Online /token answers 401 without ?k=<PAGE_KEY>. Without this the agent ' +
+      'stays mute on the public address and every backend check still passes.',
+  },
+  {
+    file: 'app.js',
+    text: 'localStorage.setItem(STORE, k)',
+    why:
+      'The key is remembered so it can be taken out of the address bar. Without ' +
+      'it the address must carry ?k=... on every visit — which locked Claudia ' +
+      'out twice on 24/09 and put the password on camera in the pitch video.',
+  },
+  {
+    file: 'app.js',
+    text: "url.searchParams.delete('k')",
+    why:
+      'This is what clears the key from the address bar. Without it the page ' +
+      'still works and the secret is legible in every frame that films it.',
   },
 ];
 
@@ -153,6 +184,19 @@ try {
     }
     file[patch.file] = before.split(patch.find).join(patch.put);
   }
+
+  for (const need of REQUIRED) {
+    if (!file[need.file].includes(need.text)) {
+      throw new Error(
+        `MISSING FROM ${need.file}: ${need.text}\n` +
+        `  it has to be there for: ${need.why}\n` +
+        `  server.mjs has changed. Put it back, or update this check on purpose —\n` +
+        `  do not delete it: this is the only thing standing between a rename and\n` +
+        `  a deploy that passes every test and is dead on the public address.`,
+      );
+    }
+  }
+  console.log(`  ${REQUIRED.length} required strings present in the built page: ok`);
 
   // THE PAGE IS CACHED FOR FOUR HOURS AND ITS NAME NEVER CHANGES.
   //

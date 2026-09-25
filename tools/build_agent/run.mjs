@@ -198,7 +198,11 @@ const DIARY = hasNotebook
   // 22/09, first spoken test: it recorded the morning tablets and said only
   // "I've got that down for you" — which she cannot check. Naming the thing is
   // the entire point of reading it back, so the rule now says the words.
-  ? 'When they tell you a number or a habit, such as a medicine taken, a reading or a walk, record it with your diary tool, then say what you put down, naming the thing and the number: "that is your morning tablets, taken." Saying only that you have it down is not reading it back, because they cannot catch a mistake in it. When they ask what is in their diary, read it with the tool and tell them exactly, with the time. If nothing is there, say so. Never guess, and never use a value from another day.'
+  // 24/09: the two tools this paragraph NAMES fired all day; the one it did not
+  // name fired zero times in ten conversations, however its own description was
+  // worded. A tool description says what a tool is for. The prompt is where the
+  // agent is told to reach for it. Both, or neither works.
+  ? 'When they tell you a number or a habit, such as a medicine taken, a reading or a walk, record it with your diary tool, then say what you put down, naming the thing and the number: "that is your morning tablets, taken." Saying only that you have it down is not reading it back, because they cannot catch a mistake in it. When they ask what is in their diary, read it with the tool and tell them exactly, with the time. If nothing is there, say so. Never guess, and never use a value from another day. When they mention something still ahead of them, such as a dinner, a visit or an appointment, write it down with your note tool the moment they say it, and then go on talking about it as anyone would. Unlike the diary, do not tell them you have noted it and do not promise them anything about it: a medicine is read back so they can catch a mistake, but their evening out is just something you will be glad to hear about next time.'
   : 'YOU HAVE NO DIARY IN THIS VERSION, AND NOTHING THEY SAY IS BEING SAVED. Never say that you have noted, recorded, written down or will remember anything, and never offer to. If they tell you something worth keeping, such as a medicine, say plainly and without fuss that you cannot write it down yet, and that it is coming. Saying you recorded a medicine when you did not is the worst thing you can do in this conversation.';
 
 // The "never mention" list comes from setup.json, written by the setup module,
@@ -351,12 +355,32 @@ if (hasNotebook) {
       // at the start" and was never used once, because a model acts on a moment
       // it can feel and ignores a position in time (§6.15). "The moment it
       // comes up" is a moment.
-      // The first spoken test, 22/09, wrote "her friend used to work at a shop
-      // in Glasgow" — a thing it had just LEARNED, while the dinner with that
-      // friend next week, the thing that had not happened yet, went unnoted.
-      // A model reads "worth returning to" as "worth knowing". The test has to
-      // be about time, not about interest.
-      description: t.note ?? 'Note the one thing still open when you leave — something that has not happened yet, or has not finished. A plan for the coming days, news they are waiting on, a worry with no answer yet, a story they began and did not end. Use it the moment it comes up, not at the end. A fact you simply learned about their life is NOT this, however interesting: if you could not ask "how did it go?" about it next time, do not use this tool.',
+      //
+      // 22/09, first spoken test: it wrote "her friend used to work at a shop
+      // in Glasgow" — a thing it had just LEARNED — while the dinner with that
+      // same friend, the thing that had not happened yet, went unnoted. A model
+      // reads "worth returning to" as "worth knowing", so the test was made to
+      // be about time rather than interest, by ADDING A PROHIBITION.
+      //
+      // 24/09: THE PROHIBITION KILLED THE FALSE POSITIVE AND NEVER MADE THE
+      // TRUE ONE. Nine conversations since, including "we plan to have dinner
+      // together on Saturday evening" and "we are going out for dinner to
+      // Marco's" — the same dinner, twice, with a day and a place on it. The
+      // tool fired ZERO times. `diary_record` fired three times the same day,
+      // so the model calls tools perfectly well; it was this description.
+      // Four fifths of it was veto, and against a veto the safe move is silence.
+      // So: the trigger LEADS, it is concrete enough to feel ("a plan with a
+      // day attached"), it says once in the positive that a plan IS this tool,
+      // and the exclusion is the last line rather than the argument.
+      // A tool description that only says when NOT to fire will not fire.
+      //
+      // 24/09, SECOND ATTEMPT, and the description was still not the fault:
+      // rewriting it changed nothing, because it opened "when you leave" — a
+      // POSITION IN TIME, the exact thing the diary_status note above says a
+      // model cannot act on. It now opens like diary_record, on the moment
+      // they say it. And the real fix is in {{DIARY}} in the prompt, which
+      // names the other two tools and never named this one.
+      description: t.note ?? 'Write down something they have just mentioned that is still ahead of them — a dinner, a visit, an appointment, a trip — or news they are waiting on, a worry with no answer yet, or a story they began and did not end. Use it the moment they say it, at any point in the conversation, even mid-subject. The test is whether you could ask them "how did it go?" about it next time. A fact about their past is not this. One thing only: the one most worth returning to.',
       parameters: {
         type: 'object',
         properties: {
