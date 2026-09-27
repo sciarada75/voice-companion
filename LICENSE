@@ -19,18 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-Third-party code
-----------------
-
-This project began as a fork of AssemblyAI's JavaScript voice agent starter,
-https://github.com/AssemblyAI/voice-agent-starter-js, published by AssemblyAI
-for builders on their Voice Agent API. Files derived from it are marked in
-`AGENTS.md`, and local changes inside the vendored browser client carry a
-`MODIFICA LOCALE` comment.
-
-Checked 26/09/2026: that repository ships no licence file of its own, so the
-MIT grant above covers this project's code and not the upstream portions,
-which remain AssemblyAI's.

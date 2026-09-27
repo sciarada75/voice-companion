@@ -1,0 +1,17 @@
+Third-party code
+================
+
+Closer began as a fork of AssemblyAI's JavaScript voice agent starter,
+https://github.com/AssemblyAI/voice-agent-starter-js, published by AssemblyAI
+for builders on their Voice Agent API. The files derived from it are named in
+AGENTS.md, and local changes inside the vendored browser client carry a
+MODIFICA LOCALE comment.
+
+Checked 26/09/2026: that repository ships no licence file of its own, so the MIT
+grant in LICENSE covers this project's code and not the upstream portions, which
+remain AssemblyAI's.
+
+This note lives here rather than at the end of LICENSE because GitHub only
+detects a licence when LICENSE holds the licence text and nothing else: with the
+note appended, the repository reported NOASSERTION instead of MIT, and the point
+of the file is the signal it sends to someone checking.
