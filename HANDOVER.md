@@ -64,14 +64,18 @@ wishes are added to the list, not done on the spot.
 | **A** | **Conversation** (stage 5) | **Done bar one thing.** Eleven spoken tests, §0.1. What is still wrong: §0.2. |
 | **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **B1 DONE. B2 NOT PROVEN — reopened 24/09**, and the earlier "done" was one lucky call: `note_for_next_time` has fired **once in twelve conversations**, and the once it fired it wrote the wrong kind of note. Anything that depends on the loose end — including the pitch video's claim that *"each conversation leaves one loose end for the next"* — is unsupported until a voice test says otherwise. See the entry in §0.1. Evidence lives in `sessions/peggy/*.json`, where each turn carries `tool_calls`. **Original 22/09 note follows, kept because the reading half genuinely works:** Writing: `diary_record` logged the tablets, `note_for_next_time` wrote a loose end. Reading: the next conversation opened with *"I remember us talking about your friend who used to work in a shop in Glasgow. I don't have the rest of that conversation"* — the one note, in its own words, no mention of having written it down, honest about the rest. What the two tests exposed about the CONVERSATION is in §0.1; the defect they exposed about publishing is §6.18. |
 | **C** | **Family view** (stages 7-9) | **Built, past what the plan asked** (§3). Missing: **delivery**. Nothing reaches anybody on its own; someone opens the page. The channel is undecided and must cost €0. |
-| **D** | **Submission** | Page, repo, README, prototype URL and **the film** done (§10). **Open: deck PDF, cover image, the three descriptions.** |
+| **D** | **Submission** | Page, repo, README, prototype URL, licence, **the film and the cover** done. **Open: the deck as a PDF, the three descriptions, the technology & category tags.** The operational list is `docs/submission/COMPLIANCE.md` — every requirement, what satisfies it, and the check that proves it. **Read that, not this table.** |
 | — | After 30/09 | stage 11 (learning), more languages, iPhone latency, **and who makes the first move** (§9) |
 
-**The safe deadline is the evening of 29/09** (the deadline's own time zone is
-unknown, §1). B is built and half proven by voice. **Everything still open is
-the submission, and it is now three things:** the deck as a PDF, the 16:9
-cover image, and the three descriptions (§1, §10). The film is done —
-`docs/submission/CLOSER.mp4`, 4:59.11.
+**The deadline is 30/09 at 17:00 CEST** — published, on lablab's own schedule,
+and it is Claudia's own clock (§1). B is built and half proven by voice.
+**Everything still open is
+the submission, and it is now three things:** the deck as a PDF, the three
+descriptions, and the technology & category tags. The film is done —
+`docs/submission/CLOSER.mp4`, 4:58.88 — and so is the cover,
+`docs/submission/cover.png`. **Work the list in `docs/submission/COMPLIANCE.md`**,
+which carries the evidence for each line and the four process steps only Claudia
+can do.
 
 ### 0.1 Phase A — the rules eleven spoken tests produced
 
@@ -300,12 +304,31 @@ lablab guide, and `lablab.ai/delivering-your-hackathon-solution`.
 | Pitch deck | PDF |
 | Code | **public GitHub repository, mandatory** |
 | **Working prototype** | **reachable by URL** |
-| Title / short / long description | 50 chars / 255 chars / 100+ words |
+| Title / short / long description | **no published title limit** / 255 chars / 100+ words |
 | Cover image | PNG or JPG, 16:9 |
+| **Technology & category tags** | a required field, missed until 26/09 |
 
-**Solo is allowed**: *"All members of each team will need to register
-independently via lablab.ai. This applies for solo participants as well"* — one
-person, registered, in a team of one.
+**Every line above was re-read from the source on 26/09 and the audit lives in
+`docs/submission/COMPLIANCE.md`** — each requirement, what satisfies it, and the
+check that proves it. Read that file, not this table, before submitting. Four of
+our own facts were wrong: the deadline is **30/09 17:00 CEST** and was never
+unknown; the prize is **five** winners at $1k + $1k each; the 50-character title
+limit appears on no public page; and the repo had **no licence** while the prize
+terms ask for MIT-compliance (fixed 26/09, `LICENSE` + `package.json`). **The
+pages are JavaScript-rendered: plain fetching returns an empty page and reads as
+"the rules do not say that."** Read them through a browser.
+
+**Solo is allowed, and a team of one is mandatory**: *"In order to participate
+you need to be a member of a team on lablab.ai. This applies for solo
+participants as well"*, and the submit button lives on the team's dashboard — no
+team, no dashboard. The team exists since 26/09, Claudia its only member.
+**Nothing requires a Discord channel and nothing requires two people.** The team
+dashboard says *"You need at least 2 members with connected Discord to create
+channels"* — a precondition for a **feature** a solo team simply does not get,
+and no team channel appears in the submission checklist. **That sentence is in
+the logged-in product and in none of the published pages**, so a session that
+searches the documentation finds nothing and wrongly concludes she misread: ask
+for the screenshot instead. Discord *registration* is required, separately.
 
 **The public address goes in the submission. Decided by Claudia 20/09**,
 reversing the earlier "live endpoint no": the rules require a prototype
@@ -314,8 +337,8 @@ to fix"*. **Nothing to build for it either** — the deployed page already takes
 `?k=<PAGE_KEY>` (§4), so the submitted link carries the key and a passer-by
 who finds the bare domain gets nothing. No spend caps, no new gates.
 
-**Still unknown, and worth one question on their Discord:** whether the repo
-must have been created inside the build window, and the deadline's time zone.
+**Still unknown:** whether the repo must have been created inside the build
+window. The deadline's time zone is settled — 17:00 CEST on 30/09.
 
 **The repo is public since 20/09:** `github.com/sciarada75/voice-companion`,
 pushed over SSH with the **full history** (first commit 8/09, before the
@@ -1156,11 +1179,28 @@ No fixed date except the submission, **30 September**.
       **It cost two rewrites to learn that 5 minutes is about 570 spoken words**,
       not the 800 that a full draft naturally reaches.
 - [x] Public GitHub repo, secret-check done (20/09).
-- [x] **THE FILM IS DONE — 25/09.** `docs/submission/CLOSER.mp4`, **4:59.11,
+- [x] **THE FILM IS DONE — 25/09, re-rendered 27/09 at 4:58.88.** Section 3 said
+      *"Not a generic LLM"* and now says *"Not a generic chatbot"*: Claudia asked
+      for *AI*, which is worse, because Closer **is** an AI and the sentence then
+      argues with itself — *chatbot* names the thing being refused. Changing one
+      line is `video/src/lines.json` -> `node narrate.mjs s3a` -> `render-all.sh`,
+      and the runtime falls out of the frame count, so **check it after every
+      render**. `video/node_modules` is not in the repo and the render fails
+      until `npm install` runs in `video/` (AGENTS.md).
+      `docs/submission/CLOSER.mp4`, **4:58.88,
       79 MB**, against a hard 5:00 and 300 MB. Its source is `video/` and is
       tracked; `video/public/` (footage, wav) is not. `video/render-all.sh`
       re-renders that same file; pass a section name to look at one on its own.
-- [ ] **Deck (PDF), cover image (16:9), title / short / long description.**
+- [ ] **Deck (PDF), cover image (16:9), title / short / long description, and the
+      technology & category tags.** Tracked with their evidence in
+      `docs/submission/COMPLIANCE.md`, which also holds the **four process steps
+      only Claudia can do** (enrol, complete the profile, create the team of one,
+      register on Discord) and the screenshot of the submission form that is the
+      last unseen thing. **The deck's thin quarter is Business Value**: lablab's
+      criteria ask for TAM/SAM, revenue streams and a competitor slide with the
+      USP, and `deployment-proposal.md` has none of the three. That gap scores
+      against us; the missing accounts and hosted family page do not, because
+      product completeness is not one of the four criteria.
 - [x] **The video is built in code, not in an editor** (22/09). Claudia asked for
       CapCut; a GUI editor cannot be driven by an agent, so the video would have
       gone back to being her job. It is **Remotion** instead — the video is a web

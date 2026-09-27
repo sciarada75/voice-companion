@@ -103,7 +103,10 @@ sessions/  state/        NOT in git: real recordings, transcripts, keys, generat
   enter the prompt, on purpose.
 - **The film's source lives in `video/`, in the repo.** It spent three days in a
   `/private/tmp` session scratchpad, one cleanup away from a submission that
-  could not be re-rendered.
+  could not be re-rendered. **`video/node_modules` is not in the repo**, so
+  `render-all.sh` fails with `npm error could not determine executable to run`
+  until `npm install` is run inside `video/`. Back the film up before
+  re-rendering: the script writes straight over `docs/submission/CLOSER.mp4`.
 
 ## Where the submission stands
 

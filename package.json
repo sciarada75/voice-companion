@@ -1,6 +1,7 @@
 {
-  "name": "voice-agent-starter",
+  "name": "closer",
   "version": "1.0.0",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "description": "Voice agents on the AssemblyAI Voice Agent API: one JSON file, a browser tab or a phone number",

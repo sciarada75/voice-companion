@@ -136,13 +136,13 @@ everybody.**
 
 > **SCREEN.** Plain type: **So: a companion.**
 
-**So, we need a companion: Closer. Not a generic LLM. Something with a job.**
+**So, we need a companion: Closer. Not a generic chatbot. Something with a job.**
 
 > Rewritten 25/09, Claudia's words. It used to be *"So: a companion. Not a
 > novelty. Something with a job."* Two things change: **the product is named
 > here**, at 1:09, rather than waiting for the end card — and the thing it is
 > being distinguished from is named too. "Not a novelty" left the comparison to
-> the viewer; *not a generic LLM* is the comparison. The tagline is still never
+> the viewer; *not a generic chatbot* is the comparison. The tagline is still never
 > spoken; only the name is.
 
 > **SCREEN.** Hold on the words as they are spoken. This is the centre of the
