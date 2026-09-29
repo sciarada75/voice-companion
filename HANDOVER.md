@@ -1135,6 +1135,19 @@ the map is only as good as the seams you thought of.**
 ### It is a conversation, never a "call" — 20/09/2026
 Claudia: *"it is a conversation, not a call, there is no phone involved."*
 Telephony is out (§8), so the word imports a device the product does not have.
+**Regressed into the public material, found 29/09.** The README, the deck's
+*"What exists today — not a mock-up"* slide and `deployment-proposal.md` all said
+the same agent *answers an ordinary phone line*, and a session repeated it to
+Claudia as "already built". Nothing is connected: `deployment/telephony/` is the
+starter's generic Twilio README and `.env` has no Twilio key. Corrected to what
+is true - **built for a phone line** (the tools are `http` so a call can use them)
+**and not connected in the prototype**. The deck now also says which parts are
+live (conversation, diary) and which run locally (setup form, family page).
+**Still in the film, section 8:** *"so the same companion answers in a browser or
+on a phone line"* (`video/src/lines.json`). Left for Claudia to decide: it reads
+as what the architecture allows, but a re-render has 1.1 s of margin under 5:00.
+**Check: before any public claim, find the thing it claims in the running
+prototype, not in a description of it.**
 Renamed across the code, the page, the family report, the model prompts and
 this file. **Kept, because they are genuinely telephones:** `worth_a_call` in
 the report (what would be worth the family *ringing* their mother about), the

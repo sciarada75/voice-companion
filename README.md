@@ -27,8 +27,11 @@ against that person's own usual week.
 
 **[lablab.claudiaonclaude.com](https://lablab.claudiaonclaude.com)** — the
 address needs the access key that goes with it; the link in the hackathon
-submission carries it. The same published agent also answers an ordinary phone
-line, so nothing about the conversation depends on owning a smartphone.
+submission carries it. The page explains who you are playing and what to try.
+
+It answers in the browser. The agent was built to be attached to a phone number
+as well - its tools run on the server, never in the browser, so a call can use
+them - but **no phone line is connected in this prototype**.
 
 ## What happens, end to end
 

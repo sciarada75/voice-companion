@@ -16,9 +16,10 @@ no threshold as clinical.
 
 ## Slide — What exists today
 
-A person talks to Closer in a browser or on an ordinary phone line. The same
-published agent answers both, so nothing about the conversation depends on the
-person owning a device, a smartphone or an app.
+A person talks to Closer in a browser. The same agent is built for a phone line:
+its tools run on our server, never in the browser, so it can be attached to a
+phone number without a rebuild - and the phone is what reaches the two thirds of
+over-75s who are not online. **In the prototype the phone line is not connected.**
 
 Around that conversation: a setup form that configures a companion for a
 specific person in about twenty minutes, a diary the person can correct out
