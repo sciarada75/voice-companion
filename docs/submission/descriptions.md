@@ -10,13 +10,18 @@ description of it** - the phone line failed that test in three other documents.
 
 ## Title
 
-Closer — a voice companion for people living alone
+Closer — a voice companion across the relative distance
 
-*If the form turns out to cap the title at 50 characters:* **Closer — voice company for people living alone**
+*If the form stops at 50 characters:* **Closer — a companion across the relative distance**
+
+The joke, for the record: *relative distance* is the ordinary phrase for how far
+apart two things are, and a *relative* is a family member - so it is also the
+distance between a person and their family. *Across*, not *for*: in English
+"for the distance" sounds unfinished, and "across" says what the product does.
 
 ## Short description (≤ 255 characters)
 
-A voice companion configured to one older person from what their family wrote. It asks about the past they know best, writes down what they said in their own words, and gives the family a page to open, never an alert. Built on AssemblyAI.
+A voice companion configured to one older person from what their family wrote. It asks about the past they know best, writes down what they said in their own words, and gives the family a page to open. Built on AssemblyAI.
 
 ## Long description (≥ 100 words)
 

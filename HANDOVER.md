@@ -72,7 +72,7 @@ and it is Claudia's own clock (§1). B is built and half proven by voice.
 **Everything still open is
 the submission, and it is now three things:** the deck as a PDF, the three
 descriptions, and the technology & category tags. The film is done —
-`docs/submission/CLOSER.mp4`, 4:58.88 — and so is the cover,
+`docs/submission/CLOSER.mp4`, 4:56.19 (29/09) — and so is the cover,
 `docs/submission/cover.png`. **Work the list in `docs/submission/COMPLIANCE.md`**,
 which carries the evidence for each line and the four process steps only Claudia
 can do.
@@ -1143,9 +1143,10 @@ starter's generic Twilio README and `.env` has no Twilio key. Corrected to what
 is true - **built for a phone line** (the tools are `http` so a call can use them)
 **and not connected in the prototype**. The deck now also says which parts are
 live (conversation, diary) and which run locally (setup form, family page).
-**Still in the film, section 8:** *"so the same companion answers in a browser or
-on a phone line"* (`video/src/lines.json`). Left for Claudia to decide: it reads
-as what the architecture allows, but a re-render has 1.1 s of margin under 5:00.
+**The film said it too, section 8** - *"so the same companion answers in a
+browser or on a phone line"*. Claudia, 29/09: *"it can be a web browser or an app
+if we wish."* Now *"can answer in a browser, or in an app"* - capability, not a
+claim of what is connected.
 **Check: before any public claim, find the thing it claims in the running
 prototype, not in a description of it.**
 Renamed across the code, the page, the family report, the model prompts and
@@ -1266,7 +1267,7 @@ No fixed date except the submission, **30 September**.
       **It cost two rewrites to learn that 5 minutes is about 570 spoken words**,
       not the 800 that a full draft naturally reaches.
 - [x] Public GitHub repo, secret-check done (20/09).
-- [x] **THE FILM IS DONE — 25/09, re-rendered 27/09 at 4:58.88.** Section 3 said
+- [x] **THE FILM IS DONE — 25/09, re-rendered 27/09, and again 29/09 at 4:56.19 / 83 MB** after three false claims in sections 7-8 (see the §5.4 entry and *It is a conversation, never a call*). Section 3 said
       *"Not a generic LLM"* and now says *"Not a generic chatbot"*: Claudia asked
       for *AI*, which is worse, because Closer **is** an AI and the sentence then
       argues with itself — *chatbot* names the thing being refused. Changing one
@@ -1385,6 +1386,21 @@ No fixed date except the submission, **30 September**.
       the companion's choice is female, the viewer get confused."* That section
       says **the user** and **the companion** now; the rest of the film still
       says she, because there the companion is not on screen.
+      **Second occurrence, 29/09, section 8:** *"And if the conversation sounds
+      unusual, alerts the family."* Four days after the first fix, in every cut
+      since. **The banned-word check could not catch it: it uses none of the
+      banned words.** It still makes the exact claim §5.4 exists to refuse - it
+      judges the person (*sounds unusual*) and it contradicts a non-negotiable
+      (*nothing reaches anybody on its own*) - and the deck said the opposite.
+      Now *"And it keeps a note of changes for the family"*, the sanctioned
+      phrase. **Check the claim, not the vocabulary: does it judge, and does it
+      send? If either, it is out.** The same read of every narrated line also
+      caught section 7: *"refuses to be told or track a PIN, a personal detail,
+      or financial data"* - a companion is told personal details all day; the
+      doctrine's rule is PINs, passwords, card and bank numbers, safe and alarm
+      codes. Now *"a PIN, a password or a card number"*. **Kept, because true:**
+      *"sad words keep recurring"* and *"confused about a daughter's name"* are the
+      report's `mood` and `self_awareness` indicators, which it really computes.
 
 **The narrator: Jamie (Premium), macOS built-in, €0.** Claudia heard the base
 `say` voices and rejected them outright — correctly, they are pre-neural and

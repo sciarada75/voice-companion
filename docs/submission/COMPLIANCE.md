@@ -56,7 +56,7 @@ returns an empty page, so they were read through a real browser):
 
 | # | Required | State | Evidence |
 |---|---|---|---|
-| 1 | **Video presentation**, MP4, max 5 minutes | done | `docs/submission/CLOSER.mp4`, **4:58.88**, 79 MB, `ffprobe` 27/09. Re-renders from `video/` via `video/render-all.sh` |
+| 1 | **Video presentation**, MP4, max 5 minutes | done | `docs/submission/CLOSER.mp4`, **4:56.19**, 83 MB, `ffprobe` 29/09 after three narration corrections in sections 7-8 (a phone line not connected, an alert that does not exist, a refusal broader than the rule). Backup of the 27/09 cut in `state/`. Re-renders from `video/` via `video/render-all.sh` |
 | 2 | **Slide presentation**, PDF | done 27/09 | `docs/submission/CLOSER-deck.pdf`, **16 pages, 1440x810 pt (16:9), 3.6 MB**. Built from `deck/index.html` via `deck/render.sh`. The design system is the film's own - which the film lifts from the product's report stylesheet - so deck, film, cover and family page read as one thing |
 | 3 | **Cover image**, PNG or JPG, 16:9 recommended | done 27/09 | `docs/submission/cover.png`, **1920x1080** PNG. Generated photograph (`cover-source.png`), the title set over it in the film's own EndCard typography so cover and film read as one thing |
 | 4 | **Project title** | ready 29/09 | `descriptions.md`: *Closer — a voice companion for people living alone*, **50 characters counted**, with a 46-character fallback if the form caps at 50 exclusive. No limit is stated on any public page |

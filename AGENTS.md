@@ -111,12 +111,13 @@ sessions/  state/        NOT in git: real recordings, transcripts, keys, generat
 ## Where the submission stands
 
 Built for the **AssemblyAI Voice Agent Hackathon** on lablab.ai, **due 30
-September 2026**; the safe deadline is the evening of the 29th, because the
-deadline's own time zone was never confirmed. Done: the public repo, the
-prototype at `lablab.claudiaonclaude.com` (the submitted link must carry `?k=`),
-and the film — `docs/submission/CLOSER.mp4`, 4:59.11 against a hard 5:00 and 79
-MB against 300. Open: the deck as a PDF, a 16:9 cover image, and the three
-descriptions. Requirements as they were read: `HANDOVER.md` §1. State: §10.
+September 2026, 17:00 CEST**. Done: the public repo, the prototype at
+`lablab.claudiaonclaude.com` (the submitted link must carry `?k=`; memory cleared
+for judges on 29/09 - **do not press the button before submitting**), the film
+`docs/submission/CLOSER.mp4` (4:56.19 against a hard 5:00, 83 MB against 300,
+not in git), the deck `CLOSER-deck.pdf`, the cover, and the texts and tags in
+`docs/submission/descriptions.md`. Open: only the form, which is Claudia's.
+Requirements as read: `HANDOVER.md` §1 and `docs/submission/COMPLIANCE.md`.
 
 ---
 

@@ -26,10 +26,10 @@
   "s7b": "It is not a medical device and does not audition for the part. It notices that someone who used to have a walk has not in the last couple of days.",
   "s7b2": "That sad words keep recurring. That someone was confused about a daughter's name, or is skipping routines. And tells the people who love her.",
   "s7c": "It is built for a person, not a condition. There is no dementia mode. There is a list of voices to choose from, and a name the user gives the companion.",
-  "s7d": "It also refuses to be told or track a PIN, a personal detail, or financial data. Itself included.",
+  "s7d": "It also refuses to be told a PIN, a password or a card number. Itself included.",
   "s8a": "Every companion app promises the same things. Configurable. Remembers routines. So does this one. That is the entry fee, not the product.",
-  "s8b": "The difference is what it does with a silence. Other companions wait to be asked. This one arrives with something to say. And if the conversation sounds unusual, alerts the family.",
-  "s8c": "Built on the AssemblyAI Voice Agent API, so the same companion answers in a browser or on a phone line.",
+  "s8b": "The difference is what it does with a silence. Other companions wait to be asked. This one arrives with something to say. And it keeps a note of changes for the family.",
+  "s8c": "Built on the AssemblyAI Voice Agent API, so the same companion can answer in a browser, or in an app.",
   "s8d": "Built for them.",
   "s8e": "And for the people who love them."
 }

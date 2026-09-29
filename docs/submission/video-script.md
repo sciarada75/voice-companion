@@ -356,8 +356,7 @@ a list of voices to choose from, and a name the user gives the companion.**
 
 > **SCREEN.** Four lines, one under the other, arriving in turn. On nothing.
 
-**It also refuses to be told or track a PIN, a personal detail, or financial
-data. Itself included.**
+**It also refuses to be told a PIN, a password or a card number. Itself included.**
 
 ---
 
@@ -373,10 +372,9 @@ data. Itself included.**
 So does this one. That is the entry fee, not the product.**
 
 **The difference is what it does with a silence. Other companions wait to be
-asked. This one arrives with something to say. And if the conversation sounds unusual, alerts the family.**
+asked. This one arrives with something to say. And it keeps a note of changes for the family.**
 
-**Built on the AssemblyAI Voice Agent API, so the same companion answers in a
-browser or on a phone line.**
+**Built on the AssemblyAI Voice Agent API, so the same companion can answer in a browser, or in an app.**
 
 **Built for them. And for the people who love them.**
 
