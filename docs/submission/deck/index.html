@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Closer — pitch deck</title>
+<!--
+  SOURCE for docs/submission/CLOSER-deck.pdf. Render with ./render.sh; never
+  hand-edit the PDF.
+
+  The design system is NOT invented. It is the same one the film uses, which the
+  film in turn lifts from the product's own report stylesheet (tools/report):
+  ground #17150f, cream #f0ece5, the mint accent #79c9b1. Deck, film, cover image
+  and the family page therefore read as one thing.
+
+  Every line obeys §5.4 of HANDOVER.md: it never says detects, decline,
+  cognitive or risk, and presents no threshold as clinical.
+-->
+<style>
+  :root{
+    --ground:#17150f;
+    --cream:#f0ece5;
+    --dim:#cfc8bb;
+    --faint:#8a8275;
+    --line:#3a3630;
+    --soft:#201d16;
+    --fine:#79c9b1;
+    --notice:#dcae5f;
+    --critical:#e98a80;
+    --serif: ui-serif, Georgia, "Times New Roman", serif;
+    --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  /* 1920x1080 at 96dpi = 20in x 11.25in. Chrome prints one slide per page. */
+  @page{size:20in 11.25in; margin:0}
+
+  *{box-sizing:border-box; margin:0; padding:0}
+
+  html{background:#0c0b08}
+
+  body{
+    font-family:var(--serif);
+    color:var(--cream);
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  .slide{
+    position:relative;
+    width:1920px; height:1080px;
+    background:var(--ground);
+    padding:88px 120px 136px;
+    overflow:hidden;
+    page-break-after:always;
+    break-after:page;
+    display:flex; flex-direction:column;
+  }
+  .slide:last-child{page-break-after:auto; break-after:auto}
+
+  /* ---- shared type -------------------------------------------------------- */
+
+  .eyebrow{
+    font-size:23px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--fine); opacity:.85; font-weight:600;
+  }
+
+  h2{
+    font-size:66px; font-weight:400; line-height:1.1;
+    letter-spacing:-.005em; margin-top:20px;
+  }
+  h2 em{font-style:italic; color:var(--dim)}
+
+  .lead{
+    font-size:34px; line-height:1.46; color:var(--dim);
+    max-width:1420px; margin-top:26px;
+  }
+  .lead b{color:var(--cream); font-weight:600}
+
+  p, li, td, th{font-size:29px; line-height:1.46}
+
+  .body{margin-top:30px; max-width:1480px}
+  .body p + p{margin-top:24px}
+
+  .kicker{
+    margin-top:auto; padding-top:26px;
+    font-size:29px; line-height:1.38; color:var(--cream);
+    border-top:1px solid var(--line);
+  }
+  .kicker b{color:var(--fine); font-weight:600}
+
+  .src{
+    font-family:var(--mono); font-size:17px; letter-spacing:.02em;
+    color:var(--faint); line-height:1.6; margin-top:20px;
+  }
+
+  /* ---- furniture ---------------------------------------------------------- */
+
+  .foot{
+    position:absolute; left:128px; right:128px; bottom:44px;
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:var(--mono); font-size:18px; letter-spacing:.09em;
+    color:var(--faint); text-transform:uppercase;
+  }
+
+  /* ---- columns and cards -------------------------------------------------- */
+
+  .cols{display:flex; gap:38px; margin-top:36px}
+  .cols.tight{gap:30px}
+  .col{
+    flex:1; background:var(--soft); border:1px solid var(--line);
+    border-radius:16px; padding:30px 32px 34px;
+  }
+  .col h3{
+    font-size:22px; letter-spacing:.14em; text-transform:uppercase;
+    font-weight:600; color:var(--fine); margin-bottom:16px; min-height:2.4em;
+  }
+  .col p{font-size:26px; line-height:1.44; color:var(--dim)}
+  .col p + p{margin-top:15px}
+  .col b{color:var(--cream); font-weight:600}
+  .col .n{
+    display:block; font-size:54px; line-height:1.05; color:var(--cream);
+    margin-bottom:11px;
+  }
+
+  /* ---- tables ------------------------------------------------------------- */
+
+  table{border-collapse:collapse; width:100%; margin-top:32px}
+  th{
+    text-align:left; font-size:19px; letter-spacing:.13em; text-transform:uppercase;
+    color:var(--fine); font-weight:600; padding:0 26px 13px 0;
+    border-bottom:1px solid var(--line);
+  }
+  td{
+    padding:17px 26px 17px 0; vertical-align:top;
+    border-bottom:1px solid var(--line); color:var(--dim); font-size:27px;
+  }
+  td b, td strong{color:var(--cream); font-weight:600}
+  td.who{color:var(--cream); width:23%; font-weight:600}
+  tr:last-child td{border-bottom:none}
+
+  /* ---- lists -------------------------------------------------------------- */
+
+  ul{list-style:none; margin-top:28px}
+  li{
+    position:relative; padding-left:42px; margin-bottom:20px;
+    color:var(--dim); font-size:29px; line-height:1.42;
+  }
+  li::before{
+    content:''; position:absolute; left:0; top:.62em;
+    width:18px; height:2px; background:var(--fine);
+  }
+  li b{color:var(--cream); font-weight:600}
+
+  ol.steps{list-style:none; counter-reset:s; margin-top:30px}
+  ol.steps li{counter-increment:s; padding-left:72px; margin-bottom:24px}
+  ol.steps li::before{
+    content:counter(s); left:0; top:-.04em; width:auto; height:auto;
+    background:none; color:var(--fine); font-family:var(--mono); font-size:28px;
+  }
+
+  /* ---- cover and end ------------------------------------------------------ */
+
+  .cover{padding:0; justify-content:flex-end}
+  .cover img{
+    position:absolute; inset:0; width:1920px; height:1080px; object-fit:cover;
+  }
+  .cover .tag{
+    position:relative; margin:0 0 66px 120px;
+    font-family:var(--mono); font-size:22px; letter-spacing:.13em;
+    text-transform:uppercase; color:#b8b0a2;
+  }
+
+  .end{align-items:center; justify-content:center; text-align:center}
+  .end .word{font-size:150px; letter-spacing:.16em; padding-left:.16em}
+  .end .sub{font-size:48px; font-style:italic; color:var(--dim); margin-top:28px}
+  .end .rule{width:200px; height:1px; background:var(--fine); margin:54px auto 0; opacity:.8}
+  .end .urls{
+    font-family:var(--mono); font-size:27px; line-height:2; color:var(--faint);
+    margin-top:52px;
+  }
+  .end .sig{
+    position:absolute; bottom:56px; left:0; right:0;
+    font-family:var(--mono); font-size:19px; letter-spacing:.14em;
+    color:#5d564b; text-transform:uppercase;
+  }
+
+  .quiet{color:var(--faint)}
+  .mint{color:var(--fine)}
+  .amber{color:var(--notice)}
+</style>
+</head>
+<body>
+
+<!-- 1 ─────────────────────────────────────────────────────────── cover ───── -->
+<section id="s1" class="slide cover">
+  <img src="../cover.png" alt="">
+  <div class="tag">AssemblyAI Voice Agent Hackathon &middot; September 2026</div>
+</section>
+
+<!-- 2 ──────────────────────────────────────────────────── the problem ───── -->
+<section id="s2" class="slide">
+  <div class="eyebrow">The ordinary Tuesday</div>
+  <h2>Two point seven million people over seventy&#8209;five<br>in Italy live on their own.</h2>
+  <div class="lead">
+    One household in ten. <b>92.8% of them can count on a relative. 3.2% have nobody.</b>
+  </div>
+
+  <div class="body">
+    <p>Closer is not built for the 3.2%. It is built for the <b>92.8%</b> &mdash; whose family
+    wants to be there and is not. Work, full days, three hours of motorway.</p>
+  </div>
+
+  <div class="kicker">
+    What is missing is not love. It is the <b>ordinary daily contact</b>, where somebody
+    would simply have noticed.
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>02</span></div>
+</section>
+
+<!-- 3 ──────────────────────────────────────────────── what talking is for ───── -->
+<section id="s3" class="slide">
+  <div class="eyebrow">What medicine cannot reach</div>
+  <h2>We have got good at the body.<br>Nobody is treating the silence.</h2>
+
+  <div class="lead">
+    We thin blood, hold cholesterol down, replace a knee, give insulin on a schedule.
+    There is no equivalent for somebody who has not had a real conversation since
+    Thursday. And the answer is not an interview: <b>they are the expert on their own
+    past; Closer is the expert on what came after.</b>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h3>What today gives them</h3>
+      <p>No work, no travelling, reading can be hard, and the afternoon is a quiz show.
+      <b>Today gives them very little to say</b> &mdash; and it is the past they are
+      surest of.</p>
+    </div>
+    <div class="col">
+      <h3>What they still own</h3>
+      <p>Their past, and it is rich: a trade they were expert in, a town before it
+      changed, a team followed since the sixties, a dance floor.
+      <b>Nobody asks about any of it any more.</b></p>
+    </div>
+    <div class="col">
+      <h3>What Closer brings back</h3>
+      <p>It never tires of the sample room, and a 1960s switchboard is no trouble. It
+      knows the history around a life, and <b>can say how that trade changed after they
+      left</b>.</p>
+    </div>
+  </div>
+
+  <div class="kicker">
+    The profile carries a <b>window</b> &mdash; <b>1957&ndash;1998</b>, the years they are
+    the authority on &mdash; and the doctrine&rsquo;s third job is <em>news from their
+    world</em>. <b>Never test them.</b> Being old and being alone are a long silence, and
+    there is no medicine aimed at it.
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>03</span></div>
+</section>
+
+<!-- 3 ───────────────────────────────────────────────────────── why now ───── -->
+<section id="s4" class="slide">
+  <div class="eyebrow">Why now</div>
+  <h2>Public payers have started buying this.</h2>
+
+  <div class="cols">
+    <div class="col">
+      <h3>The buyers arrived</h3>
+      <p><span class="n">March 2026</span>Washington State covers an AI companion under
+      Medicaid long&#8209;term services &mdash; <b>the first time nationwide</b> one has been
+      fully reimbursed.</p>
+      <p>Six US states distribute one free. Korea has <b>~14,500</b> in homes, mostly
+      through local government. Italy&rsquo;s national telemedicine plan targets
+      <b>300,000</b> people by June 2026.</p>
+    </div>
+    <div class="col">
+      <h3>The users are arriving</h3>
+      <p><span class="n">18% &rarr; 30%</span>AI use among US adults over fifty, in a
+      single year.</p>
+      <p>But only <b>23%</b> of over&#8209;65s have ever used a chatbot, against 66% of
+      under&#8209;30s. Three quarters never have.</p>
+    </div>
+    <div class="col">
+      <h3>The barrier is the keyboard</h3>
+      <p><span class="n">2 in 3</span>Italians over seventy&#8209;five are not online at
+      all &mdash; 35.7%, rising about four points a year.</p>
+      <p>A chatbot needs an app, a login and typing. <b>A conversation needs none of the
+      three.</b></p>
+    </div>
+  </div>
+
+  <div class="kicker">
+    The category now has budget lines. Almost nobody is reaching the people who are
+    <b>not online</b> &mdash; and they are two thirds of them.
+  </div>
+
+  <div class="src">
+    ISTAT, Cittadini e ICT 2025 &middot; AARP Tech Trends 2026 &middot; Pew Research, Feb 2026
+    &middot; Washington DSHS / Intuition Robotics, Mar 2026 &middot; PNRR Missione 6
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>04</span></div>
+</section>
+
+<!-- 4 ──────────────────────────────────────────────── what exists today ───── -->
+<section id="s5" class="slide">
+  <div class="eyebrow">What exists today &mdash; not a mock&#8209;up</div>
+  <h2>A person talks to Closer in a browser,<br>or on an ordinary phone line.</h2>
+
+  <div class="lead">
+    The same published agent answers both, so nothing about the conversation depends on
+    the person owning a device, a smartphone, or an app. <b>Which one is a choice per
+    person:</b> the phone line reaches the two thirds who are not online &mdash; and a
+    browser or an operator&rsquo;s own device leaves that line free to ring.
+  </div>
+
+  <ul>
+    <li>A <b>setup form</b> that configures a companion for one specific person in about twenty minutes, filled in by someone who is not technical.</li>
+    <li>A <b>diary</b> the person can correct out loud &mdash; it is theirs, and they can ask it what is in it.</li>
+    <li>A <b>note</b> each conversation leaves for the next one.</li>
+    <li>A <b>page their family opens</b> with a key. Nothing is sent to anybody; somebody opens it.</li>
+  </ul>
+
+  <div class="src">
+    Prototype: lablab.claudiaonclaude.com<br>
+    Code: github.com/sciarada75/voice-companion &mdash; public, MIT
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>05</span></div>
+</section>
+
+<!-- 5 ────────────────────────────────────────────────────── the build ───── -->
+<section id="s6" class="slide">
+  <div class="eyebrow">How it is built</div>
+  <h2>One agent. Two ways in. Three things<br>kept deliberately apart.</h2>
+
+  <div class="cols tight">
+    <div class="col">
+      <h3>The person</h3>
+      <p>A profile generated from what the family typed in free text &mdash; who they are,
+      what they will talk about, what their day looks like.</p>
+    </div>
+    <div class="col">
+      <h3>The language</h3>
+      <p>A new country is a configuration, not a rewrite. English is the default; the
+      doctrine exists per language.</p>
+    </div>
+    <div class="col">
+      <h3>The doctrine</h3>
+      <p>How the companion behaves. True for anyone, with that person&rsquo;s own details
+      filled in at build time.</p>
+    </div>
+  </div>
+
+  <ul>
+    <li>Built on the <b>AssemblyAI Voice Agent API</b>. The tools are <b>http</b> tools on purpose: a client&#8209;executed tool cannot be answered on a phone call.</li>
+    <li>The greeting <b>rotates</b> before every conversation, so it never opens the same way twice.</li>
+    <li><b>A number they say is written, never interpreted, inferred or rounded.</b> That stage is code, not a model &mdash; so two people running it get the same number.</li>
+    <li><b>The channel is a setting, not the product.</b> A browser and a phone line today, an app next &mdash; or inside the app of a partner who already has that person opening it every day. We do not have to win the home screen if somebody already has.</li>
+  </ul>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>06</span></div>
+</section>
+
+<!-- 6 ───────────────────────────────────────────────── the conversation ───── -->
+<section id="s7" class="slide">
+  <div class="eyebrow">Eleven spoken tests, eleven rules</div>
+  <h2>The conversation rules are the part<br>that took the work.</h2>
+
+  <div class="lead">
+    Every rule in the doctrine is a defect heard out loud in a spoken test, and written
+    down so it could not come back.
+  </div>
+
+  <ul>
+    <li>It <b>picks one subject</b> rather than offering a menu. A menu is work for the person.</li>
+    <li>Most turns <b>end without a question</b> &mdash; an open question opens a subject they then have to carry.</li>
+    <li>It <b>never says where a fact came from.</b> Nobody wants to be read a file about themselves.</li>
+    <li><b>Two flat answers in a row and it stops.</b> Not every day is a day for talking.</li>
+  </ul>
+
+  <div class="kicker">
+    The doctrine describes <b>the move, never a sentence</b> the model can lift &mdash;
+    an example sentence gets recited verbatim on the first reply. That cost us two
+    rewrites to learn.
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>07</span></div>
+</section>
+
+<!-- 7 ──────────────────────────────────────────────── where closer stops ───── -->
+<section id="s8" class="slide">
+  <div class="eyebrow">Where Closer stops</div>
+  <h2>Three jobs, three owners.</h2>
+
+  <table>
+    <tr>
+      <td class="who">Closer</td>
+      <td>asks, and writes down what was said &mdash; the words unchanged, and a number
+      they said <b>written, never interpreted, inferred or rounded</b>.</td>
+    </tr>
+    <tr>
+      <td class="who">The family</td>
+      <td>decides what is worth seeing. The setup form asks for their day and their medicines
+      in free text. <b>It offers no measurements and no ranges</b>: the moment we suggest
+      one, we have supplied the judgement.</td>
+    </tr>
+    <tr>
+      <td class="who">The operator</td>
+      <td>decides what to do about it. They have the nurses, the 24&#8209;hour desk and
+      the responsibility.</td>
+    </tr>
+  </table>
+
+  <div class="kicker">
+    <b>Why, and it is not modesty.</b> Judging a health number is a regulated medical act
+    &mdash; it wants a notified body and a clinical evaluation, and it moves the decision
+    to a desk with no nurse at it. And a family who trust a tool to warn them
+    <b>stop watching</b>. Neither is a trade we will make.
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>08</span></div>
+</section>
+
+<!-- 8 ─────────────────────────────────────────────────────── the market ───── -->
+<section id="s9" class="slide">
+  <div class="eyebrow">The market is the majority, not the margin</div>
+  <h2>Sized down, not up.</h2>
+
+  <table>
+    <tr>
+      <th style="width:30%">Italy &mdash; where we pilot</th>
+      <th style="width:22%">People</th>
+      <th>Why this ring</th>
+    </tr>
+    <tr>
+      <td>Over&#8209;75s living alone</td>
+      <td><b>2.7 M</b></td>
+      <td>ISTAT 2023. One household in ten.</td>
+    </tr>
+    <tr>
+      <td>&hellip; and no child within a kilometre</td>
+      <td><b>~1.0&ndash;1.3 M</b></td>
+      <td>51% of over&#8209;75s have their nearest child within 1 km. The rest are the gap.</td>
+    </tr>
+    <tr>
+      <td>&hellip; and living with a limitation</td>
+      <td><b>~550&ndash;650 k</b></td>
+      <td>Roughly a fifth report severe limitations in daily activities.</td>
+    </tr>
+  </table>
+
+  <div class="cols" style="margin-top:44px">
+    <div class="col">
+      <h3>United Kingdom &mdash; the paying proof</h3>
+      <p><b>1.7&ndash;2 million</b> people already pay <b>&pound;19&ndash;32 a month</b>
+      for a pendant alarm. That is roughly <b>&pound;450 M a year</b>, spent on a button.</p>
+    </div>
+    <div class="col">
+      <h3>United States &mdash; where the payer is</h3>
+      <p><b>16.2 million</b> over&#8209;65s live alone. Six states already hand out an AI
+      companion; one now <b>reimburses</b> it.</p>
+    </div>
+  </div>
+
+  <div class="src">
+    ISTAT 2023 &middot; ONS / TakingCare &middot; ACL Profile of Older Americans &middot;
+    NYSOFA &middot; Washington DSHS
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>09</span></div>
+</section>
+
+<!-- 9 ─────────────────────────────────────────────── competitors and USP ───── -->
+<section id="s10" class="slide">
+  <div class="eyebrow">Who else, and what only we do</div>
+  <h2>Everything that exists is either<br>reactive, generic, or a device.</h2>
+
+  <table>
+    <tr>
+      <th style="width:30%">Today</th>
+      <th style="width:26%">What it costs</th>
+      <th>Where it stops</th>
+    </tr>
+    <tr>
+      <td class="who">Pendant alarms<br><span class="quiet" style="font-size:24px">Beghelli, Tunstall, Age UK</span></td>
+      <td>&euro;4&ndash;&pound;32 / month</td>
+      <td>It only speaks when it is <b>pressed</b>. No answer for the ordinary Tuesday.</td>
+    </tr>
+    <tr>
+      <td class="who">Volunteer phone lines<br><span class="quiet" style="font-size:24px">Auser Filo d&rsquo;Argento</span></td>
+      <td>free, 6,000 volunteers</td>
+      <td><b>Inbound</b>, office hours, capacity&#8209;bound, and nothing is written down.</td>
+    </tr>
+    <tr>
+      <td class="who">AI check&#8209;in calls</td>
+      <td>$8&ndash;30 / month</td>
+      <td>The <b>same script for everyone</b>. It does not know who they are.</td>
+    </tr>
+    <tr>
+      <td class="who">Companion devices<br><span class="quiet" style="font-size:24px">ElliQ</span></td>
+      <td>~$900 / year, publicly funded</td>
+      <td>A <b>device</b> to install, in one language, in one country.</td>
+    </tr>
+  </table>
+
+  <div class="kicker">
+    Closer is configured to <b>one person</b>, from what their family typed, in
+    <b>their language</b>, on a <b>phone line they already own</b>. <b>And it moves with
+    them:</b> there is no box on the wall, so the same companion answers in a spare room
+    at Christmas, on a ward, and in the care home.
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>10</span></div>
+</section>
+
+<!-- 10 ────────────────────────────────────────────────────── the money ───── -->
+<section id="s11" class="slide">
+  <div class="eyebrow">The price, and why it can be flat</div>
+  <h2>&euro;20 a month. Talk as much as you like.</h2>
+
+  <div class="lead">
+    No minutes counter, no plan to choose, nothing for the family to check. About
+    <b>half an hour of conversation a day</b> sits inside it, every day.
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h3>Why flat is possible</h3>
+      <p>The conversation is billed by <b>content, not by the clock</b>: speech&#8209;to&#8209;text,
+      a small model, speech back. Roughly <b>$0.012&ndash;0.020 a minute</b>.</p>
+      <p>A speech&#8209;to&#8209;speech model charges for audio in <em>and</em> out and
+      re&#8209;reads the whole conversation each turn, so a long chat compounds. Ours does
+      not: minute thirty costs what minute two costs.</p>
+    </div>
+    <div class="col">
+      <h3>The comparison that matters</h3>
+      <p>A carer costs <b>&euro;8&ndash;12 an hour</b>. So &euro;20 buys <b>under two
+      hours of a person, once a month</b> &mdash; or <b>half an hour of company every
+      single day</b>.</p>
+      <p>Not an alarm, which is pressed once and insures against an event. This is the
+      ordinary day, and the ordinary day happens every day.</p>
+    </div>
+    <div class="col">
+      <h3>Revenue, wholesale</h3>
+      <p>We sell <b>per seat to the operator</b>, who already owns the customer, the
+      line and the billing.</p>
+      <p>Selling to families direct does not work: <b>you pay to find each one, and you
+      lose them when the person dies or moves into care.</b> An operator already has
+      them, and absorbs that.</p>
+      <p>Plus a one&#8209;off fee for the profile.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>11</span></div>
+</section>
+
+<!-- 11 ────────────────────────────────────────────────── first customer ───── -->
+<section id="s12" class="slide">
+  <div class="eyebrow">First customer: telecare providers</div>
+  <h2>They already own everything Closer lacks.</h2>
+
+  <table>
+    <tr>
+      <th style="width:50%">They have</th>
+      <th>Closer has</th>
+    </tr>
+    <tr>
+      <td>The exact customer, already subscribed</td>
+      <td>A reason to speak on a day nothing is wrong</td>
+    </tr>
+    <tr>
+      <td>A phone relationship into the house</td>
+      <td>A conversation worth the person&rsquo;s time</td>
+    </tr>
+    <tr>
+      <td>A 24&#8209;hour call centre</td>
+      <td>A page that says who to ring first, and why</td>
+    </tr>
+    <tr>
+      <td>Distribution and billing</td>
+      <td>The thing their product cannot do</td>
+    </tr>
+  </table>
+
+  <div class="kicker">
+    Their pendant only speaks when it is pressed. Closer is <b>the half that speaks
+    first</b> &mdash; and their call centre becomes the escalation this project
+    deliberately does not build, because <b>a machine should hand a person to a person</b>.
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>12</span></div>
+</section>
+
+<!-- 12 ────────────────────────────────────────────────────── the pilot ───── -->
+<section id="s13" class="slide">
+  <div class="eyebrow">The pilot</div>
+  <h2>Fifty subscribers. Ninety days. One language.</h2>
+
+  <table>
+    <tr>
+      <th style="width:42%">Measured</th>
+      <th>Why it is the right measure</th>
+    </tr>
+    <tr>
+      <td class="who">Share of the words spoken by the person</td>
+      <td>It rises when the conversation is working. Across twelve test conversations the
+      thirty&#8209;day average is <b>13%</b>, the best reached <b>26%</b>, from 5&ndash;9%
+      at the start.</td>
+    </tr>
+    <tr>
+      <td class="who">Average answer length</td>
+      <td>Thirty&#8209;day average <b>7 words</b>; the best conversations reached
+      <b>12</b>, from 4&ndash;5 at the start.</td>
+    </tr>
+    <tr>
+      <td class="who">Conversations a week, against their own baseline</td>
+      <td>Compared only with themselves. <b>Never with a population.</b></td>
+    </tr>
+    <tr>
+      <td class="who"><em>Worth a call</em> flags the desk agreed with</td>
+      <td>The only honest test of whether the family page is useful.</td>
+    </tr>
+  </table>
+
+  <div class="kicker">
+    Every figure is <b>arithmetic, not a model&rsquo;s opinion</b>, so two people running
+    it get the same number.
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>13</span></div>
+</section>
+
+<!-- 13 ────────────────────────────────────────────────── then, in order ───── -->
+<section id="s14" class="slide">
+  <div class="eyebrow">Then, in order</div>
+  <h2>Same product each time.<br>Different buyer.</h2>
+
+  <ol class="steps">
+    <li><b>Comune social services.</b> Municipalities already run volunteer telephone
+    rounds for over&#8209;75s living alone. A volunteer manages forty people. Closer speaks
+    to four thousand and hands the volunteer the twelve worth a visit. It does not replace
+    volunteers &mdash; it aims their time.</li>
+    <li><b>Teleassistenza under the national telemedicine programme</b>, which is funded
+    and has targets to meet by June 2026.</li>
+    <li><b>Home care agencies.</b> The carer comes Monday, Wednesday, Friday. Closer
+    covers the other four days, and hands the carer a page to read before going in.</li>
+    <li><b>Pharmacy services.</b> The diary already records what was taken. A medicine
+    routine is a pharmacy&rsquo;s existing relationship, not a new one.</li>
+    <li><b>Care homes</b> &mdash; where every other product in this list loses the
+    customer. The move is usually not a choice, and it takes the last of their habits
+    with it. Closer is the one thing that <b>arrives with them, already knowing who they
+    are</b>.</li>
+  </ol>
+
+  <div class="kicker">
+    In Japan, care technology in nursing homes <b>raised care&#8209;worker employment by
+    28%</b>. It did not replace people. It kept them.
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>14</span></div>
+</section>
+
+<!-- 14 ──────────────────────────────────────────────── what is kept ───── -->
+<section id="s15" class="slide">
+  <div class="eyebrow">What is kept, and where</div>
+  <h2>They are not the product.</h2>
+
+  <ul>
+    <li>Recordings and transcripts are pulled to the operator, masked, and <b>deleted at the speech provider</b>.</li>
+    <li>Secrets are removed before anything is written &mdash; only the fact that one came up is kept. The companion <b>refuses to be told a PIN</b>, itself included.</li>
+    <li>The family page shows <b>no transcript</b>. They do not read their post. Only the people they named can open it.</li>
+    <li><b>Nothing reaches anybody on its own.</b> No alert, no message, no email. Somebody opens the page. That is a decision, not a missing feature.</li>
+  </ul>
+
+  <div class="kicker">
+    A machine that has spoken to somebody twelve times is <b>not entitled to an opinion
+    about their mind</b>.
+  </div>
+
+  <div class="foot"><span>Closer &middot; Closer, if not near.</span><span>15</span></div>
+</section>
+
+<!-- 15 ───────────────────────────────────────────────────────── end ───── -->
+<section id="s16" class="slide end">
+  <div>
+    <div class="word">CLOSER</div>
+    <div class="sub">Closer, if not near.</div>
+    <div class="rule"></div>
+    <div class="urls">
+      lablab.claudiaonclaude.com<br>
+      github.com/sciarada75/voice-companion
+    </div>
+  </div>
+  <div class="sig">deck by ClaudiaOnClaude</div>
+</section>
+
+</body>
+</html>

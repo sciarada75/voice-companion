@@ -595,6 +595,20 @@ trust "Updated".** `GET https://agents.assemblyai.com/v1/agents/$AGENT_ID_<NAME>
 The host is `agents.assemblyai.com`; `api.assemblyai.com` answers 404 and looks
 like a missing agent.
 
+### The brief, for whoever is judging
+
+**`config/profiles/<name>/demo.json` is optional, like `habits.json`.** When it
+exists, the public page shows a brief beside the conversation: who you are
+playing, what the agent was told, and what to try. **Only for a fictional
+profile** — the brief prints what the agent was told, which for a real person is
+their biography on a public page (the reason `/agent` does not exist online).
+**Who the person is is read from `persona.json` and `topics.json` at build
+time, never written in `demo.json`**, so the brief cannot drift from the prompt.
+Each entry in `tries` is one rule of the doctrine, so a judge tests the rules,
+not a script. Server side: LOCAL CHANGE 6 in `server.mjs`, loud if `demo.json`
+is there and the profile is not; `build_web` refuses to finish if the profile
+asks for a brief and the page has none.
+
 ### The browser client
 
 `deployment/browser/server.mjs` is the AssemblyAI starter kit **vendored**, with
@@ -831,6 +845,21 @@ statistical claim either: **claim the instrument, not the discovery.**
   *Guard: a note that does not reach the agent is marked `failed`, and `/token`
   leaves those rows alone as the evidence.* **If a thing can fail silently,
   give it somewhere to say so.**
+  **Second occurrence, 29/09 — and the guard above could not catch it, because
+  nothing failed.** The write that *empties* the block after a note has been
+  delivered also ran in `waitUntil`, so it **succeeded, too late**: the next
+  session had already loaded the agent with the old note in it. Every loose end
+  was therefore heard twice. Found in the live agent on submission day: note 4,
+  *"going out for dinner tomorrow evening"*, marked `delivered` on 26/09 and
+  still in the prompt — the next person in, a judge, would have been asked about
+  a dinner they never mentioned. *Guard: `/token` now AWAITS the ageing, then the
+  greeting, one after the other and bounded at 2.5 s, before the token goes
+  back.* **Proven live, not assumed:** POST a note, mint once (the note stays —
+  that conversation is meant to hear it), mint again and read the agent the
+  instant the token returns: the block is empty. Cost: that one mint went from
+  0.55 s to 1.5 s, only on the conversation after a note is handed over.
+  **`waitUntil` is only for work nobody downstream is waiting on. Anything the
+  next request reads is not background work.**
 - **6.18 — A publish destroys the note that was waiting to be raised · OPEN.**
   `build_agent` writes `LAST_TIME: NOTHING` on every build, on purpose, and a
   publish is a `PUT` of the whole prompt. So changing one word of the rules
@@ -1145,14 +1174,59 @@ No fixed date except the submission, **30 September**.
       `introduction` plus three lines per time-of-day band; `/token` picks one
       before every conversation and PUTs it onto the stored agent. **Only
       online** (§6.20).
-- [ ] **Nothing reaches anyone by itself.** The report waits to be opened;
-      there is no alert channel, and it has to cost €0 (phase C's last item).
+- [ ] **Delivery, which is not the same thing as an alert.** Claudia, 28/09:
+      *"if we have no alert on a new session the relative must keep going in and
+      out to check if there is an update. uncomfortable."* She is right, and the
+      rule that forbids alerts was never meant to forbid delivery - §0 has always
+      listed delivery as phase C's missing piece.
+      **The test that separates them: does it fire every time?** A message that
+      goes out on *every* conversation, with the same words and no content in it
+      - *"Tuesday's page is ready"* - judges nothing and therefore warns of
+      nothing. A message that goes out *only sometimes* has decided that this
+      conversation was worth telling somebody about, and that decision is the
+      medical-device line (§5.4) and the false-safety-net problem: a family who
+      trust a signal stop watching.
+      **So: send it unconditionally, at a fixed hour, whether or not a
+      conversation happened**, and keep every word of content on the page. Sent
+      only on the days it happened, the *absence* of the message becomes a signal
+      too, and an unreliable one. Channel still undecided and still has to cost
+      €0. **Not built, and not to be built before the deadline** - it reverses
+      nothing, but it touches the one rule the film and the deck both stand on.
+- [ ] **`does_not_know` is computed and never reaches the prompt.** Found 28/09
+      while checking a deck claim. `tools/build_agent/run.mjs` builds
+      `DOES_NOT_KNOW` from the profile, but **`config/rules/en.md` has no
+      `{{DOES_NOT_KNOW}}` hole** - the holes it does have are AGENT, DIARY,
+      FOND_OF, GOOD_AT, LAST_TIME, LOVES, NEVER, PACE, PERSON, PLACE, THINGS,
+      TOPICS, WARNING. So the field is dead, and the substitution is silent about
+      it. It matters because Claudia's framing gives it a job: *the elder is the
+      expert on their past, Closer on what came after*, and `does_not_know` is
+      exactly the list of what came after. The behaviour survives today through
+      `{{TOPICS}}` and doctrine rule 3 (*news from their world*), so nothing is
+      broken - it is an unused input, not a missing feature. **A doctrine change
+      needs a spoken test (§test script), so not before the deadline.**
+- [x] **It moves with the person - claimed in the deck 28/09, and true.** Claudia
+      named the case: two weeks at a daughter's for Christmas, a month in an
+      assisted structure in the summer, a week in bed with flu, and finally the
+      care home, where the move is usually not a choice. Every one of those takes
+      the habits away, and the habits are the anchor. **Nothing in Closer is bound
+      to an address** - checked: `place` in `persona.json` is where they are
+      *from*, a subject of conversation, not an installation. A pendant has a base
+      station and a companion device is installed; Closer is a page and a phone
+      number. That is also where the money is: the care home is where every other
+      product in the list **loses** the customer, and it is where Closer keeps
+      them (deck slide 14).
 - [ ] **The report and the setup form are local only.** Fine for now; a family
       elsewhere cannot open either.
 
 **Never tested by speaking:**
 - [ ] A second language.
-- [ ] **The notebook tools by voice** — only over HTTP. Comes with B1.
+- [x] **The notebook tools by voice — first passed 29/09, on the public
+      address.** A synthesised voice said *"Yes, I've just taken my morning
+      tablets"* through Chrome's fake microphone; Iris called
+      `diary_record({"done":"yes","habit":"tablets-morning"})`, said so, and the
+      row was in D1 (29/09 06:08). So speech -> transcription -> model -> http tool
+      -> Cloudflare -> D1 all hold, and the key on the agent survived a republish.
+      Not yet by voice: `diary_read` (asking *whether* you took them).
 - [ ] **The voices by ear.** The sample player works (§3.1); `anna` was
       published without a listening comparison.
 - [ ] iPhone latency on the current agent (§6.5).
@@ -1191,16 +1265,38 @@ No fixed date except the submission, **30 September**.
       79 MB**, against a hard 5:00 and 300 MB. Its source is `video/` and is
       tracked; `video/public/` (footage, wav) is not. `video/render-all.sh`
       re-renders that same file; pass a section name to look at one on its own.
-- [ ] **Deck (PDF), cover image (16:9), title / short / long description, and the
-      technology & category tags.** Tracked with their evidence in
-      `docs/submission/COMPLIANCE.md`, which also holds the **four process steps
-      only Claudia can do** (enrol, complete the profile, create the team of one,
-      register on Discord) and the screenshot of the submission form that is the
-      last unseen thing. **The deck's thin quarter is Business Value**: lablab's
-      criteria ask for TAM/SAM, revenue streams and a competitor slide with the
-      USP, and `deployment-proposal.md` has none of the three. That gap scores
-      against us; the missing accounts and hosted family page do not, because
-      product completeness is not one of the four criteria.
+- [x] **THE DECK IS DONE - 27/09, one slide added 28/09.**
+      `docs/submission/CLOSER-deck.pdf`, 16 slides, 16:9, 3.6 MB. It is **a web page, like the film**: source `deck/index.html`,
+      rendered by `deck/render.sh` through headless Chrome, using the film's own
+      design tokens - which the film in turn lifts from the report stylesheet, so
+      there is one design system and not three. **`deployment-proposal.md` no
+      longer drives it**; that file is the argument in prose and a session that
+      edits it expecting the PDF to change will be wrong.
+      The Business Value quarter that was empty is now three slides - market
+      sizing (08), competitors with the USP (09), the flat price and why the unit
+      cost allows it (10). Two slides are new arguments rather than restatements:
+      **Why now (03)**, because public payers started buying the category -
+      Washington State reimburses an AI companion under Medicaid since March
+      2026, the first time nationwide - and **Where Closer stops (07)**, which
+      draws the medical-device line **before the first buyer, not after**. Order
+      matters there: a judge who meets the product first and the boundary second
+      has already misfiled it.
+      **Two things the first draft got wrong, both found by Claudia reading it.**
+      It called the person **"she" twenty-two times** - the product is configured
+      per person and the deck had quietly decided that person was a woman; it is
+      they/them throughout now, and the same check belongs on anything new.
+      And it was **missing its own thesis**: medicine acts on the body and
+      nothing acts on the silence; today gives an old person almost nothing to
+      say, while their past is rich and nobody asks about it. That is not a
+      sentiment, it is **why the profile has a `window` field** (1957-1998 for
+      Peggy) and `knows_well` / `does_not_know`, and why the doctrine spends
+      rules on *never test them*. It is now slide 03, and the deck was weaker
+      without the reason the product is shaped the way it is.
+- [ ] **Title / short / long description, and the technology & category tags.**
+      Tracked with their evidence in `docs/submission/COMPLIANCE.md`, which also
+      holds the **four process steps only Claudia can do** (enrol, complete the
+      profile, create the team of one, register on Discord) and the screenshot of
+      the submission form that is the last unseen thing.
 - [x] **The video is built in code, not in an editor** (22/09). Claudia asked for
       CapCut; a GUI editor cannot be driven by an agent, so the video would have
       gone back to being her job. It is **Remotion** instead — the video is a web
@@ -1403,3 +1499,17 @@ their answers are what moved when the rules improved (§3).
 | **The register test** — search transcripts for carer phrases | zero |
 | **The no-look test** — from home screen to talking without looking | possible |
 | **End to end** — after a session the recording downloads and plays | plays |
+
+**A spoken test nobody has to speak (29/09).** Headless Chrome with
+`--use-fake-device-for-media-stream --use-fake-ui-for-media-stream` and
+`--use-file-for-fake-audio-capture=<file>.wav%noloop` feeds a WAV in as the
+microphone; `say -o x.wav --file-format=WAVE --data-format=LEI16@48000 "..."`
+makes the WAV, padded with silence so it lands after the greeting. Drive the page
+over the DevTools protocol (`--remote-debugging-port`, then `Runtime.evaluate`
+to press the button and read `#transcript`). It proves the whole chain on the
+public address, tool calls included. **It is a real conversation**: it writes a
+`conversations` row, so it spends the introduction a first visitor should hear.
+Before a judge arrives, clear `conversations`, `entries` and `loose_ends` in D1
+and `PROFILE=<name> npm run ship`, then mint nothing. Desktop Chrome also will
+not make a window narrower than ~500 px: to see a phone layout, screenshot the
+page inside a 390 px `iframe`, or a clipped screenshot looks like a CSS bug.

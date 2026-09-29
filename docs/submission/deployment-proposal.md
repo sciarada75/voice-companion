@@ -2,9 +2,15 @@
 
 *Closer, if not near.*
 
-Source text for the pitch deck. One section per slide. It obeys the same
-language rules as the product and the video (§5.4 of `HANDOVER.md`): it never
-says detects, decline, cognitive or risk, and presents no threshold as clinical.
+**The argument, in prose.** The deck itself is `deck/index.html` and it renders to
+`CLOSER-deck.pdf` with `deck/render.sh` - **editing this file does not change the
+PDF.** This one stays because an argument is easier to fight about in prose than
+in slides, and because the deck is a subset: the slides drop what does not earn
+its place on a screen.
+
+Both obey the same language rules as the product and the video (§5.4 of
+`HANDOVER.md`): they never say detects, decline, cognitive or risk, and present
+no threshold as clinical.
 
 ---
 
@@ -33,6 +39,28 @@ Closer is not built for the 3.2%. It is built for the 92.8% whose family wants
 to be there and is not: work, full days, three hours of motorway. What is
 missing is not love. It is the ordinary daily contact, where somebody would
 simply have noticed.
+
+---
+
+## Slide — Where Closer stops
+
+Three jobs, three owners. The line is drawn here, before the first buyer, so
+nobody has to guess it later.
+
+| Who | Decides |
+|---|---|
+| **Closer** | asks, and writes down what was said — the words unchanged, and a number they said written, never interpreted, inferred or rounded |
+| **The family** | what is worth seeing. The setup form asks for their day and their medicines in free text. It offers no measurements and no ranges: the moment we suggest one, we have supplied the judgement |
+| **The operator** | what to do about it. They have the nurses, the 24-hour desk and the responsibility |
+
+It does not detect anything. It notices that someone who talked for nine minutes
+last week talked for two today, and tells the people who love her. It is not a
+medical device and does not audition for the part.
+
+**Why it is built this way, and it is not modesty.** Judging a health number is a
+regulated medical act — it wants a notified body and a clinical evaluation, and
+it moves the decision to a desk that has no nurse at it. And a family who trust a
+tool to warn them **stop watching**. Neither is a trade we will make.
 
 ---
 
@@ -105,11 +133,7 @@ in a row and it stops.
 
 ---
 
-## Slide — What Closer will not do
-
-It does not detect anything. It is not a medical device and does not audition
-for the part. It notices that someone who talked for nine minutes last week
-talked for two today, and tells the people who love her.
+## Slide — What is kept, and where
 
 Recordings and transcripts are pulled to the operator, masked, and **deleted
 from the speech provider**. Secrets are removed before anything is written; only

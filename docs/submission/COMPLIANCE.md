@@ -16,16 +16,15 @@ finish by the evening of the 29th still stands as margin, not as the limit.
 
 Three artefacts and one form. Nothing else is open, and none of it is code.
 
-1. **The deck, as a PDF.** The source is `deployment-proposal.md`, which has the
-   market framing, the first customer, the pilot, the order of buyers and what
-   Closer will not do. **Three slides are missing and they are the ones that
-   score**, because Business Value is one of the four criteria and lablab's own
-   pro-tips name exactly these: **market sizing (TAM/SAM)**, a **revenue model**
-   consistent with the telecare-provider route already chosen, and a
-   **competitor slide** against pendant alarms and check-in-call services, with
-   the USP. Every figure obeys §5.4 and every claim is one a judge can check;
-   the deck already softened its numbers to match the report, §10, and that
-   decision stands. Then export to PDF.
+1. ~~**The deck, as a PDF.**~~ **Done 27/09** - `CLOSER-deck.pdf`, 16 slides,
+   16:9, 3.6 MB. Source `deck/index.html`, rendered by `deck/render.sh` through
+   headless Chrome; **never hand-edit the PDF, and note that editing
+   `deployment-proposal.md` does not change it.** The three Business Value
+   slides lablab's pro-tips ask for are now in it - market sizing (08),
+   competitors with the USP (09), the revenue model (10) - plus a *Why now*
+   slide (03) and *Where Closer stops* (07), which draws the medical-device line
+   **before** the first buyer rather than after, so a judge cannot misfile the
+   product and then read the rest through that.
 2. **The three descriptions**, written from the deck once it exists: title,
    short (≤255 characters, **counted**), long (≥100 words, **counted**).
 3. **The technology & category tags** — name the AssemblyAI Voice Agent API.
@@ -58,7 +57,7 @@ returns an empty page, so they were read through a real browser):
 | # | Required | State | Evidence |
 |---|---|---|---|
 | 1 | **Video presentation**, MP4, max 5 minutes | done | `docs/submission/CLOSER.mp4`, **4:58.88**, 79 MB, `ffprobe` 27/09. Re-renders from `video/` via `video/render-all.sh` |
-| 2 | **Slide presentation**, PDF | **OPEN** | The argument is written (`deployment-proposal.md`); the PDF does not exist |
+| 2 | **Slide presentation**, PDF | done 27/09 | `docs/submission/CLOSER-deck.pdf`, **16 pages, 1440x810 pt (16:9), 3.6 MB**. Built from `deck/index.html` via `deck/render.sh`. The design system is the film's own - which the film lifts from the product's report stylesheet - so deck, film, cover and family page read as one thing |
 | 3 | **Cover image**, PNG or JPG, 16:9 recommended | done 27/09 | `docs/submission/cover.png`, **1920x1080** PNG. Generated photograph (`cover-source.png`), the title set over it in the film's own EndCard typography so cover and film read as one thing |
 | 4 | **Project title** | **OPEN** | No character limit is stated on any public page. Our note said 50; unverified, and only the form can settle it. Keep it short regardless |
 | 5 | **Short description**, ≤ 255 characters | **OPEN** | Must be counted, not estimated |
@@ -85,6 +84,17 @@ Verified 26/09 against the live deployment:
 So the prototype is genuinely reachable and genuinely gated. **Re-run this check
 after the last deploy before submitting**, and re-run it if the key is rotated.
 
+**Re-verified 29/09 after the last deploy, on both hosts** - `/` 200, `/token`
+and `/diary/status` 401 without the key - **and past the gate, as a judge meets
+it**: a real Chrome opened the keyed link, the key left the address bar, the
+brief was on screen, *Talk to Iris* opened a session, and a first-time visitor
+heard the full introduction. A synthesised voice then recorded a diary entry by
+speaking. **Memory cleared for the judges**: D1 `conversations`, `entries`,
+`loose_ends` at 0, the agent's memory block empty, greeting set to the
+introduction (backup of the old rows in `state/`, not in git). **Mint nothing
+before submitting** - every mint is a conversation, and the first one is the
+judge's introduction.
+
 Not yet verified: that the submission form preserves the `?k=` query string. If
 it strips or normalises the URL, the prototype reads as dead. Check at
 submission time by clicking the link back out of the form.
@@ -104,9 +114,10 @@ done" is not evidence.
       prefer"* (Getting Started); teams are 1-6, a maximum of six and **no
       minimum**. This is a hard blocker: *"submit your project via the dedicated
       button on your team's dashboard"*, and with no team there is no dashboard.
-- [ ] **Registered on the lablab Discord server** — *"complete your registration
+- [x] **Registered on the lablab Discord server** — *"complete your registration
       on both our lablab.ai platform and Discord server"* (Getting Started).
-      Registering on it, **not** creating a channel on it.
+      Registering on it, **not** creating a channel on it. Evidence: Claudia,
+      29/09 - *"discord joined days ago."*
 - [ ] **Screenshot every field of the submission form.** The last thing that
       cannot be seen from here: it settles the title limit, the hosting-platform
       dropdown, the tags vocabulary, and anything nobody wrote down.
