@@ -217,11 +217,70 @@
     body.simple.has-brief main { grid-template-columns: minmax(0, 1fr); }
     body.simple.has-brief #brief { grid-column: 1; grid-row: 1; margin-bottom: 1.5rem; }
   }
+
+  /* LOCAL CHANGE 7. The person's page wears Closer's clothes, not the starter's.
+     Until 29/09 it kept the AssemblyAI site tokens above - white, cobolt blue, a
+     typewriter button - while the cover, the film and the deck a judge has just
+     seen are dark, warm and serif. Claudia: "it has nothing to do with the
+     presentation or the video". These are the deck's tokens (docs/submission/
+     deck/index.html), which the film lifts from the family page, so all four
+     read as one thing. Scoped to body.simple: /dev keeps the starter's look. */
+  .brand, .credit { display: none; }
+  body.simple {
+    --ground: #17150f; --cream: #f0ece5; --dim: #cfc8bb; --faint: #8a8275;
+    --line: #3a3630; --soft: #201d16; --fine: #79c9b1; --critical: #e98a80;
+    --font-display: ui-serif, Georgia, "Times New Roman", serif;
+    --font-body: ui-serif, Georgia, "Times New Roman", serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+    --text: var(--dim); --text-dark: var(--cream); --text-muted: var(--faint);
+    --text-faint: var(--faint); --border: var(--line); --surface-alt: var(--soft);
+    background: var(--ground); color: var(--dim);
+  }
+  body.simple header { border-bottom: 1px solid var(--line); padding-bottom: 1.2rem; }
+  body.simple .brand { display: block; flex-basis: 100%; margin-bottom: 2.6rem; }
+  body.simple .brand-mark { font-family: var(--font-display); font-size: 1.05rem;
+    letter-spacing: .32em; color: var(--cream); }
+  body.simple .brand-line { font-family: var(--font-display); font-style: italic;
+    font-size: 1.05rem; color: var(--faint); margin-top: .3rem; }
+  body.simple .brand-line::before { content: ""; display: block; width: 2.4rem;
+    height: 1px; background: var(--fine); margin: .7rem 0 .75rem; }
+  body.simple header h1 { font-size: 3.4rem; letter-spacing: -.5px; color: var(--cream); }
+  body.simple .status::before { width: 8px; height: 8px; }
+  body.simple .status.listening, body.simple .status.speaking { color: var(--fine); }
+  body.simple .status.error { color: var(--critical); }
+  body.simple .status::after { color: var(--dim); font-style: italic; }
+  body.simple #transcript { color: var(--dim); padding: 1.6rem 0 1.4rem; }
+  body.simple .line.agent .said { color: var(--cream); }
+  body.simple .line.tool { color: var(--fine); }
+  body.simple #btn { background: var(--fine); color: var(--ground);
+    font-family: var(--font-display); font-size: 1.55rem; min-height: 4.6rem;
+    border-radius: 999px; transition: background-color .2s, transform .2s; }
+  body.simple #btn:hover:not(:disabled) { background: #93d6c1; transform: translateY(-1px); }
+  body.simple #btn.live { background: transparent; color: var(--critical);
+    border: 1px solid var(--critical); }
+  body.simple #btn.live:hover { background: rgba(233,138,128,.08); }
+  body.simple #btn:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
+  body.simple .pane-foot { background: transparent; }
+  body.simple .credit { display: block; margin-top: 2.2rem; padding-left: 2px; font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+  body.simple.has-brief #brief { background: var(--soft); border: 1px solid var(--line);
+    border-radius: 14px; color: var(--dim); padding: 1.7rem 1.8rem 1.5rem; }
+  body.simple #brief .brief-eyebrow { color: var(--fine); }
+  body.simple #brief h2 { color: var(--cream); font-size: 2rem; }
+  body.simple #brief .brief-lead { color: var(--cream); }
+  body.simple #brief h3 { color: var(--fine); border-top: 1px solid var(--line);
+    padding-top: 1.1rem; margin-top: 1.4rem; }
+  body.simple #brief dt { color: var(--faint); }
+  body.simple #brief b { color: var(--cream); font-weight: 600; }
+  body.simple #brief ol li::marker { color: var(--fine); font-family: var(--font-mono);
+    font-size: .85em; }
+  body.simple #brief .brief-note { color: var(--faint); font-style: italic; }
 </style>
 </head>
 <body class="simple has-brief">
 <main>
   <header>
+    <div class="brand"><div class="brand-mark">CLOSER</div><div class="brand-line">Closer, if not near.</div></div>
     <h1>Iris</h1>
     <span class="status idle" id="status"><span id="status-text">idle</span></span>
     <span class="meter"><span id="elapsed">0:00</span><span id="cost">$0.000</span></span>
@@ -238,6 +297,7 @@
         <select id="mic" aria-label="Microphone"><option value="">Default microphone</option></select>
         <button id="btn">Start</button><!-- the simple page's label is set by the client -->
       </div>
+      <span class="credit">Built on the AssemblyAI Voice Agent API</span>
     </section>
     <section class="pane" id="side">
       <div class="pane-head">
