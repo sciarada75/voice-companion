@@ -198,6 +198,20 @@ try {
   }
   console.log(`  ${REQUIRED.length} required strings present in the built page: ok`);
 
+  // A PROFILE THAT ASKS FOR A BRIEF MUST SHIP ONE. The brief is how a judge knows
+  // who they are playing; a page that built without it is a judge with no
+  // context and not one error anywhere (LOCAL CHANGE 6 in server.mjs).
+  if (PROFILE && existsSync(join(ROOT, `config/profiles/${PROFILE}/demo.json`))) {
+    const page = file['index.html'];
+    if (!page.includes('<aside id="brief"') || !page.includes('class="simple has-brief"')) {
+      throw new Error(
+        `config/profiles/${PROFILE}/demo.json is there, but the built page has no brief.\n` +
+        '  server.mjs has changed or could not read the profile. Do not publish.',
+      );
+    }
+    console.log('  the brief is in the page: ok');
+  }
+
   // THE PAGE IS CACHED FOR FOUR HOURS AND ITS NAME NEVER CHANGES.
   //
   // 22/09: a deployed fix was live on the hash URL and on a cache-busted

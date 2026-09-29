@@ -79,9 +79,25 @@ export async function onRequestGet({ request, env, waitUntil }) {
       // agent keeps the greeting it already has and the conversation is
       // completely normal. The only cost of giving up is hearing yesterday's
       // opening line.
-      await withTimeout(pickGreeting(env), 1500);
+      //
+      // THE LOOSE END IS AWAITED TOO, AND FIRST. It used to be waitUntil, and
+      // that delivered every loose end TWICE: the conversation after the one
+      // that received it starts before the background write that empties the
+      // block has landed, so AssemblyAI loads the agent with the old note still
+      // in it. Found 29/09 in the live agent: loose end 4 marked 'delivered' on
+      // 26/09, "going out for dinner tomorrow evening" still in the prompt, and
+      // the next person to open the page — on submission day, a judge — would
+      // have been asked about a dinner they never mentioned. That is the "you
+      // told me before" failure §0.3 forbids, arriving from a stranger.
+      //
+      // One after the other, never in parallel: both are writes to the same
+      // stored agent, and a PUT that echoes the agent back while another is in
+      // flight is not something to bet a greeting on. The bound covers both,
+      // and the ageing goes first because a stale note is worse than a repeated
+      // hello. Typical cost measured on 22/09: ~100 ms for the greeting, three
+      // requests for the note.
+      await withTimeout(ageLooseEnd(env).then(() => pickGreeting(env)), 2500);
       waitUntil(recordConversation(env));
-      waitUntil(ageLooseEnd(env));
     }
 
     return json(await res.json(), 200);
@@ -138,7 +154,8 @@ async function recordConversation(env) {
   }
 }
 
-// A loose end lives for exactly ONE conversation.
+// A loose end lives for exactly ONE conversation — which is only true because
+// the caller AWAITS this before the token goes back (see above).
 //
 // Without this, Monday's bad night gets asked about every day for a week, which
 // is the "you told me before" failure in slow motion — the thing §0.3 forbids.

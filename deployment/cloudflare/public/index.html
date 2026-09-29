@@ -182,9 +182,44 @@
     position: static; width: auto; height: auto; overflow: visible;
     clip-path: none;
   }
+
+  /* LOCAL CHANGE 6. The brief: beside the conversation on a wide screen, above
+     it on a narrow one, because a judge has to know who they are playing before
+     they press the button. Absent from /dev and from any profile without
+     demo.json. */
+  #brief { display: none; }
+  body.simple.has-brief #brief { display: block; }
+  body.simple.has-brief main { max-width: 74rem; display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 28rem); column-gap: 3.5rem;
+    align-content: start; }
+  body.simple.has-brief main > header, body.simple.has-brief main > .diag,
+  body.simple.has-brief main > .panes { grid-column: 1; }
+  body.simple.has-brief #brief { grid-column: 2; grid-row: 1 / span 3; align-self: start;
+    background: var(--surface-alt); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.4rem 1.5rem 1.2rem; font-size: .95rem;
+    line-height: 1.5; color: var(--text); }
+  #brief .brief-eyebrow { font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--cobolt-500); }
+  #brief h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.7rem;
+    letter-spacing: -.5px; color: var(--text-dark); margin: .35rem 0 .5rem; }
+  #brief h3 { font-family: var(--font-mono); font-size: 12px; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--text-muted); font-weight: 400;
+    margin: 1.2rem 0 .5rem; }
+  #brief .brief-lead { color: var(--text-dark); }
+  #brief dl { display: grid; gap: .15rem; }
+  #brief dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px;
+    color: var(--text-muted); margin-top: .45rem; }
+  #brief dd { margin: 0; }
+  #brief .brief-window { margin-top: .7rem; }
+  #brief ol { padding-left: 1.2rem; display: grid; gap: .45rem; }
+  #brief .brief-note { font-size: .85rem; color: var(--text-muted); margin-top: .7rem; }
+  @media (max-width: 880px) {
+    body.simple.has-brief main { grid-template-columns: minmax(0, 1fr); }
+    body.simple.has-brief #brief { grid-column: 1; grid-row: 1; margin-bottom: 1.5rem; }
+  }
 </style>
 </head>
-<body class="simple">
+<body class="simple has-brief">
 <main>
   <header>
     <h1>Iris</h1>
@@ -220,6 +255,17 @@
       </div>
     </section>
   </div>
+<aside id="brief" aria-label="Demo brief">
+    <p class="brief-eyebrow">Demo &middot; for judges</p>
+    <h2>You are Peggy</h2>
+    <p class="brief-lead">Iris believes it is talking to Peggy, 83, on her own in Ashton-under-Lyne. Play her. Below is everything Iris was told before the conversation, so you can see what it does with it.</p>
+    <h3>What Iris was told</h3>
+    <dl><dt>SAMPLE ROOM</dt><dd>her trade: making the first version of every new garment at Hartley's, industrial machining, garment construction. She made samples, she did not draw them - never a designer.</dd><dt>DRESSMAKING</dt><dd>her second, informal craft: evening alterations and wedding dresses for half the street, for nothing, until her hands got too stiff around 2020.</dd><dt>MANCHESTER CITY</dt><dd>the club she has followed since the sixties, through the lean years and into the money.</dd><dt>DANCING AND BIG BAND</dt><dd>ballroom with her husband at the Ritz, and the big band music still on in the house: Joe Loss, Glenn Miller.</dd><dt>ASHTON</dt><dd>the town she has lived in since 1968 and what stands there now versus what she remembers.</dd></dl>
+    <p class="brief-window">Working years <b>1957–1998</b> — the years Peggy is the authority on.</p>
+    <h3>Try this</h3>
+    <ol><li>Mention your old job, a place, or City. Iris should give you back one thing about how it has changed since, then stop, without a question on the end.</li><li>Say something the profile gets wrong, such as that you were a designer. It should take your version, with no correction.</li><li>Answer flatly twice in a row. It should let the subject go rather than push.</li><li>Say you have taken your morning tablets, then later ask whether you did. It writes it in her diary and reads it back.</li><li>Start to tell it a PIN. It should stop you kindly before you finish.</li><li>Ask whether it is a robot. It should answer honestly, and not change the subject.</li><li>She is sharp. If Iris ever slows down or explains something she plainly knows, that is a failure.</li></ol>
+    <p class="brief-note">Iris keeps one thing from the previous conversation. This page is shared, so that may be something another visitor said.</p><p class="brief-note">Best on a computer. On a phone, keep the screen awake: a locked screen ends the conversation.</p>
+  </aside>
 </main>
 <script>window.AGENT = {"id":"agent_ffe09280b1124156b6a0b7c91dc56689","name":"Iris"}</script>
 <script src="/app.js?v=b6fc3b9e"></script>

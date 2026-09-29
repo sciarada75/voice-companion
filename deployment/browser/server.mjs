@@ -6,6 +6,9 @@
 // The API key stays in this process; the page only gets 60-second tokens.
 
 import http from 'node:http'
+import { readFileSync, existsSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
 import { aai, loadEnv, publishAgent, readAgent, required, storedAgentId } from '../../lib.mjs'
 
 loadEnv()
@@ -36,6 +39,72 @@ const AGENT = await (async () => {
 })()
 
 console.log(`Agent: ${AGENT.id}`)
+
+// LOCAL CHANGE 6 (not from the starter kit). THE BRIEF, FOR WHOEVER IS JUDGING.
+//
+// The public page is built for the person having the conversation: one button,
+// no context. A judge who lands on it does not know who Iris thinks they are,
+// so they cannot tell whether Iris used what it was told or made it up. The
+// brief says who they are playing and what to try.
+//
+// ONLY IF THE PROFILE HAS demo.json, exactly like the notebook and habits.json.
+// A real person's page must never print what the agent was told about them, so
+// the file is an explicit opt-in, and it exists only for a fictional profile.
+//
+// WHO THE PERSON IS IS NOT WRITTEN IN demo.json. It is read here from the same
+// persona.json and topics.json the agent is built from, so the brief cannot say
+// one thing while the prompt says another — the §6.2 family, on the one page a
+// judge will read. demo.json only holds what to tell the judge.
+//
+// Loud if demo.json is there and the profile is not: a brief that silently
+// failed to render is a judge with no context and no error anywhere.
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
+
+const BRIEF = (() => {
+  const profile = process.env.PROFILE || process.env.AGENT || ''
+  const dir = join(ROOT, 'config/profiles', profile)
+  if (!profile || !existsSync(join(dir, 'demo.json'))) return ''
+  const read = (file) => {
+    try {
+      return JSON.parse(readFileSync(join(dir, file), 'utf8'))
+    } catch (error) {
+      console.error(`\nERROR: config/profiles/${profile}/demo.json asks for a brief, but ${file} cannot be read: ${error.message}\n`)
+      process.exit(1)
+    }
+  }
+  const demo = read('demo.json')
+  const persona = read('persona.json')
+  const topics = read('topics.json')
+  const domains = Object.values(topics.domains ?? {})
+  if (!demo.title || !demo.lead || !Array.isArray(demo.tries) || !demo.tries.length || !domains.length) {
+    console.error(`\nERROR: the brief for "${profile}" needs demo.json title, lead and tries, and topics.json domains.\n`)
+    process.exit(1)
+  }
+  const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  // "SAMPLE ROOM - her trade: ..." -> a label and its text. The label keeps its
+  // own case: sentence-casing it would give "Manchester city".
+  const told = domains.map((d) => {
+    const at = d.indexOf(' - ')
+    return at === -1
+      ? `<dd>${esc(d)}</dd>`
+      : `<dt>${esc(d.slice(0, at))}</dt><dd>${esc(d.slice(at + 3))}</dd>`
+  }).join('')
+  const window_ = persona.window
+    ? `<p class="brief-window">Working years <b>${esc(persona.window.replace('-', '–'))}</b> — the years ${esc(persona.name ?? 'they')} is the authority on.</p>`
+    : ''
+  return `<aside id="brief" aria-label="Demo brief">
+    <p class="brief-eyebrow">Demo &middot; for judges</p>
+    <h2>${esc(demo.title)}</h2>
+    <p class="brief-lead">${esc(demo.lead)}</p>
+    <h3>What ${esc(AGENT.name)} was told</h3>
+    <dl>${told}</dl>
+    ${window_}
+    <h3>Try this</h3>
+    <ol>${demo.tries.map((t) => `<li>${esc(t)}</li>`).join('')}</ol>
+    ${(demo.notes ?? []).map((n) => `<p class="brief-note">${esc(n)}</p>`).join('')}
+  </aside>`
+})()
+if (BRIEF) console.log('Brief: on (the profile has demo.json)')
 
 // --- client ----------------------------------------------------------------
 // Stringified and served as /app.js.
@@ -1058,6 +1127,41 @@ const HTML = `<!DOCTYPE html>
     position: static; width: auto; height: auto; overflow: visible;
     clip-path: none;
   }
+
+  /* LOCAL CHANGE 6. The brief: beside the conversation on a wide screen, above
+     it on a narrow one, because a judge has to know who they are playing before
+     they press the button. Absent from /dev and from any profile without
+     demo.json. */
+  #brief { display: none; }
+  body.simple.has-brief #brief { display: block; }
+  body.simple.has-brief main { max-width: 74rem; display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 28rem); column-gap: 3.5rem;
+    align-content: start; }
+  body.simple.has-brief main > header, body.simple.has-brief main > .diag,
+  body.simple.has-brief main > .panes { grid-column: 1; }
+  body.simple.has-brief #brief { grid-column: 2; grid-row: 1 / span 3; align-self: start;
+    background: var(--surface-alt); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.4rem 1.5rem 1.2rem; font-size: .95rem;
+    line-height: 1.5; color: var(--text); }
+  #brief .brief-eyebrow { font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--cobolt-500); }
+  #brief h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.7rem;
+    letter-spacing: -.5px; color: var(--text-dark); margin: .35rem 0 .5rem; }
+  #brief h3 { font-family: var(--font-mono); font-size: 12px; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--text-muted); font-weight: 400;
+    margin: 1.2rem 0 .5rem; }
+  #brief .brief-lead { color: var(--text-dark); }
+  #brief dl { display: grid; gap: .15rem; }
+  #brief dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px;
+    color: var(--text-muted); margin-top: .45rem; }
+  #brief dd { margin: 0; }
+  #brief .brief-window { margin-top: .7rem; }
+  #brief ol { padding-left: 1.2rem; display: grid; gap: .45rem; }
+  #brief .brief-note { font-size: .85rem; color: var(--text-muted); margin-top: .7rem; }
+  @media (max-width: 880px) {
+    body.simple.has-brief main { grid-template-columns: minmax(0, 1fr); }
+    body.simple.has-brief #brief { grid-column: 1; grid-row: 1; margin-bottom: 1.5rem; }
+  }
 </style>
 </head>
 <body>
@@ -1096,6 +1200,7 @@ const HTML = `<!DOCTYPE html>
       </div>
     </section>
   </div>
+<!--BRIEF-->
 </main>
 <script>window.AGENT = ${JSON.stringify(AGENT).replace(/</g, '\\u003c')}</script>
 <script src="/app.js"></script>
@@ -1149,7 +1254,11 @@ const server = http.createServer(async (req, res) => {
   // "/" is the person's page, "/dev" the developer's: the same HTML, one class
   // of difference (LOCAL CHANGE 5).
   res.writeHead(200, { 'content-type': 'text/html' })
-  res.end(req.url.startsWith('/dev') ? HTML : HTML.replace('<body>', '<body class="simple">'))
+  res.end(req.url.startsWith('/dev')
+    ? HTML.replace('<!--BRIEF-->', '')
+    : HTML
+        .replace('<body>', BRIEF ? '<body class="simple has-brief">' : '<body class="simple">')
+        .replace('<!--BRIEF-->', () => BRIEF))
 })
 
 // LOCAL CHANGE 4. The starter, if 3000 is taken, moves up to 3001 and carries
