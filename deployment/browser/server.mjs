@@ -76,8 +76,8 @@ const BRIEF = (() => {
   const persona = read('persona.json')
   const topics = read('topics.json')
   const domains = Object.values(topics.domains ?? {})
-  if (!demo.title || !demo.lead || !Array.isArray(demo.tries) || !demo.tries.length || !domains.length) {
-    console.error(`\nERROR: the brief for "${profile}" needs demo.json title, lead and tries, and topics.json domains.\n`)
+  if (!demo.title || !Array.isArray(demo.about) || !demo.about.length || !Array.isArray(demo.tries) || !demo.tries.length || !domains.length) {
+    console.error(`\nERROR: the brief for "${profile}" needs demo.json title, about and tries, and topics.json domains.\n`)
     process.exit(1)
   }
   const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -95,12 +95,15 @@ const BRIEF = (() => {
   return `<aside id="brief" aria-label="Demo brief">
     <p class="brief-eyebrow">Demo &middot; for judges</p>
     <h2>${esc(demo.title)}</h2>
-    <p class="brief-lead">${esc(demo.lead)}</p>
-    <h3>What ${esc(AGENT.name)} was told</h3>
+    ${demo.about.map((a, i) => `<p class="${i ? 'brief-about' : 'brief-lead'}">${esc(a)}</p>`).join('')}
+    <h3>What ${esc(AGENT.name)} knows about ${esc(persona.name ?? 'them')}</h3>
     <dl>${told}</dl>
     ${window_}
-    <h3>Try this</h3>
-    <ol>${demo.tries.map((t) => `<li>${esc(t)}</li>`).join('')}</ol>
+    <h3>${esc(demo.triesTitle ?? 'Try this')}</h3>
+    ${demo.triesLead ? `<p class="brief-about">${esc(demo.triesLead)}</p>` : ''}
+    <ol>${demo.tries.map((t) => typeof t === 'string'
+      ? `<li>${esc(t)}</li>`
+      : `<li>${esc(t.moment)}<span class="brief-then">${esc(t.then)}</span></li>`).join('')}</ol>
     ${(demo.notes ?? []).map((n) => `<p class="brief-note">${esc(n)}</p>`).join('')}
   </aside>`
 })()
@@ -1220,6 +1223,10 @@ const HTML = `<!DOCTYPE html>
   body.simple #brief ol li::marker { color: var(--fine); font-family: var(--font-mono);
     font-size: .85em; }
   body.simple #brief .brief-note { color: var(--faint); font-style: italic; }
+  #brief .brief-about { margin-top: .7rem; }
+  #brief .brief-then { display: block; color: var(--text-muted); font-style: italic;
+    margin-top: .15rem; }
+  body.simple #brief .brief-then { color: var(--faint); }
 </style>
 </head>
 <body>

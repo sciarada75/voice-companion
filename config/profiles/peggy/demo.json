@@ -1,18 +1,46 @@
 {
-  "_readme": "OPTIONAL, like habits.json. When a profile has this file, the public page shows a brief beside the conversation, for somebody evaluating Closer rather than for the person it is built for. Only for a fictional profile: the brief prints what the agent was told, and nothing about a real person may ever be shown on a public page. WHO the person is comes from persona.json and topics.json at build time, never from here, so the brief cannot drift from the prompt. Each entry in `tries` names one rule of config/rules/<lang>.md, so a judge is testing the doctrine, not a script.",
-  "title": "Try it as Peggy",
-  "lead": "Iris is set up for Peggy, 83, who lives on her own in Ashton-under-Lyne. Speak as her to see how it works. Below is what Iris was given about her before the first conversation, the way a family fills it in.",
+  "_readme": "OPTIONAL, like habits.json. When a profile has this file, the public page shows a brief beside the conversation, for somebody evaluating Closer rather than for the person it is built for. Only for a fictional profile: the brief prints what the agent was told, and nothing about a real person may ever be shown on a public page. WHO the person is comes from persona.json and topics.json at build time, never from here, so the brief cannot drift from the prompt. `about` introduces Closer and this setup for somebody who lands here with no context. Each entry in `tries` is a moment from a real week, never an instruction to steer the person, and names one rule of config/rules/<lang>.md, so a judge is testing the doctrine, not a script.",
+  "title": "Closer, set up for Peggy",
   "tries": [
-    "Mention your old job, a place, or City. Iris should give you back one thing about how it has changed since, then stop, without a question on the end.",
-    "Say something the profile gets wrong, such as that you were a designer. It should take your version, with no correction.",
-    "Answer flatly twice in a row. It should let the subject go rather than push.",
-    "Say you have taken your morning tablets, then later ask whether you did. It writes it in her diary and reads it back.",
-    "Start to tell it a PIN. It should stop you kindly before you finish.",
-    "Ask whether it is a robot. It should answer honestly, and not change the subject.",
-    "She is sharp. If Iris ever slows down or explains something she plainly knows, that is a failure."
+    {
+      "moment": "She starts talking about the sample room, the town, or City.",
+      "then": "Iris gives back one thing about how it has changed since, then stops, without a question on the end."
+    },
+    {
+      "moment": "She says something the family wrote down differently, such as that she was a designer.",
+      "then": "Her version wins. No correction."
+    },
+    {
+      "moment": "She is not in the mood and answers flatly, twice.",
+      "then": "Iris lets the subject go rather than push."
+    },
+    {
+      "moment": "She mentions she has taken her morning tablets, and later is not sure she did.",
+      "then": "It is in her diary, and Iris reads it back."
+    },
+    {
+      "moment": "She starts to read out her bank PIN.",
+      "then": "Iris stops her kindly before she finishes."
+    },
+    {
+      "moment": "She asks whether Iris is a real person.",
+      "then": "An honest answer, and the conversation carries on."
+    },
+    {
+      "moment": "She is sharp, and expects to be spoken to that way.",
+      "then": "If Iris slows down or explains what she plainly knows, that is a failure."
+    }
   ],
   "notes": [
+    "Peggy is fictional. Nothing on this page is about a real person.",
     "Iris keeps one thing from the previous conversation. This page is shared, so that may be something another visitor said.",
     "Best on a computer. On a phone, keep the screen awake: a locked screen ends the conversation."
-  ]
+  ],
+  "about": [
+    "Closer is a voice companion for older people who live alone. Their family describes them in plain words, and Closer talks with them every day about what they know best: their work, their town, their past. It keeps a diary of their day, in their own words, for the family to open.",
+    "In this demo it is set up for Peggy, 83, who lives alone in Ashton-under-Lyne. Her companion is called Iris, a name chosen for her comfort. Peggy knows Iris is a voice agent, and Iris never pretends to be a person.",
+    "Iris was given Peggy's story so that their conversations start on common ground. You speak as Peggy."
+  ],
+  "triesTitle": "Moments from Peggy’s week",
+  "triesLead": "Not a script: things that happen to a real person. Under each, what Iris should do."
 }
