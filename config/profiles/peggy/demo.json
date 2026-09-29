@@ -1,7 +1,7 @@
 {
   "_readme": "OPTIONAL, like habits.json. When a profile has this file, the public page shows a brief beside the conversation, for somebody evaluating Closer rather than for the person it is built for. Only for a fictional profile: the brief prints what the agent was told, and nothing about a real person may ever be shown on a public page. WHO the person is comes from persona.json and topics.json at build time, never from here, so the brief cannot drift from the prompt. Each entry in `tries` names one rule of config/rules/<lang>.md, so a judge is testing the doctrine, not a script.",
-  "title": "You are Peggy",
-  "lead": "Iris believes it is talking to Peggy, 83, on her own in Ashton-under-Lyne. Play her. Below is everything Iris was told before the conversation, so you can see what it does with it.",
+  "title": "Try it as Peggy",
+  "lead": "Iris is set up for Peggy, 83, who lives on her own in Ashton-under-Lyne. Speak as her to see how it works. Below is what Iris was given about her before the first conversation, the way a family fills it in.",
   "tries": [
     "Mention your old job, a place, or City. Iris should give you back one thing about how it has changed since, then stop, without a question on the end.",
     "Say something the profile gets wrong, such as that you were a designer. It should take your version, with no correction.",
