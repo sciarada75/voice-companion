@@ -497,10 +497,16 @@ async function start() {
     // been given it — so the fix is to open the full link once, not to keep the
     // key in the address forever. Said in that order, because the second half
     // is the part that was missing on 24/09.
+    //
+    // 29/09: the film's last card shows the bare address, so a judge who types
+    // it from there lands here with no key and no idea what "?k=" means. The
+    // message now says where the full link is. Redirecting the bare address to
+    // the keyed one was considered and rejected: it hands the key to everyone,
+    // which is the same as having no gate.
     if (res.status === 401) {
       throw new Error(
-        'this browser has not been given the key yet: open the full link ending in ?k=... once, ' +
-          'and it will be remembered',
+        'to try it, open the demo link from the Closer submission on lablab.ai. ' +
+          'Once opened, this browser remembers it',
       )
     }
     if (!res.ok) throw new Error('could not mint a token, check the API key')
