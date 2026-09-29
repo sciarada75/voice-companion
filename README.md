@@ -27,7 +27,7 @@ against that person's own usual week.
 
 **[lablab.claudiaonclaude.com](https://lablab.claudiaonclaude.com)** — the
 address needs the access key that goes with it; the link in the hackathon
-submission carries it. The page explains who you are playing and what to try.
+submission carries it. The page introduces Closer and the person it is set up for.
 
 It answers in the browser. The agent was built to be attached to a phone number
 as well - its tools run on the server, never in the browser, so a call can use
