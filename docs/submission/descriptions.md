@@ -10,14 +10,16 @@ description of it** - the phone line failed that test in three other documents.
 
 ## Title
 
-Closer — a voice companion across the relative distance
+Closer — a voice companion for people living alone
 
-*If the form stops at 50 characters:* **Closer — a companion across the relative distance**
+*If the form stops before 50 characters:* **Closer — a companion for people living alone**
 
-The joke, for the record: *relative distance* is the ordinary phrase for how far
-apart two things are, and a *relative* is a family member - so it is also the
-distance between a person and their family. *Across*, not *for*: in English
-"for the distance" sounds unfinished, and "across" says what the product does.
+A title in a gallery says what the thing is; the feeling is carried by the
+tagline on the cover, the film and the deck, *Closer, if not near*. The pun
+*relative distance* (the phrase for how far apart two things are, and a
+*relative* is family) was tried as the title on 29/09 and rejected: it has to be
+worked out, it names nobody, and it would compete with the tagline. It lives on
+deck slide 02, where the reader has time for it.
 
 ## Short description (≤ 255 characters)
 
