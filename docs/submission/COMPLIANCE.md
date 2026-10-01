@@ -12,9 +12,12 @@ finish by the evening of the 29th still stands as margin, not as the limit.
 
 ---
 
-## NEXT — what finishing the submission means, in order
+## SUBMITTED — 30/09/2026, before 17:00 CEST
 
-Three artefacts and one form. Nothing else is open, and none of it is code.
+Claudia submitted the form herself; every field was filled from
+`descriptions.md`, and its last section records exactly what went in. The
+numbered list below is kept as the record of how the submission was finished.
+**While judging lasts, do not touch the live demo** (`HANDOVER.md` §0, phase D).
 
 1. ~~**The deck, as a PDF.**~~ **Done 27/09** - `CLOSER-deck.pdf`, 16 slides,
    16:9, 3.6 MB. Source `deck/index.html`, rendered by `deck/render.sh` through
@@ -59,10 +62,10 @@ returns an empty page, so they were read through a real browser):
 | 1 | **Video presentation**, MP4, max 5 minutes | done | `docs/submission/CLOSER.mp4`, **4:56.19**, 83 MB, `ffprobe` 29/09 after three narration corrections in sections 7-8 (a phone line not connected, an alert that does not exist, a refusal broader than the rule). Backup of the 27/09 cut in `state/`. Re-renders from `video/` via `video/render-all.sh` |
 | 2 | **Slide presentation**, PDF | done 27/09 | `docs/submission/CLOSER-deck.pdf`, **16 pages, 1440x810 pt (16:9), 3.6 MB**. Built from `deck/index.html` via `deck/render.sh`. The design system is the film's own - which the film lifts from the product's report stylesheet - so deck, film, cover and family page read as one thing |
 | 3 | **Cover image**, PNG or JPG, 16:9 recommended | done 27/09 | `docs/submission/cover.png`, **1920x1080** PNG. Generated photograph (`cover-source.png`), the title set over it in the film's own EndCard typography so cover and film read as one thing |
-| 4 | **Project title** | ready 29/09 | `descriptions.md`: *Closer — a voice companion for people living alone*, **50 characters counted**, with a 44-character fallback if the form caps at 50 exclusive. The pun *relative distance* was tried as the title and rejected; it is on deck slide 02. No limit is stated on any public page |
-| 5 | **Short description**, ≤ 255 characters | ready 29/09 | `descriptions.md`, **238 characters counted** by the script in that file |
-| 6 | **Long description**, ≥ 100 words | ready 29/09 | `descriptions.md`, **237 words counted**. Every claim checked against the running prototype, not a description of it |
-| 7 | **Technology & category tags** | ready 29/09 | `descriptions.md`, led by the AssemblyAI Voice Agent API; pick from the form's own vocabulary. **No Twilio or telephony tag**: nothing is connected |
+| 4 | **Project title** | submitted | *Closer — a voice companion for people living alone*, **50 characters**: the form's counter is **50 max, 5 min**, so it fits exactly. The pun *relative distance* was tried as the title and rejected; it is on deck slide 02 |
+| 5 | **Short description**, 50-255 characters | submitted | `descriptions.md`, **222 characters counted** by the script in that file |
+| 6 | **Long description**, 600-2000 **characters** (the form; the public page says 100+ words) | submitted | `descriptions.md`, **1,300 characters, 237 words**. Every claim checked against the running prototype |
+| 7 | **Technology & category tags** | submitted | Category is a **single choice**: *Voice Assistant*. Technologies from a fixed vocabulary with **no Voice Agent API entry**: see `descriptions.md`. **No Twilio or telephony tag** |
 | 8 | **Public GitHub repository** | done | `github.com/sciarada75/voice-companion`, public since 20/09. Secret check: `.env`, `agents/*.env`, `sessions/`, `state/` and `config/profiles/*/setup.json` are gitignored; the page key and API key are in no commit |
 | 9 | **Application URL**, a link that lets a judge interact | done | See §2 |
 | 10 | **MIT-compliant** ("Submissions must be original and MIT-compliant", prize terms) | done 26/09 | `LICENSE` (bare MIT text) + `"license": "MIT"` in `package.json` + `NOTICE` for the fork credit. **The note must stay out of `LICENSE`**: appended there, GitHub's detector reported the repository as `NOASSERTION` instead of MIT, and the file exists for that signal. Verified by the GitHub API after pushing. **Before this the repo had neither, which under copyright's default means all rights reserved — the legal opposite of what the rules ask.** Upstream check, 26/09: the AssemblyAI starter ships no licence file, so the MIT grant covers this project's code and not the vendored portions, which the LICENSE credits |
@@ -95,9 +98,13 @@ introduction (backup of the old rows in `state/`, not in git). **Mint nothing
 before submitting** - every mint is a conversation, and the first one is the
 judge's introduction.
 
-Not yet verified: that the submission form preserves the `?k=` query string. If
-it strips or normalises the URL, the prototype reads as dead. Check at
-submission time by clicking the link back out of the form.
+**Re-verified 29/09 evening, after the page was restyled and the brief
+rewritten**: two spoken conversations on the live site through a real Chrome
+(introduction; a diary entry written by voice and read back by voice in the next
+conversation; an honest answer when asked about last time), no browser errors,
+then reset to D1 0/0/0, memory block NOTHING, greeting the introduction. A
+fresh clone from GitHub installs and passes 24/24; no key in any commit.
+Claudia was told to click the keyed link back out of the form before submitting.
 
 ## 3. Process — only Claudia can do these
 
@@ -118,9 +125,12 @@ done" is not evidence.
       on both our lablab.ai platform and Discord server"* (Getting Started).
       Registering on it, **not** creating a channel on it. Evidence: Claudia,
       29/09 - *"discord joined days ago."*
-- [ ] **Screenshot every field of the submission form.** The last thing that
-      cannot be seen from here: it settles the title limit, the hosting-platform
-      dropdown, the tags vocabulary, and anything nobody wrote down.
+- [x] **Screenshot every field of the submission form.** Done 29/09. Three
+      steps: *Basic Information* (title, short, long, category, technologies),
+      the uploads (cover, video, slides - all files, hosted by lablab), and
+      *Application* (GitHub, demo platform, demo URL, additional information).
+      The limits it enforces are in rows 4-7 above.
+- [x] **Submitted** 30/09, on time.
 
 **Read carefully, because it has already caused one scare:** nothing requires a
 Discord channel and nothing requires two people. **The sentence that reads that

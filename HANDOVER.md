@@ -4,15 +4,13 @@ A voice companion for old people living alone, **configurable to the person and
 to the language**. Runs on the AssemblyAI Voice Agent API. Built for the
 **AssemblyAI Voice Agent Hackathon** on lablab.ai, **due 30 September 2026**.
 
-**State, 25/09:** the whole pipe runs — a form describing a person -> profile
--> published agent you can talk to, locally and online -> conversations pulled back,
-masked, measured -> a family page only their circle can open. **Memory has been
-spoken to once:** the notebook recorded a habit by voice and a loose end was
-written by voice, both verified in the stored agent afterwards. **No note has
-ever been raised back in a conversation** (§0, phase B). **Nothing reaches
-anybody on its own.** The **film is finished** (§10); the submission is four
-items short of complete.
-**Updated:** 2026-09-25
+**State, 01/10: SUBMITTED on time (30/09), now in judging.** The whole pipe
+runs — a form describing a person -> profile -> published agent you can talk
+to, locally and online -> conversations pulled back, masked, measured -> a
+family page only their circle can open. **Nothing reaches anybody on its own.**
+**During judging the live demo is the judges'**: see §0, phase D, before
+shipping anything.
+**Updated:** 2026-10-01
 
 **How to read this file.** It records the *why*, not the state: where we are is
 already said by the code and `git log`. Organised by subject, never by date — a
@@ -31,7 +29,7 @@ Target: under ~500 lines. English only.
 
 | Area | State | Where |
 |---|---|---|
-| **The plan, and where each phase stands** | A done · B half · C built · **D open, and it is all that is left** | §0 |
+| **The plan, and where each phase stands** | A done · B half · C built · **D submitted 30/09** | §0 |
 | Value proposition, and the hackathon's requirements | decided; requirements read 20/09 | §1 |
 | Evidence base: the person is derived from data | decided 17/09 | §1.5, `config/evidence.json` |
 | The system in 11 stages | 9 built, 2 missing | §2 |
@@ -64,18 +62,18 @@ wishes are added to the list, not done on the spot.
 | **A** | **Conversation** (stage 5) | **Done bar one thing.** Eleven spoken tests, §0.1. What is still wrong: §0.2. |
 | **B** | **Memory** (stages 6, 10). **B1** the notebook works for a real profile · **B2** each conversation leaves a summary the next one reads | **B1 DONE. B2 NOT PROVEN — reopened 24/09**, and the earlier "done" was one lucky call: `note_for_next_time` has fired **once in twelve conversations**, and the once it fired it wrote the wrong kind of note. Anything that depends on the loose end — including the pitch video's claim that *"each conversation leaves one loose end for the next"* — is unsupported until a voice test says otherwise. See the entry in §0.1. Evidence lives in `sessions/peggy/*.json`, where each turn carries `tool_calls`. **Original 22/09 note follows, kept because the reading half genuinely works:** Writing: `diary_record` logged the tablets, `note_for_next_time` wrote a loose end. Reading: the next conversation opened with *"I remember us talking about your friend who used to work in a shop in Glasgow. I don't have the rest of that conversation"* — the one note, in its own words, no mention of having written it down, honest about the rest. What the two tests exposed about the CONVERSATION is in §0.1; the defect they exposed about publishing is §6.18. |
 | **C** | **Family view** (stages 7-9) | **Built, past what the plan asked** (§3). Missing: **delivery**. Nothing reaches anybody on its own; someone opens the page. The channel is undecided and must cost €0. |
-| **D** | **Submission** | Page, repo, README, prototype URL, licence, **the film and the cover** done. **Open: the deck as a PDF, the three descriptions, the technology & category tags.** The operational list is `docs/submission/COMPLIANCE.md` — every requirement, what satisfies it, and the check that proves it. **Read that, not this table.** |
+| **D** | **Submission** | **Submitted 30/09, before 17:00 CEST.** What went into each field of the form, and what the form itself enforces, is in `docs/submission/COMPLIANCE.md` and `descriptions.md`. |
 | — | After 30/09 | stage 11 (learning), more languages, iPhone latency, **and who makes the first move** (§9) |
 
-**The deadline is 30/09 at 17:00 CEST** — published, on lablab's own schedule,
-and it is Claudia's own clock (§1). B is built and half proven by voice.
-**Everything still open is
-the submission, and it is now three things:** the deck as a PDF, the three
-descriptions, and the technology & category tags. The film is done —
-`docs/submission/CLOSER.mp4`, 4:56.19 (29/09) — and so is the cover,
-`docs/submission/cover.png`. **Work the list in `docs/submission/COMPLIANCE.md`**,
-which carries the evidence for each line and the four process steps only Claudia
-can do.
+**While the judging lasts, the live demo belongs to the judges.** Last verified
+29/09 evening by two spoken conversations on the live site (introduction, diary
+written and read back by voice, an honest "I don't have the rest of our last
+conversation"), then reset: D1 empty, memory block NOTHING, greeting the
+introduction. **Do not ship, reset or talk to it without Claudia asking.** A
+`ship` after judges have spoken does not erase what they said, but a reset does,
+and they may be mid-evaluation. Claudia decided 29/09 **not** to monitor or
+wipe what judges say between them: if one asks whether Iris remembers, it should
+answer honestly, and an old person swearing is a real scenario, not misuse.
 
 ### 0.1 Phase A — the rules eleven spoken tests produced
 
@@ -304,9 +302,11 @@ lablab guide, and `lablab.ai/delivering-your-hackathon-solution`.
 | Pitch deck | PDF |
 | Code | **public GitHub repository, mandatory** |
 | **Working prototype** | **reachable by URL** |
-| Title / short / long description | **no published title limit** / 255 chars / 100+ words |
+| Title / short / long description | **50 chars** / **50-255 chars** / **600-2000 chars** (the form's own counters, seen 29/09; the public pages say only 255 and 100+ words) |
 | Cover image | PNG or JPG, 16:9 |
-| **Technology & category tags** | a required field, missed until 26/09 |
+| **Technology & category tags** | required. **Category is ONE choice** from a fixed list; **there is no "Voice Agent API" technology tag** - the AssemblyAI entries are Guardrails (API) and LLM Gateway, and 25 other entries used Guardrails as the AssemblyAI marker (lablab's `/apps/tech/assemblyai`, 29/09) |
+| Demo platform | dropdown: Streamlit, Replit, Vercel, native.builder, **Other** |
+| Video | **uploaded as a file**, hosted by lablab - no YouTube needed |
 
 **Every line above was re-read from the source on 26/09 and the audit lives in
 `docs/submission/COMPLIANCE.md`** — each requirement, what satisfies it, and the
@@ -598,8 +598,18 @@ like a missing agent.
 ### The brief, for whoever is judging
 
 **`config/profiles/<name>/demo.json` is optional, like `habits.json`.** When it
-exists, the public page shows a brief beside the conversation: who you are
-playing, what the agent was told, and what to try. **Only for a fictional
+exists, the public page shows a brief beside the conversation: **what Closer is
+(`about`), how this demo is set up, what the agent knows about the person, and
+moments from their week** (`tries` as `{moment, then}`).
+
+**The framing is a rule, not a style (Claudia, 29/09).** The first version said
+*"You are Peggy. Iris believes it is talking to Peggy... Play her"*, which reads
+as fooling a fragile person. It must say that the companion is **set up for**
+the person, named for their comfort, that **the person knows it is a voice
+agent and it never pretends to be a person**, and that the judge **speaks as**
+them. The things to try are **situations that happen in a real week**, never
+instructions for steering the person. A cold visitor must learn what the system
+is for before who the person is. **Only for a fictional
 profile** — the brief prints what the agent was told, which for a real person is
 their biography on a public page (the reason `/agent` does not exist online).
 **Who the person is is read from `persona.json` and `topics.json` at build
@@ -615,7 +625,11 @@ asks for a brief and the page has none.
 local changes marked `MODIFICA LOCALE`: (1) 350 ms of silence up front after
 `getUserMedia` (Bluetooth profile switch swallowed the greeting); (2) no buffer
 flush on `input.speech.started` (§6.7a); (3) 400 ms playback cushion (§6.7b);
-(4) no silent port fallback (§6.11). The page is built in memory and served as
+(4) no silent port fallback (§6.11); (5) the person's page vs `/dev`; (6) the
+brief; (7) **the person's page wears the deck's tokens** (ground, cream, mint,
+serif), because a judge arriving from the cover, film and deck met the
+starter's white-and-cobolt page and it *"had nothing to do with the
+presentation"* (29/09). `/dev` keeps the starter's look. The page is built in memory and served as
 `/app.js`. **The agent id is fixed when the server starts** — a server started
 before a publish serves the old agent.
 
@@ -1060,6 +1074,22 @@ once they were cut to titles.
 ---
 
 ## 9. Decisions
+
+### Copy and gate, decided at submission — 29/09/2026
+
+- **The title says what it is; the tagline carries the feeling.** Title *Closer
+  — a voice companion for people living alone*; tagline *Closer, if not near*
+  on cover, film, deck and page. The pun *relative distance* was tried as the
+  title and rejected: it had to be worked out, named nobody, and competed with
+  the tagline. It lives on deck slide 02, where the reader has time for it.
+- **The key stays.** Redirecting the bare address to the keyed one was rejected
+  (it publishes the key, which is no gate), and so was opening the demo with a
+  daily cap (cost, against the €0 rule). The film's end card shows the bare
+  address, so a keyless visitor is told to *open the demo link from the Closer
+  submission on lablab.ai* (the 401 message in `server.mjs`).
+- **"Health", "Healthcare", "Mental health" were refused as the category**
+  (Voice Assistant chosen): any of them files Closer as the medical product
+  that deck slide 07 says it is not.
 
 ### The plan and its order — 19/09/2026
 §0. Work goes in that order; new wishes join the list.

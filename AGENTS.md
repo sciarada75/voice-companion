@@ -110,14 +110,16 @@ sessions/  state/        NOT in git: real recordings, transcripts, keys, generat
 
 ## Where the submission stands
 
-Built for the **AssemblyAI Voice Agent Hackathon** on lablab.ai, **due 30
-September 2026, 17:00 CEST**. Done: the public repo, the prototype at
-`lablab.claudiaonclaude.com` (the submitted link must carry `?k=`; memory cleared
-for judges on 29/09 - **do not press the button before submitting**), the film
-`docs/submission/CLOSER.mp4` (4:56.19 against a hard 5:00, 83 MB against 300,
-not in git), the deck `CLOSER-deck.pdf`, the cover, and the texts and tags in
-`docs/submission/descriptions.md`. Open: only the form, which is Claudia's.
-Requirements as read: `HANDOVER.md` §1 and `docs/submission/COMPLIANCE.md`.
+Built for the **AssemblyAI Voice Agent Hackathon** on lablab.ai and **submitted
+on 30 September 2026, before the 17:00 CEST deadline. Now in judging.** What
+went into every field is in `docs/submission/descriptions.md`; the requirements
+and their evidence are in `docs/submission/COMPLIANCE.md`.
+
+**While judging lasts, the live demo belongs to the judges.** The submitted
+link is `lablab.claudiaonclaude.com/?k=…`. Do not ship, reset, or talk to it
+unless Claudia asks: a reset would erase what a judge just said, and every
+conversation started from here is one more in the shared memory. What judges
+say is deliberately **not** monitored or wiped (`HANDOVER.md` §0, phase D).
 
 ---
 
